@@ -7,9 +7,10 @@
     <!--  3 lines must come first -->
     <meta name="description" content="Home page for form maker.">
     <meta name="author" content="Jun Cai">
-    <title>Profile</title>
+    <title>Login</title>
+    <!--<link rel="import" href="imports/template.html">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link href="../../css/dashboard.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
@@ -17,19 +18,20 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="../home/home.view.html">Form Maker</a>
+            <a class="navbar-brand" href="home.html">Form Maker</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="profile.view.html">Username</a></li>
-                <li><a href="../home/home.view.html">Logout</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li class="active"><a>Login</a></li>
+                <li><a href="profile.html">Username</a></li>
+                <li><a href="home.html">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -39,14 +41,14 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li><a href="../home/home.view.html">Home</a></li>
-                <li class="active"><a href="profile.view.html">Profile <span class="sr-only">(current)</span></a></li>
-                <li><a href="../admin/admin.view.html">Admin</a></li>
-                <li><a href="../forms/forms.view.html">Forms</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="forms.html">Forms</a></li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">Profile</h1>
+            <h1 class="page-header">Login</h1>
             <form class="form-horizontal">
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-4 control-label">Username</label>
@@ -61,28 +63,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputFirstName" class="col-sm-4 control-label">First Name</label>
-                    <div class="col-sm-6 col-md-5">
-                        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputLastName" class="col-sm-4 control-label">Last Name</label>
-                    <div class="col-sm-6 col-md-5">
-                        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail" class="col-sm-4 control-label">Email</label>
-                    <div class="col-sm-6 col-md-5">
-                        <input type="text" class="form-control" id="inputEmail" placeholder="Email">
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="col-sm-4 control-label"></label>
                     <div class="col-sm-6 col-md-5">
-                        <a href="profile.view.html" class="form-control btn btn-primary">Update</a>
-                        <!--<input class="form-control btn btn-default" type="submit" value="Update">-->
+                        <a href="profile.html" class="form-control btn btn-primary btn-block">Login</a>
+                        <!--<input class="form-control btn btn-default" type="submit" value="Login">-->
                     </div>
                 </div>
             </form>
