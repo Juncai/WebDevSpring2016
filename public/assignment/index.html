@@ -6,17 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Jun Cai">
     <title>Index</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link href="css/style.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
     <script src="app.js"></script>
+    <script src="config.js"></script>
+    <script src="controllers/main.controller.js"></script>
+    <script src="controllers/header.controller.js"></script>
+    <script src="controllers/sidebar.controller.js"></script>
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body ng-controller="MainController">
-<div ng-include="views/header/header.view.html"></div>
-<div class="col-sm-3 col-md-2 sidebar" ng-include="views/sidebar/sidebar.view.html"></div>
+<div ng-include="'views/header/header.view.html'"></div>
+<div class="col-sm-3 col-md-2 sidebar" ng-include="'views/sidebar/sidebar.view.html'"></div>
 <div ng-view></div>
-<!--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-include="views/home/home.view.html"></div>-->
 </body>
 </html>
