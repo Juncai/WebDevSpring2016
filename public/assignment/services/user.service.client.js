@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by Jun Cai on 2/22/2016.
  */
@@ -11,23 +12,23 @@
             currentUsers: [
                 {
                     "_id": 123, "firstName": "Alice", "lastName": "Wonderland",
-                    "username": "alice", "password": "alice", "roles": ["student"]
+                    "username": "alice", "password": "alice", "roles": ["student"], "email": ""
                 },
                 {
                     "_id": 234, "firstName": "Bob", "lastName": "Hope",
-                    "username": "bob", "password": "bob", "roles": ["admin"]
+                    "username": "bob", "password": "bob", "roles": ["admin"], "email": ""
                 },
                 {
                     "_id": 345, "firstName": "Charlie", "lastName": "Brown",
-                    "username": "charlie", "password": "charlie", "roles": ["faculty"]
+                    "username": "charlie", "password": "charlie", "roles": ["faculty"], "email": ""
                 },
                 {
                     "_id": 456, "firstName": "Dan", "lastName": "Craig",
-                    "username": "dan", "password": "dan", "roles": ["faculty", "admin"]
+                    "username": "dan", "password": "dan", "roles": ["faculty", "admin"], "email": ""
                 },
                 {
                     "_id": 567, "firstName": "Edward", "lastName": "Norton",
-                    "username": "ed", "password": "ed", "roles": ["student"]
+                    "username": "ed", "password": "ed", "roles": ["student"], "email": ""
                 }
             ],
 
@@ -92,11 +93,10 @@
         }
 
         function findAllUsers(callback) {
-            callback(currentUsers);
+            callback(model.currentUsers);
         }
 
         function createUser(user, callback) {
-            // TODO need sanity check (required fields, existing username...)
             var newUser = {
                 _id: (new Date).getTime(),
                 username: user.username,
@@ -110,16 +110,16 @@
             var indexToRemove = -1;
             var index;
             var cUser;
-            for (index = 0; index < currentUsers.length; index++) {
-                cUser = currentUsers[index];
+            for (index = 0; index < model.currentUsers.length; index++) {
+                cUser = model.currentUsers[index];
                 if (cUser._id == userId) {
                     indexToRemove = index;
                 }
             }
             if (indexToRemove > -1) {
-                currentUsers.splice(indexToRemove, 1);
+                model.currentUsers.splice(indexToRemove, 1);
             }
-            callback(currentUsers);
+            callback(model.currentUsers);
         }
 
         function updateUser(userId, user, callback) {
@@ -128,6 +128,7 @@
                 cUser.firstName = user.firstName;
                 cUser.lastName = user.lastName;
                 cUser.password = user.password;
+                cUser.email = user.email;
             }
             callback(cUser);
         }

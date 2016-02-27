@@ -1,10 +1,11 @@
+"use strict";
 /**
  * Created by Jun Cai on 2/22/2016.
  */
 (function () {
     angular
         .module("FormBuilderApp")
-        .factory("FormsService", formsService);
+        .factory("FormService", formsService);
 
     function formsService($rootScope) {
         var model = {
@@ -24,12 +25,12 @@
 
         function createFormForUser(userId, form, callback) {
             var newForm = {
-                _id: (newDate).getTime(),
+                _id: (new Date).getTime(),
                 title: form.title,
                 userId: userId
             };
             model.currentForms.push(newForm);
-            callback(newform);
+            callback(newForm);
         }
 
         function findAllFormsForUser(userId, callback) {

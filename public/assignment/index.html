@@ -13,6 +13,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
     <script src="app.js"></script>
     <script src="config.js"></script>
+    <script src="services/user.service.client.js"></script>
+    <script src="services/forms.service.client.js"></script>
     <script src="controllers/main.controller.js"></script>
     <script src="controllers/header.controller.js"></script>
     <script src="controllers/sidebar.controller.js"></script>
@@ -23,8 +25,8 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body ng-controller="MainController">
-<div ng-include="'views/header/header.view.html'"></div>
-<div class="col-sm-3 col-md-2 sidebar" ng-include="'views/sidebar/sidebar.view.html'"></div>
+<ng-include src="'views/header/header.view.html'"></ng-include>
+<ng-include src="'views/sidebar/sidebar.view.html'"></ng-include>
 <div ng-view></div>
 </body>
 </html>

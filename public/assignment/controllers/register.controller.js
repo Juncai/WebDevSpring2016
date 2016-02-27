@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by Jun Cai on 2/13/2016.
  */
@@ -6,7 +7,7 @@
         .module("FormBuilderApp")
         .controller("RegisterController", registerController);
 
-    function registerController($scope, $rootScope, $location, UserService) {
+    function registerController($scope, $location, UserService) {
         $scope.message = null;
         $scope.register = register;
 
@@ -20,11 +21,11 @@
                 $scope.message = "Username is required.";
                 return;
             }
-            if (!user.password || !user.veryfyPassword) {
+            if (!user.password || !user.verifyPassword) {
                 $scope.message = "Password is required.";
                 return;
             }
-            if (user.veryfyPassword != user.password) {
+            if (user.verifyPassword != user.password) {
                 $scope.message = "Passwords don't match.";
                 return;
             }
@@ -37,8 +38,11 @@
                 $scope.message = "Existing username.";
                 return;
             }
-            var newUser = UserService.createUser(user);
-            UserService.setCurrentUser(newUser);
+            UserService.createUser(user, registerCallback);
+        }
+
+        function registerCallback (user) {
+            UserService.setCurrentUser(user);
             $location.url("/profile");
         }
     }

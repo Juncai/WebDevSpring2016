@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by Jun Cai on 2/13/2016.
  */
@@ -7,7 +8,7 @@
         .module("FormBuilderApp")
         .controller("ProfileController", profileController);
 
-    function profileController($scope, $rootScope, $location, UserService) {
+    function profileController($scope, $location, UserService) {
         $scope.error = null;
         $scope.message = null;
         $scope.currentUser = UserService.getCurrentUser();

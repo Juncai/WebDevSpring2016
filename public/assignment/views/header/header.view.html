@@ -11,11 +11,11 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li ng-show="!user" ng-class="{'active': $location.url() == '/register'}"><a href="#/register">Register</a></li>
-            <li ng-show="!user" ng-class="{'active': $location.url() == '/login'}"><a href="#/login">Login</a></li>
-            <li ng-show="user" ng-class="{'active': $location.url() == '/home'}"><a href="#/home">Logout</a></li>
-            <li ng-show="user" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">Username</a></li>
-            <li ng-show="admin" ng-class="{'active': $location.url() == '/admin'}"><a href="#/admin">Admin</a></li>
+            <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/register'}"><a href="#/register">Register</a></li>
+            <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/login'}"><a href="#/login">Login</a></li>
+            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/home'}"><a ng-click="logout()" href="#/home">Logout</a></li>
+            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">{{currentUser.firstName}}</a></li>
+            <li ng-show="isAdmin()" ng-class="{'active': $location.url() == '/admin'}"><a href="#/admin">Admin</a></li>
         </ul>
     </div>
 </div>

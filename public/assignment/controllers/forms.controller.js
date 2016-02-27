@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by Jun Cai on 2/13/2016.
  */
@@ -34,11 +35,12 @@
             FormService.findAllFormsForUser($rootScope.currentUser._id, findAllFormCallback);
         }
         function deleteForm(index) {
-            FormService.deleteFormById(index, deleteFormCallback);
+            var formToDelete = $scope.forms[index];
+            FormService.deleteFormById(formToDelete._id, deleteFormCallback);
         }
 
         function deleteFormCallback(forms) {
-            FormService.findAllFormsForUser($rootScope.currentUser._id, findAllFormCallback);
+            $scope.forms = forms;
         }
 
         function selectForm(index) {
