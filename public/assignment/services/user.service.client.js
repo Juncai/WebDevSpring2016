@@ -1,5 +1,5 @@
 /**
- * Created by jonca on 2/22/2016.
+ * Created by Jun Cai on 2/22/2016.
  */
 (function () {
     angular
@@ -7,8 +7,8 @@
         .factory("UserService", userService);
 
     function userService($rootScope) {
-        var currentUsers =
-            [
+        var model = {
+            currentUsers: [
                 {
                     "_id": 123, "firstName": "Alice", "lastName": "Wonderland",
                     "username": "alice", "password": "alice", "roles": ["student"]
@@ -29,26 +29,63 @@
                     "_id": 567, "firstName": "Edward", "lastName": "Norton",
                     "username": "ed", "password": "ed", "roles": ["student"]
                 }
-            ];
+            ],
 
-        var api = {
             findUserByCredentials: findUserByCredentials,
+            findUserById: findUserById,
+            findUserByUsername: findUserByUsername,
             findAllUsers: findAllUsers,
             createUser: createUser,
             deleteUserById: deleteUserById,
-            updateUser: updateUser
+            updateUser: updateUser,
+            setCurrentUser: setCurrentUser,
+            getCurrentUser: getCurrentUser
         };
+        return model;
 
-        return api;
+        function setCurrentUser(user) {
+            $rootScope.currentUser = user;
+        }
 
-        function findUserByCredentials(username, password, callback) {
-            var index;
+        function getCurrentUser() {
+            return $rootScope.currentUser;
+        }
+
+        function findUserByUsername(username) {
             var user = null;
             var cUser;
-            for (index = 0; index < currentUsers.length; index++) {
-                cUser = currentUsers[index];
-                if (cUser.username == username && cUser.password == password) {
+            for (var i in model.currentUsers) {
+                cUser = model.currentUsers[i];
+                if (cUser.username === username) {
                     user = cUser;
+                    break;
+                }
+            }
+            return user;
+        }
+
+        function findUserById(id) {
+            var user = null;
+            var cUser;
+            for (var i in model.currentUsers) {
+                cUser = model.currentUsers[i];
+                if (cUser._id === id) {
+                    user = cUser;
+                    break;
+                }
+            }
+            return user;
+        }
+
+        function findUserByCredentials(username, password, callback) {
+            var user = null;
+            var cUser;
+            for (var i in model.currentUsers) {
+                cUser = model.currentUsers[i];
+                if (cUser.username === username &&
+                    cUser.password === password) {
+                    user = cUser;
+                    break;
                 }
             }
             callback(user);
@@ -60,9 +97,13 @@
 
         function createUser(user, callback) {
             // TODO need sanity check (required fields, existing username...)
-            user._id = (new Date).getTime();
-            currentUsers.push(user);
-            callback(user);
+            var newUser = {
+                _id: (new Date).getTime(),
+                username: user.username,
+                password: user.password
+            };
+            model.currentUsers.push(newUser);
+            callback(newUser);
         }
 
         function deleteUserById(userId, callback) {
@@ -82,18 +123,13 @@
         }
 
         function updateUser(userId, user, callback) {
-            var index;
-            var cUser;
-            for (index = 0; index < currentUsers.length; index++) {
-                cUser = currentUsers[index];
-                if (cUser._id == userId) {
-                    for (var name in user) {
-                        cUser[name] = user[name];
-                    }
-                    callback(cUser);
-                    break;
-                }
+            var cUser = model.findUserById(userId);
+            if (cUser != null) {
+                cUser.firstName = user.firstName;
+                cUser.lastName = user.lastName;
+                cUser.password = user.password;
             }
+            callback(cUser);
         }
     }
 })();
