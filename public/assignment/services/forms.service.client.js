@@ -33,6 +33,18 @@
             callback(newForm);
         }
 
+        //function findAllFormsForUser(userId) {
+        //    var userForms = [];
+        //    var cForm;
+        //    for (var i in model.currentForms) {
+        //        cForm = model.currentForms[i];
+        //        if (cForm.userId == userId) {
+        //            userForms.push(cForm);
+        //        }
+        //    }
+        //    return userForms;
+        //}
+
         function findAllFormsForUser(userId, callback) {
             var userForms = [];
             var cForm;
@@ -56,7 +68,7 @@
                 }
             }
             if (indToRemove > -1) {
-                model.currentForms.splice(indToRemove);
+                model.currentForms.splice(indToRemove, 1);
             }
             callback(model.currentForms);
         }
