@@ -15,6 +15,7 @@
         $scope.updateForm = updateForm;
         $scope.deleteForm = deleteForm;
         $scope.selectForm = selectForm;
+        $scope.form = {"title" : ""};
 
 
         if ($rootScope.currentUser) {
@@ -31,12 +32,14 @@
         }
 
         function updateForm() {
-            var cForm = $scope.selectedForm;
-            FormService.updateFormById(cForm._id, cForm, updateFormCallback);
+            if ($scope..selectedForm != null) {
+                FormService.updateFormById($scope.selectedForm._id, $scope.form, updateFormCallback);
+            }
         }
 
         function updateFormCallback(form) {
             FormService.findAllFormsForUser($rootScope.currentUser._id, findAllFormCallback);
+            $scope.selectedForm = null;
         }
         function deleteForm(index) {
             var formToDelete = $scope.forms[index];
@@ -49,6 +52,7 @@
 
         function selectForm(index) {
             $scope.selectedForm = $scope.forms[index];
+            $scope.form.title = $scope.selectedForm.title;
         }
 
         function findAllFormCallback(forms) {
