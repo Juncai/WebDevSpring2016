@@ -32,7 +32,7 @@
         }
 
         function updateForm() {
-            if ($scope..selectedForm != null) {
+            if ($scope.selectedForm != null) {
                 FormService.updateFormById($scope.selectedForm._id, $scope.form, updateFormCallback);
             }
         }
