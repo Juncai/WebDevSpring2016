@@ -38,6 +38,9 @@
                 $scope.message = "Existing username.";
                 return;
             }
+            user.firstName = "";
+            user.lastName = "";
+            user.roles = [];
             UserService.createUser(user, registerCallback);
         }
 

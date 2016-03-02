@@ -100,7 +100,11 @@
             var newUser = {
                 _id: (new Date).getTime(),
                 username: user.username,
-                password: user.password
+                password: user.password,
+                roles: user.roles,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName
             };
             model.currentUsers.push(newUser);
             callback(newUser);

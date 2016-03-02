@@ -20,6 +20,18 @@
         $scope.update = update;
 
         function update(user) {
+            if (!user.password || !user.verifyPassword) {
+                $scope.message = "Password is required.";
+                return;
+            }
+            if (user.verifyPassword != user.password) {
+                $scope.message = "Passwords don't match.";
+                return;
+            }
+            if (!user.email) {
+                $scope.message = "Email is required.";
+                return;
+            }
             UserService.updateUser($scope.currentUser._id, user, updateCallback);
         }
 
