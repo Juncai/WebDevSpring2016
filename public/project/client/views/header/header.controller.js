@@ -5,7 +5,7 @@
 
 (function() {
     angular
-        .module("FormBuilderApp")
+        .module("QuizZ")
         .controller("HeaderController", headerController);
 
     function headerController($scope, $location, UserService) {
