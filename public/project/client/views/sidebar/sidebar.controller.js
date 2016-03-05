@@ -9,11 +9,11 @@
 
     function sidebarController($scope, $location, UserService) {
         $scope.$location = $location;
-        $scope.isAdmin = isAdmin;
+        //$scope.isAdmin = isAdmin;
 
-        function isAdmin() {
-            var user = UserService.getCurrentUser();
-            return (user != null && user.roles.indexOf("admin") != -1);
-        }
+        //function isAdmin() {
+        //    var user = UserService.getCurrentUser();
+        //    return (user != null && user.roles.indexOf("admin") != -1);
+        //}
     }
 })();

@@ -1,0 +1,61 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">Quiz Detail</h1>
+    <div ng-show="message" class="alert alert-danger" role="alert">{{message}}</div>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="name" class="col-sm-4 control-label">Quiz Name</label>
+            <div class="col-sm-6 col-md-5">
+                <input ng-model="currentQuiz.name" type="text" class="form-control" id="name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="question" class="col-sm-4 control-label">Question</label>
+            <div class="col-sm-6 col-md-5">
+                <input ng-model="currentCard.question" type="text" class="form-control" id="question">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="answer" class="col-sm-4 control-label">Answer</label>
+            <div class="col-sm-6 col-md-5">
+                <input ng-model="currentCard.answer" type="text" class="form-control" id="answer">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="picture" class="col-sm-4 control-label">Picture</label>
+            <div class="col-sm-6 col-md-5">
+                <input ng-model="currentCard.picture" type="text" class="form-control" id="picture">
+                <img src={{currentCard.picture}} width="320" height="174" alt="Ford Mustang">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label"></label>
+            <div class="col-sm-6 col-md-5">
+                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
+                <button ng-click="prev()" class="btn btn-primary">Prev</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label"></label>
+            <div class="col-sm-6 col-md-5">
+                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
+                <button ng-click="saveQuiz()" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label"></label>
+            <div class="col-sm-6 col-md-5">
+                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
+                <button ng-click="backToList()" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label"></label>
+            <div class="col-sm-6 col-md-5">
+                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
+                <button ng-click="next()" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </form>
+</div>
+

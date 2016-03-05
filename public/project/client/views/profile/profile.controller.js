@@ -8,10 +8,10 @@
         .module("QuizZ")
         .controller("ProfileController", profileController);
 
-    function profileController($scope, $location, UserService) {
+    function profileController($scope, $location, $rootScope) {
         $scope.error = null;
         $scope.message = null;
-        $scope.currentUser = UserService.getCurrentUser();
+        $scope.currentUser = $rootScope.currentUser;
 
         if (!$scope.currentUser) {
             $location.url("/home");
@@ -32,20 +32,8 @@
                 $scope.message = "Email is required.";
                 return;
             }
-            UserService.updateUser($scope.currentUser._id, user, updateCallback);
-        }
-
-        function updateCallback(user) {
-            $scope.error = null;
-            $scope.message = null;
-
-            if (user) {
-                $scope.currentUser = user;
-                $scope.message = "Update successfully.";
-                UserService.setCurrentUser($scope.currentUser);
-            } else {
-                $scope.message = "Update failed";
-            }
+            $rootScope.currentUser = user;
+            $scope.currentUser = user;
         }
     }
 })();
