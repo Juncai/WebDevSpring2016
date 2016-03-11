@@ -4,24 +4,40 @@
 (function () {
     angular
         .module("QuizZ")
-        .factory("SearchService", searchService);
+        .factory("SchoolService", schoolService);
 
-    function searchService($http) {
+    function schoolService($http) {
+        var schools = [];
 
         var searchQueryString = "https://inventory.data.gov/api/action/datastore_search" +
             "?resource_id=38625c3d-5388-4c16-a30f-d105432553a4&q=";
         var findQueryString = "https://inventory.data.gov/api/action/datastore_search" +
             "?resource_id=38625c3d-5388-4c16-a30f-d105432553a4&limit=1&q=UNITID:";
         var api = {
-            schools: {},
+            schools: schools,
             searchSchoolsByName: searchSchoolsByName,
-            findSchoolByID: findSchoolByID
+            findSchoolByID: findSchoolByID,
+            cacheSchool: cacheSchool
         };
         return api;
 
         function findSchoolByID(schoolID) {
             // TODO find school in the database instead
-            return $http.jsonp(findQueryString + schoolID + "&callback=JSON_CALLBACK");
+            var res = null;
+            for (var s in schools) {
+                if (schools[s].UNITID == schoolID) {
+                    res = schools[s];
+                }
+            }
+            return res;
+            //return $http.jsonp(findQueryString + schoolID + "&callback=JSON_CALLBACK");
+        }
+
+        function cacheSchool(school) {
+            if (findSchoolByID(school.UNITID) == null) {
+                schools.push(school);
+            }
+
         }
 
         function searchSchoolsByName(name) {

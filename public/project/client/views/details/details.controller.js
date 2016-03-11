@@ -6,39 +6,41 @@
         .module("QuizZ")
         .controller("DetailsController", detailsController);
 
-    function detailsController($routeParams,
-                               SearchService,
+    function detailsController($scope,
+                               $routeParams,
+                               SchoolService,
                                $rootScope,
                                $location,
                                ClassService
     ) {
-        var vm = this;
-        var imdbID = $routeParams.imdbID;
+        var schoolID = $routeParams.schoolID;
         var currentUser = $rootScope.currentUser;
-        vm.favorite = favorite;
+        //$scope.favorite = favorite;
 
         function init() {
-            SearchService
-                .findSchoolByID(imdbID)
-                .then(function(response){
-                    vm.data = response.data;
-                });
+            $scope.data = SchoolService.findSchoolByID(schoolID);
+            $scope.classes = ClassService.findClassBySchoolID(schoolID);
+            //SchoolService
+            //    .findSchoolByID(schoolID)
+            //    .then(function(response){
+            //        $scope.data = response;
+            //    });
 
-            ClassService
-                .findUserLikes (imdbID)
-                .then(function(response){
-                    vm.movie = response.data;
-                });
+            //ClassService
+            //    .findUserLikes (imdbID)
+            //    .then(function(response){
+            //        $scope.movie = response.data;
+            //    });
         }
         init();
 
-        function favorite(movie) {
-            if(currentUser) {
-                ClassService
-                    .userLikesMovie(currentUser._id, movie);
-            } else {
-                $location.url("/login");
-            }
-        }
+        //function favorite(movie) {
+        //    if(currentUser) {
+        //        ClassService
+        //            .userLikesMovie(currentUser._id, movie);
+        //    } else {
+        //        $location.url("/login");
+        //    }
+        //}
     }
 })();

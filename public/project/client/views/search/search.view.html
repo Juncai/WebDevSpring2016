@@ -21,10 +21,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="school in data.records">
+            <tr ng-repeat="school in data.records track by school.UNITID">
                 <td>{{school.UNITID}}</td>
                 <td>
-                    <a href="#/details/{{school.UNITID}}">
+                    <!--<a href="#/details/{{school.UNITID}}">-->
+                    <a ng-click="details($index)">
                         {{school.INSTNM}}
                     </a>
                 </td>

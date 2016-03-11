@@ -62,7 +62,7 @@
                 templateUrl: "views/search/search.view.html",
                 controller: "SearchController"
             })
-            .when("/details", {
+            .when("/details/:schoolID", {
                 templateUrl: "views/details/details.view.html",
                 controller: "DetailsController"
             })

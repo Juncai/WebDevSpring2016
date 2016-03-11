@@ -26,10 +26,10 @@
                     "_id": 456, "name": "Class 04", "schoolID": 234, "created": "2016-03-05 12:00.00",
                     "students": [234, 456], "teacher": 567, "quizList": [123, 234]
                 }
-            ]
+            ],
 
 
-            //findUserByCredentials: findUserByCredentials,
+            findClassBySchoolID: findClassBySchoolID
             //findUserById: findUserById,
             //findUserByUsername: findUserByUsername,
             //findAllUsers: findAllUsers,
@@ -62,17 +62,9 @@
             return user;
         }
 
-        function findUserById(id) {
-            var user = null;
-            var cUser;
-            for (var i in model.currentUsers) {
-                cUser = model.currentUsers[i];
-                if (cUser._id === id) {
-                    user = cUser;
-                    break;
-                }
-            }
-            return user;
+        function findClassBySchoolID(id) {
+            // dummy function for demo purpose
+            return model.classes;
         }
 
         function findUserByCredentials(username, password, callback) {
