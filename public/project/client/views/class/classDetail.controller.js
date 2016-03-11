@@ -13,9 +13,14 @@
         $scope.message = null;
         $scope.currentClass = ClassService.classes[0];
         $scope.backToList = backToList;
+        $scope.joinClass = joinClass;
 
         function backToList() {
             $location.url("/classList");
+        }
+
+        function joinClass() {
+            $location.url("/classDetail");
         }
     }
 })();

@@ -31,6 +31,10 @@
                 templateUrl: "views/class/classList.view.html",
                 controller: "ClassListController"
             })
+            .when("/newClass", {
+                templateUrl: "views/class/newClass.view.html",
+                controller: "NewClassController"
+            })
             .when("/performance", {
                 templateUrl: "views/performance/performance.view.html",
                 controller: "PerformanceController"

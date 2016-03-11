@@ -27,7 +27,7 @@
         function details(index) {
             var cSchool = $scope.data.records[index];
             SchoolService.cacheSchool(cSchool);
-            $location.url("/details/" + cSchool.UNITID);
+            //$location.url("/details/" + cSchool.UNITID);
         }
     }
 })();

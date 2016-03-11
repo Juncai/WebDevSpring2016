@@ -6,29 +6,27 @@
     <br/>
     <br/>
 
-
     <h4>City</h4>
     <p>
         {{data.CITY}}
     </p>
 
+    <h4>County Name</h4>
+    <p>
+        {{data.COUNTYNM}}
+    </p>
+
+    <h4>Zip Code</h4>
+    <p>
+        {{data.ZIP}}
+    </p>
+
     <h4>Classes</h4>
     <ul>
         <li ng-repeat="class in classes">
-            {{class.name}}
+            <a href="#/classDetail">{{class.name}}</a>
         </li>
     </ul>
+    <button ng-click="newClass(data.UNITID)">Create Class</button>
 
-    <!--{{model.userLikes}}-->
-
-    <!--<div ng-if="model.movie.userLikes">-->
-        <!--<h4>Other Users that Like This Movie</h4>-->
-        <!--<ul>-->
-            <!--<li ng-repeat="user in model.movie.userLikes">-->
-                <!--<a href="#/profile/{{user.username}}">-->
-                    <!--{{user.username}}-->
-                <!--</a>-->
-            <!--</li>-->
-        <!--</ul>-->
-    <!--</div>-->
 </div>

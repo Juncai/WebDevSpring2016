@@ -1,0 +1,28 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">Create Class</h1>
+    <div ng-show="message" class="alert alert-danger" role="alert">{{message}}</div>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="schoolID" class="col-sm-4 control-label">School ID</label>
+            <div class="col-sm-6 col-md-5">
+                <input ng-model="newClass.schoolID" type="text" class="form-control" id="schoolID" placeholder="School ID" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputClassName" class="col-sm-4 control-label">Class Name</label>
+            <div class="col-sm-6 col-md-5">
+                <input ng-model="newClass.name" type="text" class="form-control" id="inputClassName"
+                       placeholder="Class Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label"></label>
+            <div class="col-sm-6 col-md-5">
+                <!--<a ng-click="register(user)" class="form-control btn btn-block btn-primary">Register</a>-->
+                <button ng-click="create(newClass)" class="btn btn-block btn-primary">Create</button>
+                <button href="#/home" class="btn btn-block btn-primary">Cancel</button>
+                <!--<input class="form-control btn btn-default" type="submit" value="Register">-->
+            </div>
+        </div>
+    </form>
+</div>

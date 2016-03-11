@@ -35,6 +35,10 @@
         <li ng-repeat="qid in currentClass.quizList"><a href="#/quizDetail">{{qid}}</a>  <a href="#/performance">Grades</a></li>
     </ul>
 </div>
+
+<div class="col-sm-6 col-md-5">
+    <button ng-click="joinClass()" class="btn btn-primary btn-block">Join Class</button>
+</div>
 <div class="col-sm-6 col-md-5">
     <button ng-click="backToList()" class="btn btn-primary btn-block">Back</button>
 </div>

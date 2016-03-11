@@ -22,7 +22,7 @@
 
         function create(user) {
             user._id = (new Date).getTime();
-            UserService.users.push(newUser);
+            UserService.users.push(user);
             refreshCollection();
         }
 
