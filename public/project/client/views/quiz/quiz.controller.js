@@ -5,10 +5,10 @@
 (function () {
     angular
         .module("QuizZ")
-        .controller("UserController", userController);
+        .controller("QuizController", quizController);
 
-    function userController($scope, UserService) {
-        var fields = ["_id", "firstName", "lastname", "username", "password", "email", "birthdate", "role"];
+    function quizController($scope, QuizService) {
+        var fields = ["_id", "name", "authorID", "created"];
 
         $scope.message = null;
         $scope.create = create;
@@ -20,14 +20,14 @@
         $scope.fields = fields;
         $scope.newItem = {};
 
-        function create(user) {
-            user._id = (new Date).getTime();
-            UserService.users.push(newUser);
+        function create(quiz) {
+            quiz._id = (new Date).getTime();
+            QuizService.quizzes.push(quiz);
             refreshCollection();
         }
 
         function all() {
-            return UserService.users;
+            return QuizService.quizzes;
         }
 
         function update() {
@@ -42,11 +42,11 @@
             prepareNewItem();
         }
 
-        function updateHelper(id, user) {
-            user._id = id;
+        function updateHelper(id, item) {
+            item._id = id;
             var indexToUpdate = find(id);
             if (indexToUpdate > -1) {
-                UserService.users[indexToUpdate] = user;
+                QuizService.quizzes[indexToUpdate] = item;
             }
             refreshCollection();
         }
@@ -54,14 +54,14 @@
         function remove(index) {
             var indexToRemove = findIndexById($scope.collection[index]._id);
             if (indexToRemove > -1) {
-                UserService.users.splice(indexToRemove, 1);
+                QuizService.quizzes.splice(indexToRemove, 1);
             }
             refreshCollection();
         }
 
         function findIndexById(id) {
-            for (var i in UserService.users) {
-                if (UserService.users[i]._id == id) {
+            for (var i in QuizService.quizzes) {
+                if (QuizService.quizzes[i]._id == id) {
                     return i;
                 }
             }

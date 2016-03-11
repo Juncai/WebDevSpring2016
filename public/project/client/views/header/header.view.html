@@ -13,9 +13,9 @@
         <div class="col-small-3 col-md-3">
             <form class="navbar-form" role="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for quiz...">
+                    <input type="text" class="form-control" placeholder="Search for school...">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                        <a href="#/search" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></a>
                     </div>
                 </div>
             </form>
@@ -24,8 +24,7 @@
             <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/register'}"><a href="#/register">Sign up</a></li>
             <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/login'}"><a href="#/login">Login</a></li>
             <li ng-show="currentUser" ng-class="{'active': $location.url() == '/home'}"><a ng-click="logout()" href="#/home">Logout</a></li>
-            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">{{currentUser.username}}</a></li>
-            <!--<li ng-show="isAdmin()" ng-class="{'active': $location.url() == '/admin'}"><a href="#/admin">Admin</a></li>-->
+            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">{{currentUser.firstName}}</a></li>
         </ul>
     </div>
 </div>

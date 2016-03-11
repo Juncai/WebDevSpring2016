@@ -1,0 +1,36 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2>Seach</h2>
+
+    <input ng-model="school.name"
+           class="form-control"
+           placeholder="Boston"/>
+
+    <button ng-click="search(school)"
+            class="btn btn-primary btn-block">
+        Search
+    </button>
+
+    <div ng-if="data">
+        <h3>Search Results</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>School ID</th>
+                <th>School Name</th>
+                <th>City</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="school in data.records">
+                <td>{{school.UNITID}}</td>
+                <td>
+                    <a href="#/details/{{school.UNITID}}">
+                        {{school.INSTNM}}
+                    </a>
+                </td>
+                <td>{{school.CITY}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

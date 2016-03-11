@@ -5,10 +5,10 @@
 (function () {
     angular
         .module("QuizZ")
-        .controller("UserController", userController);
+        .controller("ClassController", classController);
 
-    function userController($scope, UserService) {
-        var fields = ["_id", "firstName", "lastname", "username", "password", "email", "birthdate", "role"];
+    function classController($scope, ClassService) {
+        var fields = ["_id", "name", "schoolID", "created", "teacher"];
 
         $scope.message = null;
         $scope.create = create;
@@ -20,14 +20,14 @@
         $scope.fields = fields;
         $scope.newItem = {};
 
-        function create(user) {
-            user._id = (new Date).getTime();
-            UserService.users.push(newUser);
+        function create(item) {
+            item._id = (new Date).getTime();
+            ClassService.classes.push(item);
             refreshCollection();
         }
 
         function all() {
-            return UserService.users;
+            return ClassService.classes;
         }
 
         function update() {
@@ -42,11 +42,11 @@
             prepareNewItem();
         }
 
-        function updateHelper(id, user) {
-            user._id = id;
+        function updateHelper(id, item) {
+            item._id = id;
             var indexToUpdate = find(id);
             if (indexToUpdate > -1) {
-                UserService.users[indexToUpdate] = user;
+                ClassService.classes[indexToUpdate] = item;
             }
             refreshCollection();
         }
@@ -54,14 +54,14 @@
         function remove(index) {
             var indexToRemove = findIndexById($scope.collection[index]._id);
             if (indexToRemove > -1) {
-                UserService.users.splice(indexToRemove, 1);
+                ClassService.classes.splice(indexToRemove, 1);
             }
             refreshCollection();
         }
 
         function findIndexById(id) {
-            for (var i in UserService.users) {
-                if (UserService.users[i]._id == id) {
+            for (var i in ClassService.classes) {
+                if (ClassService.classes[i]._id == id) {
                     return i;
                 }
             }

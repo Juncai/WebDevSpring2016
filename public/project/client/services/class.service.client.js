@@ -5,35 +5,26 @@
 (function () {
     angular
         .module("QuizZ")
-        .factory("UserService", userService);
+        .factory("ClassService", classService);
 
-    function userService($rootScope) {
+    function classService($rootScope) {
         var model = {
-            users : [
+            classes: [
                 {
-                    "_id": 123, "firstName": "Alice", "lastName": "Wonderland", "birthdate": "2000-10-5",
-                    "username": "alice", "password": "alice", "role": "Student", "email": "abc@gmail.com",
-                    "followed": [234, 345], "following": [345, 456]
+                    "_id": 123, "name": "Class 01", "schoolID": 123, "created": "2016-03-05 12:00.00",
+                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
                 },
                 {
-                    "_id": 234, "firstName": "Bob", "lastName": "Hope", "birthdate": "2000-10-5",
-                    "username": "bob", "password": "bob", "role": "Student", "email": "abc@gmail.com",
-                    "followed": [123, 345], "following": [345, 456]
+                    "_id": 234, "name": "Class 02", "schoolID": 123, "created": "2016-03-05 12:00.00",
+                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
                 },
                 {
-                    "_id": 345, "firstName": "Charlie", "lastName": "Brown", "birthdate": "2000-10-5",
-                    "username": "charlie", "password": "charlie", "role": "Teacher", "email": "abc@gmail.com",
-                    "followed": [123, 234], "following": [123, 234]
+                    "_id": 345, "name": "Class 03", "schoolID": 234, "created": "2016-03-05 12:00.00",
+                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
                 },
                 {
-                    "_id": 456, "firstName": "Dan", "lastName": "Craig", "birthdate": "2000-10-5",
-                    "username": "dan", "password": "dan", "role": "Teacher", "email": "abc@gmail.com",
-                    "followed": [123, 234], "following": []
-                },
-                {
-                    "_id": 567, "firstName": "Edward", "lastName": "Norton", "birthdate": "2000-10-5",
-                    "username": "ed", "password": "ed", "role": "Student", "email": "abc@gmail.com",
-                    "followed": [], "following": []
+                    "_id": 456, "name": "Class 04", "schoolID": 234, "created": "2016-03-05 12:00.00",
+                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
                 }
             ]
 

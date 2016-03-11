@@ -1,5 +1,5 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">Users</h1>
+    <h1 class="page-header">Quizzes</h1>
     <form class="form-horizontal">
         <div class="table-responsive">
             <table class="table table-striped">
@@ -8,8 +8,6 @@
                     <th ng-repeat="field in fields">
                         {{field}}
                     </th>
-                    <!--<th nowrap><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Form Name-->
-                    <!--</th>-->
                     <th nowrap>
                         <div class="col-sm-1"></div>
                         Action
@@ -25,54 +23,25 @@
                     </td>
                     <td>
                         <div>
-                            <input ng-model="newItem.firstName" type="text" class="form-control"
-                                   placeholder="First Name">
+                            <input ng-model="newItem.name" type="text" class="form-control"
+                                   placeholder="Quiz Name">
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input ng-model="newItem.lastName" type="text" class="form-control"
-                                   placeholder="Last Name">
+                            <input ng-model="newItem.authorID" type="text" class="form-control"
+                                   placeholder="Author ID">
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input ng-model="newItem.username" type="text" class="form-control"
-                                   placeholder="Username">
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input ng-model="newItem.password" type="password" class="form-control"
-                                   placeholder="Password">
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input ng-model="newItem.email" type="email" class="form-control"
-                                   placeholder="Email">
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input ng-model="newItem.birthDate" type="text" class="form-control" id="inputBirthDate"
-                                   placeholder="Birth Date">
+                            <input ng-model="newItem.created" type="text" class="form-control" id="inputBirthDate"
+                                   placeholder="Date Created">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                     </td>
-                    <td>
-                        <!--<label for="inputRole" class="col-sm-4 control-label">Role</label>-->
-                        <label for="inputRole">Role</label>
-                        <div>
-                            <select ng-model="newItem.role" class="form-control" id="inputRole">
-                                <option>Student</option>
-                                <option>Teacher</option>
-                            </select>
-                        </div>
-                    </td>
-
                     <td>
                         <div class="col-sm-2">
                             <button ng-click="create(newItem)" class="btn btn-default">
@@ -89,8 +58,6 @@
                 <tr ng-repeat="item in collection track by item._id">
                     <td nowrap ng-repeat="field in fields">
                         {{item[field]}}
-                        <!--<div class=""></div>-->
-                        <!--<a href="fields.view.html">{{form.title}}</a></td>-->
                     </td>
                     <td>
                         <div class="col-sm-2">

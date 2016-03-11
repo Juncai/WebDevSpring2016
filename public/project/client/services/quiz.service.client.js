@@ -5,35 +5,22 @@
 (function () {
     angular
         .module("QuizZ")
-        .factory("UserService", userService);
+        .factory("QuizService", quizService);
 
-    function userService($rootScope) {
+    function quizService($rootScope) {
         var model = {
-            users : [
+            quizzes: [
                 {
-                    "_id": 123, "firstName": "Alice", "lastName": "Wonderland", "birthdate": "2000-10-5",
-                    "username": "alice", "password": "alice", "role": "Student", "email": "abc@gmail.com",
-                    "followed": [234, 345], "following": [345, 456]
+                    "_id": 123, "name": "Quiz 01", "authorID": 123, "created": "2016-03-05 12:00.00",
+                    "assignedTo": [234, 456], "cards": [123, 234]
                 },
                 {
-                    "_id": 234, "firstName": "Bob", "lastName": "Hope", "birthdate": "2000-10-5",
-                    "username": "bob", "password": "bob", "role": "Student", "email": "abc@gmail.com",
-                    "followed": [123, 345], "following": [345, 456]
+                    "_id": 234, "name": "Quiz 02", "authorID": 123, "created": "2016-03-05 12:00.00",
+                    "assignedTo": [234, 456], "cards": [345, 456]
                 },
                 {
-                    "_id": 345, "firstName": "Charlie", "lastName": "Brown", "birthdate": "2000-10-5",
-                    "username": "charlie", "password": "charlie", "role": "Teacher", "email": "abc@gmail.com",
-                    "followed": [123, 234], "following": [123, 234]
-                },
-                {
-                    "_id": 456, "firstName": "Dan", "lastName": "Craig", "birthdate": "2000-10-5",
-                    "username": "dan", "password": "dan", "role": "Teacher", "email": "abc@gmail.com",
-                    "followed": [123, 234], "following": []
-                },
-                {
-                    "_id": 567, "firstName": "Edward", "lastName": "Norton", "birthdate": "2000-10-5",
-                    "username": "ed", "password": "ed", "role": "Student", "email": "abc@gmail.com",
-                    "followed": [], "following": []
+                    "_id": 345, "name": "Quiz 03", "authorID": 123, "created": "2016-03-05 12:00.00",
+                    "assignedTo": [234, 456], "cards": [567, 678]
                 }
             ]
 

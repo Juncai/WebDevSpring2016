@@ -1,5 +1,5 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">Users</h1>
+    <h1 class="page-header">Class</h1>
     <form class="form-horizontal">
         <div class="table-responsive">
             <table class="table table-striped">
@@ -18,6 +18,12 @@
                 </thead>
                 <tbody>
                 <tr>
+                    <!--<td ng-repeat="field in fields">-->
+                    <!--<div>-->
+                    <!--<input ng-model="newItem[field]" type="text" class="form-control" id="{{field}}"-->
+                    <!--placeholder={{field}}>-->
+                    <!--</div>-->
+                    <!--</td>-->
                     <td>
                         <div>
                             <input ng-model="newItem._id" type="text" class="form-control" placeholder="id" disabled>
@@ -25,54 +31,31 @@
                     </td>
                     <td>
                         <div>
-                            <input ng-model="newItem.firstName" type="text" class="form-control"
-                                   placeholder="First Name">
+                            <input ng-model="newItem.name" type="text" class="form-control"
+                                   placeholder="Class Name">
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input ng-model="newItem.lastName" type="text" class="form-control"
-                                   placeholder="Last Name">
+                            <input ng-model="newItem.schoolID" type="text" class="form-control"
+                                   placeholder="School ID">
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input ng-model="newItem.username" type="text" class="form-control"
-                                   placeholder="Username">
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input ng-model="newItem.password" type="password" class="form-control"
-                                   placeholder="Password">
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input ng-model="newItem.email" type="email" class="form-control"
-                                   placeholder="Email">
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input ng-model="newItem.birthDate" type="text" class="form-control" id="inputBirthDate"
-                                   placeholder="Birth Date">
+                            <input ng-model="newItem.created" type="text" class="form-control"
+                                   placeholder="Date Created">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                     </td>
                     <td>
-                        <!--<label for="inputRole" class="col-sm-4 control-label">Role</label>-->
-                        <label for="inputRole">Role</label>
                         <div>
-                            <select ng-model="newItem.role" class="form-control" id="inputRole">
-                                <option>Student</option>
-                                <option>Teacher</option>
-                            </select>
+                            <input ng-model="newItem.teacher" type="text" class="form-control"
+                                   placeholder="Teacher ID">
                         </div>
                     </td>
-
                     <td>
                         <div class="col-sm-2">
                             <button ng-click="create(newItem)" class="btn btn-default">
