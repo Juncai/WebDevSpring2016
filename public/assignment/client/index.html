@@ -15,16 +15,15 @@
     <script src="config.js"></script>
     <script src="services/user.service.client.js"></script>
     <script src="services/forms.service.client.js"></script>
-    <script src="controllers/main.controller.js"></script>
-    <script src="controllers/header.controller.js"></script>
-    <script src="controllers/sidebar.controller.js"></script>
-    <script src="controllers/forms.controller.js"></script>
-    <script src="controllers/login.controller.js"></script>
-    <script src="controllers/profile.controller.js"></script>
-    <script src="controllers/register.controller.js"></script>
+    <script src="views/header/header.controller.js"></script>
+    <script src="views/sidebar/sidebar.controller.js"></script>
+    <script src="views/forms/forms.controller.js"></script>
+    <script src="views/users/login.controller.js"></script>
+    <script src="views/users/profile.controller.js"></script>
+    <script src="views/users/register.controller.js"></script>
     <link href="css/style.css" rel="stylesheet">
 </head>
-<body ng-controller="MainController">
+<body>
 <ng-include src="'views/header/header.view.html'"></ng-include>
 <ng-include src="'views/sidebar/sidebar.view.html'"></ng-include>
 <div ng-view></div>
