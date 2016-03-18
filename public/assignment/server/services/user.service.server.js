@@ -1,35 +1,32 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function(app, formModel, userModel) {
+module.exports = function (app, formModel, userModel) {
     app.post("/api/assignment/user", addUser);
-    //app.post("/api/assignment/user", register);
     app.get("/api/assignment/user", all);
     app.get("/api/assignment/user/:id", profile);
     app.get("/api/assignment/user?username=username", findUserByUsername);
-    //app.post("/api/assignment/user", login);
     app.get("/api/assignment/user?username=alice&password=wonderland", login);
-    app.post("/api/project/omdb/logout", logout);
-    app.post("/api/assignment/user", register);
+    app.put("/api/assignment/user/:id", updateUser);
+    app.delete("/api/assignment/user/:id", deleteUser);
 
     function profile(req, res) {
-        var userId = req.params.userId;
-        var user = userModel.findUserById(userId);
+        var id = req.params.id;
+        var user = userModel.findUserById(id);
         console.log(user);
     }
 
     function addUser(req, res) {
         var user = req.body;
-        var users = userModel.createUser(user);
-        res.json(users);
+        res.json(userModel.createUser(user));
     }
 
-    function register(req, res) {
-        var user = req.body;
-        user = userModel.createUser(user);
-        req.session.currentUser = user;
-        res.json(user);
-    }
+    //function register(req, res) {
+    //    var user = req.body;
+    //    user = userModel.createUser(user);
+    //    req.session.currentUser = user;
+    //    res.json(user);
+    //}
 
     function login(req, res) {
         var credentials = {};
@@ -40,12 +37,14 @@ module.exports = function(app, formModel, userModel) {
         res.json(user);
     }
 
-    function loggedin(req, res) {
-        res.json(req.session.currentUser);
+    function updateUser(req, res) {
+        var id = req.params.id;
+        var user = req.body;
+        res.json(userModel.updateUser(id, user));
     }
 
-    function logout(req, res) {
-        req.session.destroy();
-        res.send(200);
+    function deleteUser(req, res) {
+        var id = req.params.id;
+        res.json(userModel.deleteUser(id));
     }
 };

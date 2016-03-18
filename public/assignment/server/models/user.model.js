@@ -16,7 +16,7 @@ module.exports = function () {
 
 
     function createUser(user) {
-        user._id = "ID_" + (new Date()).getTime();
+        user._id = uuid.v1();
         mock.push(user);
         return mock;
     }
@@ -50,14 +50,17 @@ module.exports = function () {
             for (var p in user) {
                 mock[i][p] = user[p];
             }
-            return mock[u];
+            //return mock[u];
         }
-        return null;
+        return mock;
     }
 
     function deleteUser(id) {
-
-
+        var indexToRemove = findIndexById(id);
+        if (indexToRemove > -1) {
+            mock.splice(indexToRemove, 1);
+        }
+        return mock;
     }
 
     function findIndexById(id) {

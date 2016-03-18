@@ -7,31 +7,8 @@
         .module("FormBuilderApp")
         .factory("UserService", userService);
 
-    function userService($rootScope) {
+    function userService($http, $rootScope) {
         var model = {
-            currentUsers: [
-                {
-                    "_id": 123, "firstName": "Alice", "lastName": "Wonderland",
-                    "username": "alice", "password": "alice", "roles": ["student"], "email": ""
-                },
-                {
-                    "_id": 234, "firstName": "Bob", "lastName": "Hope",
-                    "username": "bob", "password": "bob", "roles": ["admin"], "email": ""
-                },
-                {
-                    "_id": 345, "firstName": "Charlie", "lastName": "Brown",
-                    "username": "charlie", "password": "charlie", "roles": ["faculty"], "email": ""
-                },
-                {
-                    "_id": 456, "firstName": "Dan", "lastName": "Craig",
-                    "username": "dan", "password": "dan", "roles": ["faculty", "admin"], "email": ""
-                },
-                {
-                    "_id": 567, "firstName": "Edward", "lastName": "Norton",
-                    "username": "ed", "password": "ed", "roles": ["student"], "email": ""
-                }
-            ],
-
             findUserByCredentials: findUserByCredentials,
             findUserById: findUserById,
             findUserByUsername: findUserByUsername,
@@ -43,6 +20,13 @@
             getCurrentUser: getCurrentUser
         };
         return model;
+        //app.post("/api/assignment/user", addUser);
+        //app.get("/api/assignment/user", all);
+        //app.get("/api/assignment/user/:id", profile);
+        //app.get("/api/assignment/user?username=username", findUserByUsername);
+        //app.get("/api/assignment/user?username=alice&password=wonderland", login);
+        //app.put("/api/assignment/user/:id", updateUser);
+        //app.delete("/api/assignment/user/:id", deleteUser);
 
         function setCurrentUser(user) {
             $rootScope.currentUser = user;
@@ -53,16 +37,7 @@
         }
 
         function findUserByUsername(username) {
-            var user = null;
-            var cUser;
-            for (var i in model.currentUsers) {
-                cUser = model.currentUsers[i];
-                if (cUser.username === username) {
-                    user = cUser;
-                    break;
-                }
-            }
-            return user;
+            return $http.get("/api/assignment/user?username=" + $rootScope.currentUser.username);
         }
 
         function findUserById(id) {
