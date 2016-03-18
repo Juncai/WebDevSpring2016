@@ -108,7 +108,7 @@ module.exports = function () {
             var indForm = findIndexById(mock, form._id);
             mock[indForm] = form;
         }
-        return form;
+        return form.fields;
     }
 
     function createFieldForForm(formId, field) {
@@ -117,7 +117,7 @@ module.exports = function () {
         form.fields.push(field);
         var indForm = findIndexById(mock, form._id);
         mock[indForm] = form;
-        return form;
+        return form.fields;
     }
 
     function updateFieldForForm(formId, fieldId, field) {
@@ -128,6 +128,6 @@ module.exports = function () {
         }
         var indForm = findIndexById(mock, form._id);
         mock[indForm] = form;
-        return form;
+        return form.fields;
     }
 };
