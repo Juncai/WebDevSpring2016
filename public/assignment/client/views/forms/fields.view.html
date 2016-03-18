@@ -26,7 +26,7 @@
                             <input ng-switch-when="TEXTAREA" type="text" class="form-control"
                                    placeholder="field.placeholder">
                             <input ng-switch-when="DATE" type="date" class="form-control" placeholder="Select Date">
-                            <div ng-switch-when="CHECKBOX" class="checkbox">
+                            <div ng-switch-when="CHECKBOXES" class="checkbox">
                                 <label ng-repeat="op in field.options">
                                     <input type="checkbox" ng-value="op.value">
                                     {{op.label}}
