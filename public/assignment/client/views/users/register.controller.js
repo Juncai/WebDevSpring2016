@@ -34,22 +34,27 @@
                 vm.message = "Email is required.";
                 return;
             }
-            var userWithSameUsername = UserService.findUserByUsername(user.username);
-            if (userWithSameUsername != null) {
-                vm.message = "Existing username.";
-                return;
-            }
+            //var userWithSameUsername = UserService.findUserByUsername(user.username);
+            //if (userWithSameUsername != null) {
+            //    vm.message = "Existing username.";
+            //    return;
+            //}
             user.firstName = "";
             user.lastName = "";
             user.roles = [];
             UserService
                 .createUser(user)
-                .then(function(response) {
-                    var currentUser = response.data;
-                    if (currentUser != null) {
-                        UserService.setCurrentUser(currentUser);
-                        $location.url("/profile");
+                .then(function (response) {
+                    var users = response.data;
+                    for (var u in users) {
+                        if (users[u].username == user.username) {
+                            UserService.setCurrentUser(users[u]);
+                            $location.url("/profile");
+                            break;
+                        }
                     }
+                    //var currentUser = response.data;
+
                 });
         }
     }

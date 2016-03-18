@@ -23,7 +23,7 @@
 
         function isAdmin() {
             var user = UserService.getCurrentUser();
-            return (user != null && user.roles.indexOf("admin") != -1);
+            return (user != null && user.roles != null && user.roles.indexOf("admin") != -1);
         }
     }
 })();

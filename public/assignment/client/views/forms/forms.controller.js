@@ -8,7 +8,7 @@
         .module("FormBuilderApp")
         .controller("FormController", formController);
 
-    function formController($rootScope, FormService) {
+    function formController(UserService, FormService) {
         var vm = this;
         vm.error = null;
         vm.message = null;
@@ -16,12 +16,15 @@
         vm.updateForm = updateForm;
         vm.deleteForm = deleteForm;
         vm.selectForm = selectForm;
-        vm.form = {"title": ""};
+        vm.newForm = {"title": ""};
+        vm.forms = [];
+        var user = null;
 
         function init() {
-            if ($rootScope.currentUser) {
+            user = UserService.getCurrentUser();
+            if (user != null) {
                 FormService
-                    .findAllFormsForUser($rootScope.currentUser._id)
+                    .findAllFormsForUser(user._id)
                     .then(function (response) {
                         vm.forms = response.data;
                     })
@@ -42,9 +45,16 @@
         function updateForm() {
             if (vm.selectedForm != null) {
                 FormService
-                    .updateFormById(vm.selectedForm._id, vm.form)
+                    .updateFormById(vm.selectedForm._id, vm.newForm)
                     .then(function (response) {
-                        vm.forms = response.data;
+                        var allForms = response.data;
+                        var formsForUser = [];
+                        for (var f in allForms) {
+                            if (allForms[f].userId == user._id) {
+                                formsForUser.push(allForms[f]);
+                            }
+                        }
+                        vm.forms = formsForUser;
                         vm.selectedForm = null;
                     });
             }
@@ -61,7 +71,7 @@
 
         function selectForm(index) {
             vm.selectedForm = vm.forms[index];
-            vm.form.title = vm.selectedForm.title;
+            vm.newForm.title = vm.selectedForm.title;
         }
     }
 })();

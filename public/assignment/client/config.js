@@ -12,8 +12,10 @@
             .when("/admin", {
                 templateUrl: "views/admin/admin.view.html"
             })
-            .when("/fields", {
-                templateUrl: "views/forms/fields.view.html"
+            .when("/form/:formId/fields", {
+                templateUrl: "views/forms/fields.view.html",
+                controller: "FieldController",
+                controllerAs: "model"
             })
             .when("/forms", {
                 templateUrl: "views/forms/forms.view.html",

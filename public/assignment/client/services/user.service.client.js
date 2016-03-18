@@ -30,7 +30,7 @@
         }
 
         function findUserByUsername(username) {
-            return $http.get("/api/assignment/user?username=" + $rootScope.currentUser.username);
+            return $http.get("/api/assignment/user?username=" + username);
         }
 
         function findUserById(id) {

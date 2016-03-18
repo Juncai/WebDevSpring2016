@@ -31,7 +31,7 @@
                 $scope.message = "Email is required.";
                 return;
             }
-            UserService.updateUser($scope.currentUser._id, user, updateCallback);
+            UserService.updateUser($scope.currentUser._id, user);
         }
 
         function updateCallback(user) {

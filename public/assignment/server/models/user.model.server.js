@@ -2,6 +2,7 @@
  * Created by jonca on 3/16/2016.
  */
 var mock = require("./user.mock.json");
+var uuid = require('node-uuid');
 module.exports = function () {
     var api = {
         createUser: createUser,
@@ -13,7 +14,6 @@ module.exports = function () {
         findUserByUsername: findUserByUsername
     };
     return api;
-
 
     function createUser(user) {
         user._id = uuid.v1();

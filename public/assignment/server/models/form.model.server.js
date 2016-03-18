@@ -2,6 +2,7 @@
  * Created by jonca on 3/16/2016.
  */
 var mock = require("./form.mock.json");
+var uuid = require('node-uuid');
 module.exports = function () {
     var api = {
         findFormByID: findFormByID,
@@ -73,7 +74,7 @@ module.exports = function () {
     function findFormsByUserId(userId) {
         var userForms = [];
         for (var m in mock) {
-            if (mock[m].userId === userId) {
+            if (mock[m].userId == userId) {
                 userForms.push(mock[m]);
             }
         }
