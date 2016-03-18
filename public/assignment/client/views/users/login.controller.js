@@ -8,21 +8,31 @@
         .module("FormBuilderApp")
         .controller("LoginController", loginController);
 
-    function loginController($scope, $rootScope, $location, UserService) {
-        $scope.login = login;
+    function loginController($location, UserService) {
+        var vm = this;
+        
+        vm.login = login;
+
+        function init() {
+
+        }
+        init();
 
         function login(user) {
-            UserService.findUserByCredentials(user.username, user.password, loginCallback);
-        }
-
-        function loginCallback(user) {
-            if (user) {
-                $rootScope.currentUser = user;
-                UserService.setCurrentUser(user);
-                $location.url("/profile");
-            } else {
-                $scope.message = "Login failed.";
+            if (!user) {
+                return;
             }
+            UserService
+                .findUserByCredentials(
+                    user.username,
+                    user.password
+                )
+                .then(function(response) {
+                    if (response.data) {
+                        UserService.setCurrentUser(response.data);
+                        $location.url("/profile");
+                    }
+                });
         }
     }
 })();

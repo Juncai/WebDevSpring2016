@@ -21,24 +21,24 @@
                 <tr>
                     <td>
                         <div>
-                            <input ng-model="form.title" type="text" class="form-control" id="inputFormName"
+                            <input ng-model="model.form.title" type="text" class="form-control" id="inputFormName"
                                    placeholder="FormName">
                         </div>
                     </td>
                     <td>
                         <div class="col-sm-2">
-                            <button ng-click="addForm(form)" class="btn btn-default">
+                            <button ng-click="model.addForm(model.form)" class="btn btn-default">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
                         </div>
                         <div class="col-sm-2">
-                            <button ng-click="updateForm()" class="btn btn-default">
+                            <button ng-click="model.updateForm()" class="btn btn-default">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="form in forms track by form._id">
+                <tr ng-repeat="form in model.forms track by form._id">
                     <td nowrap>
                         <div class=""></div>
                         <a href="fields.view.html">{{form.title}}</a></td>

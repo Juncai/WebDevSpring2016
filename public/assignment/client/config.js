@@ -17,11 +17,12 @@
             })
             .when("/forms", {
                 templateUrl: "views/forms/forms.view.html",
-                controller: "FormController"
+                controller: "FormController",
+                controllerAs: "model"
             })
             .when("/header", {
                 templateUrl: "views/header/header.view.html",
-                controller: "HeaderController",
+                controller: "HeaderController"
             })
             .when("/home", {
                 templateUrl: "views/home/home.view.html"
@@ -32,7 +33,8 @@
             })
             .when("/login", {
                 templateUrl: "views/users/login.view.html",
-                controller: "LoginController"
+                controller: "LoginController",
+                controllerAs: "model"
             })
             .when("/profile", {
                 templateUrl: "views/users/profile.view.html",
@@ -41,7 +43,8 @@
             })
             .when("/register", {
                 templateUrl: "views/users/register.view.html",
-                controller: "RegisterController"
+                controller: "RegisterController",
+                controllerAs: "model"
             })
             .otherwise({
                 redirectTo: "/home"
