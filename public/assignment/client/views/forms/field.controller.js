@@ -13,6 +13,7 @@
         vm.addField = addField;
         vm.updateField = updateField;
         vm.removeField = removeField;
+        vm.displayOptions = displayOptions;
         vm.fieldType = null;
         var formId = $routeParams.formId;
         var userId = $routeParams.userId;
@@ -31,6 +32,15 @@
 
         init();
 
+        function displayOptions(options) {
+            var res = "";
+            var cop;
+            for (var op in options) {
+                cop = options[op];
+                res += cop.label + ":" + cop.value + "\n";
+            }
+            return res;
+        }
 
         function addField(fieldType) {
             var newField = null;
