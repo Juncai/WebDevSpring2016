@@ -1,0 +1,108 @@
+[
+  {
+    "_id": 123,
+    "firstName": "Alice",
+    "lastName": "Wonderland",
+    "birthdate": "2000-10-5",
+    "username": "alice",
+    "password": "alice",
+    "role": "Student",
+    "email": "abc@gmail.com",
+    "followed": [
+      234,
+      345
+    ],
+    "following": [
+      345,
+      456
+    ],
+    "enroll": [
+    ],
+    "quizList": [
+
+    ]
+  },
+  {
+    "_id": 234,
+    "firstName": "Bob",
+    "lastName": "Hope",
+    "birthdate": "2000-10-5",
+    "username": "bob",
+    "password": "bob",
+    "role": "Student",
+    "email": "abc@gmail.com",
+    "followed": [
+      123,
+      345
+    ],
+    "following": [
+      345,
+      456
+    ],
+    "enroll": [
+    ],
+    "quizList": [
+
+    ]
+  },
+  {
+    "_id": 345,
+    "firstName": "Charlie",
+    "lastName": "Brown",
+    "birthdate": "2000-10-5",
+    "username": "charlie",
+    "password": "charlie",
+    "role": "Teacher",
+    "email": "abc@gmail.com",
+    "followed": [
+      123,
+      234
+    ],
+    "following": [
+      123,
+      234
+    ],
+    "enroll": [
+    ],
+    "quizList": [
+
+    ]
+  },
+  {
+    "_id": 456,
+    "firstName": "Dan",
+    "lastName": "Craig",
+    "birthdate": "2000-10-5",
+    "username": "dan",
+    "password": "dan",
+    "role": "Teacher",
+    "email": "abc@gmail.com",
+    "followed": [
+      123,
+      234
+    ],
+    "following": [],
+    "enroll": [
+    ],
+    "quizList": [
+
+    ]
+  },
+  {
+    "_id": 567,
+    "firstName": "Edward",
+    "lastName": "Norton",
+    "birthdate": "2000-10-5",
+    "username": "ed",
+    "password": "ed",
+    "role": "Student",
+    "email": "abc@gmail.com",
+    "followed": [],
+    "following": [],
+    "enroll": [
+    ],
+    "quizList": [
+
+    ]
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "_id": 123,
+    "name": "Quiz 01",
+    "userId": 123,
+    "created": "2016-03-05 12:00.00",
+    "assignedTo": [
+      234,
+      456
+    ],
+    "cards": [
+      {
+        "_id": 123,
+        "question": "Car",
+        "answer": "车",
+        "picture": "https://farm1.staticflickr.com/514/19933361592_5bd2542eb2_n.jpg"
+      },
+      {
+        "_id": 234,
+        "question": "Cat",
+        "answer": "猫",
+        "picture": "https://farm4.staticflickr.com/3665/10224967706_33f6f2b961_n.jpg"
+      }
+    ]
+  },
+  {
+    "_id": 234,
+    "name": "Quiz 02",
+    "userId": 123,
+    "created": "2016-03-05 12:00.00",
+    "assignedTo": [
+      234,
+      456
+    ],
+    "cards": [
+      {
+        "_id": 345,
+        "question": "Car",
+        "answer": "车",
+        "picture": "https://farm1.staticflickr.com/514/19933361592_5bd2542eb2_n.jpg"
+      },
+      {
+        "_id": 456,
+        "question": "Cat",
+        "answer": "猫",
+        "picture": "https://farm4.staticflickr.com/3665/10224967706_33f6f2b961_n.jpg"
+      }
+    ]
+  },
+  {
+    "_id": 345,
+    "name": "Quiz 03",
+    "userId": 123,
+    "created": "2016-03-05 12:00.00",
+    "assignedTo": [
+      234,
+      456
+    ],
+    "cards": [
+      {
+        "_id": 567,
+        "question": "Car",
+        "answer": "车",
+        "picture": "https://farm1.staticflickr.com/514/19933361592_5bd2542eb2_n.jpg"
+      },
+      {
+        "_id": 678,
+        "question": "Cat",
+        "answer": "猫",
+        "picture": "https://farm4.staticflickr.com/3665/10224967706_33f6f2b961_n.jpg"
+      }
+    ]
+  }
+]

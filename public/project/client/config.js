@@ -9,72 +9,81 @@
 
     function configuration($routeProvider) {
         $routeProvider
-            .when("/admin", {
-                templateUrl: "views/admin/admin.view.html"
-            })
-            .when("/fields", {
-                templateUrl: "views/forms/fields.view.html"
-            })
             .when("/quizDetail", {
                 templateUrl: "views/quiz/quizDetail.view.html",
-                controller: "QuizDetailController"
+                controller: "QuizDetailController",
+                controllerAs: "model"
             })
             .when("/quizList", {
                 templateUrl: "views/quiz/quizList.view.html",
-                controller: "QuizListController"
+                controller: "QuizListController",
+                controllerAs: "model"
             })
             .when("/classDetail", {
                 templateUrl: "views/class/classDetail.view.html",
-                controller: "ClassDetailController"
+                controller: "ClassDetailController",
+                controllerAs: "model"
             })
             .when("/classList", {
                 templateUrl: "views/class/classList.view.html",
-                controller: "ClassListController"
+                controller: "ClassListController",
+                controllerAs: "model"
             })
             .when("/newClass", {
                 templateUrl: "views/class/newClass.view.html",
-                controller: "NewClassController"
+                controller: "NewClassController",
+                controllerAs: "model"
             })
             .when("/performance", {
                 templateUrl: "views/performance/performance.view.html",
-                controller: "PerformanceController"
+                controller: "PerformanceController",
+                controllerAs: "model"
             })
             .when("/header", {
                 templateUrl: "views/header/header.view.html",
-                controller: "HeaderController"
+                controller: "HeaderController",
+                controllerAs: "model"
             })
             .when("/home", {
-                templateUrl: "views/home/home.view.html"
+                templateUrl: "views/home/home.view.html",
+                controller: "HomeController",
+                controllerAs: "model"
             })
             .when("/sidebar", {
                 templateUrl: "views/sidebar/sidebar.view.html",
-                controller: "SidebarController"
+                controller: "SidebarController",
+                controllerAs: "model"
             })
             .when("/login", {
                 templateUrl: "views/login/login.view.html",
-                controller: "LoginController"
+                controller: "LoginController",
+                controllerAs: "model"
             })
             .when("/profile", {
                 templateUrl: "views/profile/profile.view.html",
-                controller: "ProfileController"
+                controller: "ProfileController",
+                controllerAs: "model"
             })
             .when("/register", {
                 templateUrl: "views/register/register.view.html",
-                controller: "RegisterController"
+                controller: "RegisterController",
+                controllerAs: "model"
             })
             .when("/search", {
                 templateUrl: "views/search/search.view.html",
-                controller: "SearchController"
+                controller: "SearchController",
+                controllerAs: "model"
             })
             .when("/details/:schoolID", {
                 templateUrl: "views/details/details.view.html",
-                controller: "DetailsController"
+                controller: "DetailsController",
+                controllerAs: "model"
             })
             .when("/user", {
                 templateUrl: "views/user/user.view.html",
                 controller: "UserController"
             })
-            .when("/quiz", {
+            .when("/quiz/:quizId", {
                 templateUrl: "views/quiz/quiz.view.html",
                 controller: "QuizController"
             })

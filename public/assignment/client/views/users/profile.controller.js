@@ -33,18 +33,5 @@
             }
             UserService.updateUser($scope.currentUser._id, user);
         }
-
-        function updateCallback(user) {
-            $scope.error = null;
-            $scope.message = null;
-
-            if (user) {
-                $scope.currentUser = user;
-                $scope.message = "Update successfully.";
-                UserService.setCurrentUser($scope.currentUser);
-            } else {
-                $scope.message = "Update failed";
-            }
-        }
     }
 })();
