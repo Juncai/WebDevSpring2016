@@ -1,16 +1,16 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2>Seach</h2>
 
-    <input ng-model="school.name"
+    <input ng-model="model.school.name"
            class="form-control"
            placeholder="Boston"/>
 
-    <button ng-click="search(school)"
+    <button ng-click="model.search(model.school)"
             class="btn btn-primary btn-block">
         Search
     </button>
 
-    <div ng-if="data">
+    <div ng-if="model.data">
         <h3>Search Results</h3>
         <table class="table table-striped">
             <thead>
@@ -21,15 +21,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="school in data.records track by school.UNITID">
-                <td>{{school.UNITID}}</td>
+            <tr ng-repeat="sc in model.data.records track by sc.UNITID">
+                <td>{{sc.UNITID}}</td>
                 <td>
-                    <a href="#/details/{{school.UNITID}}" ng-click="details($index)">
+                    <a href="#/details/{{sc.UNITID}}" ng-click="model.details($index)">
                     <!--<a ng-click="details($index)">-->
-                        {{school.INSTNM}}
+                        {{sc.INSTNM}}
                     </a>
                 </td>
-                <td>{{school.CITY}}</td>
+                <td>{{sc.CITY}}</td>
             </tr>
             </tbody>
         </table>

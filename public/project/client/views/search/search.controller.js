@@ -7,9 +7,11 @@
         .module("QuizZ")
         .controller("SearchController", searchController);
 
-    function searchController($scope, $location, SchoolService) {
-        $scope.search = search;
-        $scope.details = details;
+    function searchController($location, SchoolService) {
+        var vm = this;
+        vm.search = search;
+        vm.details = details;
+        vm.data = null;
 
         function init() {
 
@@ -20,12 +22,12 @@
             SchoolService
                 .searchSchoolsByName(school.name)
                 .success(function(response){
-                    $scope.data = response.result;
+                    vm.data = response.result;
                 });
         }
 
         function details(index) {
-            var cSchool = $scope.data.records[index];
+            var cSchool = vm.data.records[index];
             SchoolService.cacheSchool(cSchool);
             //$location.url("/details/" + cSchool.UNITID);
         }

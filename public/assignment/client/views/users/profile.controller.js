@@ -7,31 +7,39 @@
         .module("FormBuilderApp")
         .controller("ProfileController", profileController);
 
-    function profileController($scope, $location, UserService) {
-        $scope.error = null;
-        $scope.message = null;
-        $scope.currentUser = UserService.getCurrentUser();
+    function profileController($location, UserService) {
+        var vm = this;
+        vm.error = null;
+        vm.message = null;
+        vm.currentUser = UserService.getCurrentUser();
 
-        if (!$scope.currentUser) {
+        if (!vm.currentUser) {
             $location.url("/home");
         }
 
-        $scope.update = update;
+        vm.update = update;
 
         function update(user) {
             if (!user.password || !user.verifyPassword) {
-                $scope.message = "Password is required.";
+                vm.message = "Password is required.";
                 return;
             }
             if (user.verifyPassword != user.password) {
-                $scope.message = "Passwords don't match.";
+                vm.message = "Passwords don't match.";
                 return;
             }
             if (!user.email) {
-                $scope.message = "Email is required.";
+                vm.message = "Email is required.";
                 return;
             }
-            UserService.updateUser($scope.currentUser._id, user);
+            UserService
+                .updateUser(vm.currentUser._id, user)
+                .then(function (response) {
+                var cUser = response.data;
+                if (cUser != null) {
+                    vm.currentUser = cUser;
+                }
+            });
         }
     }
 })();

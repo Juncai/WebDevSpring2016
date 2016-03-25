@@ -8,13 +8,18 @@
         .controller("HomeController", homeController);
 
     function homeController($location, UserService, QuizService) {
+
         var vm = this;
         vm.currentUser = UserService.getCurrentUser();
+        vm.login = login;
 
         function init() {
-            vm.userQuizzes = userQuizzes();
-            vm.quizzesTodo = quizzesTodo();
+            if (vm.currentUser) {
+                vm.userQuizzes = userQuizzes();
+                vm.quizzesTodo = quizzesTodo();
+            }
         }
+
         init();
 
         function userQuizzes() {
@@ -25,8 +30,34 @@
         }
 
         function quizzesTodo() {
-            return null;
+            var quizToDo = [
+                {
+                    "_id": "111",
+                    "title": "Sample Quiz 1"
+                },
+                {
+                    "_id": "222",
+                    "title": "Sample Quiz 2"
+                }
+            ];
+            return quizToDo;
         }
 
+        function login(user) {
+            if (!user) {
+                return;
+            }
+            UserService
+                .findUserByCredentials(
+                    user.username,
+                    user.password
+                )
+                .then(function (response) {
+                    if (response.data) {
+                        UserService.setCurrentUser(response.data);
+                        $location.url("/profile");
+                    }
+                });
+        }
     }
 })();

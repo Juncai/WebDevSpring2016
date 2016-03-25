@@ -7,20 +7,51 @@
         .module("QuizZ")
         .controller("RegisterController", registerController);
 
-    function registerController($scope, $rootScope, $location) {
-        $scope.message = null;
-        $scope.register = register;
-        var dummyUser =
-        {
-            "_id": 123, "firstName": "Alice", "lastName": "Wonderland", "birthdate": "2000-10-5",
-            "password": "alice", "role": "student", "email": "abc@gmail.com",
-            "followed": [234, 345], "following": [345, 456], "quizList": [123, 234], "classes": [123, 234]
-        };
+    function registerController($location, UserService) {
+        var vm = this;
+        vm.message = null;
+        vm.register = register;
+
+        function init() {
+
+        }
+        init();
 
         function register(user) {
-            $scope.message = null;
-            $rootScope.currentUser = dummyUser;
-            $location.url("/profile");
+            vm.message = null;
+            if (user == null) {
+                vm.message = "Invalid information input.";
+                return;
+            }
+            if (!user.username) {
+                vm.message = "Username is required.";
+                return;
+            }
+            if (!user.password || !user.verifyPassword) {
+                vm.message = "Password is required.";
+                return;
+            }
+            if (user.verifyPassword != user.password) {
+                vm.message = "Passwords don't match.";
+                return;
+            }
+            if (!user.email) {
+                vm.message = "Email is required.";
+                return;
+            }
+
+            UserService
+                .createUser(user)
+                .then(function (response) {
+                    var users = response.data;
+                    for (var u in users) {
+                        if (users[u].username == user.username) {
+                            UserService.setCurrentUser(users[u]);
+                            $location.url("/profile");
+                            break;
+                        }
+                    }
+                });
         }
     }
 })();

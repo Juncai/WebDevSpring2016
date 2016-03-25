@@ -22,7 +22,7 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/register'}"><a href="#/register">Sign up</a></li>
-            <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/login'}"><a href="#/login">Login</a></li>
+            <!--<li ng-show="!currentUser" ng-class="{'active': $location.url() == '/login'}"><a href="#/login">Login</a></li>-->
             <li ng-show="currentUser" ng-class="{'active': $location.url() == '/home'}"><a ng-click="logout()" href="#/home">Logout</a></li>
             <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">{{currentUser.firstName}}</a></li>
         </ul>

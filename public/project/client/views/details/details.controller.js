@@ -6,17 +6,20 @@
         .module("QuizZ")
         .controller("DetailsController", detailsController);
 
-    function detailsController($scope,
-                               $routeParams,
+    function detailsController($routeParams,
                                $location,
                                SchoolService,
                                ClassService) {
+        var vm = this;
         var schoolID = $routeParams.schoolID;
 
         function init() {
-            $scope.data = SchoolService.findSchoolByID(schoolID);
-            $scope.classes = ClassService.findClassBySchoolID(schoolID);
-            $scope.newClass = newClass;
+            if (schoolID != null) {
+                vm.school = SchoolService.findSchoolByID(schoolID);
+                vm.classes = ClassService.findClassBySchoolID(schoolID);
+                vm.newClass = newClass;
+            }
+
         }
 
         init();

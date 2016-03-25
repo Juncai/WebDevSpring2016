@@ -1,32 +1,32 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2>Details</h2>
 
-    <h3>{{data.INSTNM}}</h3>
+    <h3>{{model.school.INSTNM}}</h3>
 
     <br/>
     <br/>
 
     <h4>City</h4>
     <p>
-        {{data.CITY}}
+        {{model.school.CITY}}
     </p>
 
     <h4>County Name</h4>
     <p>
-        {{data.COUNTYNM}}
+        {{model.school.COUNTYNM}}
     </p>
 
     <h4>Zip Code</h4>
     <p>
-        {{data.ZIP}}
+        {{model.school.ZIP}}
     </p>
 
     <h4>Classes</h4>
     <ul>
-        <li ng-repeat="class in classes">
+        <li ng-repeat="class in model.classes">
             <a href="#/classDetail">{{class.name}}</a>
         </li>
     </ul>
-    <button ng-click="newClass(data.UNITID)">Create Class</button>
+    <button ng-click="newClass(model.school.UNITID)">Create Class</button>
 
 </div>

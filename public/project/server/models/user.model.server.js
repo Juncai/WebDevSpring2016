@@ -21,7 +21,6 @@ module.exports = function () {
         return mock;
     }
 
-
     function findAllUsers() {
         return mock;
     }
@@ -50,7 +49,7 @@ module.exports = function () {
             for (var p in user) {
                 mock[i][p] = user[p];
             }
-            return mock[u];
+            return mock[i];
         }
         return null;
     }
@@ -66,7 +65,7 @@ module.exports = function () {
     function findIndexById(id) {
         for (var u in mock) {
             if (mock[u]._id == id) {
-                return i;
+                return u;
             }
         }
         return -1;
