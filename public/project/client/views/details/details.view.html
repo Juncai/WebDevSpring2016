@@ -1,5 +1,6 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h2>Details</h2>
+    <div ng-show="message" class="alert alert-danger" role="alert">{{model.message}}</div>
+    <h2>School Details</h2>
 
     <h3>{{model.school.INSTNM}}</h3>
 
@@ -24,9 +25,21 @@
     <h4>Classes</h4>
     <ul>
         <li ng-repeat="class in model.classes">
-            <a href="#/classDetail">{{class.name}}</a>
+            <a ng-href="#/classDetail/{{class._id}}">{{class.name}}</a>
         </li>
     </ul>
-    <button ng-click="newClass(model.school.UNITID)">Create Class</button>
+    <div ng-show="model.currentUser">
+        <form>
+            <div class="form-group">
+                <label for="inputClassName" class="col-sm-4 control-label">Name for New Class</label>
+                <div class="col-sm-6 col-md-5">
+                    <input ng-model="model.newClassName" type="text" class="form-control" id="inputClassName"
+                           placeholder="Name for the New Class">
+                </div>
+            </div>
+        </form>
+        <button ng-click="model.newClass(model.newClassName)">Create Class</button>
+    </div>
+
 
 </div>

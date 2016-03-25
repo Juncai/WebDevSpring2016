@@ -7,35 +7,33 @@
         .module("QuizZ")
         .factory("ClassService", classService);
 
-    function classService($rootScope) {
+    function classService($http) {
         var model = {
-            classes: [
-                {
-                    "_id": 123, "name": "Class 01", "schoolID": 123, "created": "2016-03-05 12:00.00",
-                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
-                },
-                {
-                    "_id": 234, "name": "Class 02", "schoolID": 123, "created": "2016-03-05 12:00.00",
-                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
-                },
-                {
-                    "_id": 345, "name": "Class 03", "schoolID": 234, "created": "2016-03-05 12:00.00",
-                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
-                },
-                {
-                    "_id": 456, "name": "Class 04", "schoolID": 234, "created": "2016-03-05 12:00.00",
-                    "students": [234, 456], "teacher": 567, "quizList": [123, 234]
-                }
-            ],
-
-
-            findClassBySchoolID: findClassBySchoolID
+            findClassesBySchoolId: findClassesBySchoolId,
+            findClassesByUserId: findClassesByUserId,
+            createClass: createClass,
+            findClassById: findClassById
         };
         return model;
 
-        function findClassBySchoolID(id) {
+        function findClassById(classId) {
             // dummy function for demo purpose
-            return model.classes;
+            return $http.get("/api/project/class/" + classId);
+        }
+
+        function findClassesBySchoolId(schoolId) {
+            // dummy function for demo purpose
+            return $http.get("/api/project/school/" + schoolId + "/class");
+        }
+
+        function findClassesByUserId(userId) {
+            // dummy function for demo purpose
+            return $http.get("/api/project/user/" + userId + "/class");
+        }
+
+        function createClass(userId, clazz) {
+            // dummy function for demo purpose
+            return $http.post("/api/project/user/" + userId + "/class", clazz);
         }
     }
 })();

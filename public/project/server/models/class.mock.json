@@ -2,7 +2,7 @@
   {
     "_id": 123,
     "name": "Class 01",
-    "schoolID": 123,
+    "schoolId": 123,
     "created": "2016-03-05 12:00.00",
     "students": [
       234,
@@ -17,7 +17,7 @@
   {
     "_id": 234,
     "name": "Class 02",
-    "schoolID": 123,
+    "schoolId": 123,
     "created": "2016-03-05 12:00.00",
     "students": [
       234,
@@ -32,7 +32,7 @@
   {
     "_id": 345,
     "name": "Class 03",
-    "schoolID": 234,
+    "schoolId": 234,
     "created": "2016-03-05 12:00.00",
     "students": [
       234,
@@ -47,7 +47,7 @@
   {
     "_id": 456,
     "name": "Class 04",
-    "schoolID": 234,
+    "schoolId": 234,
     "created": "2016-03-05 12:00.00",
     "students": [
       234,

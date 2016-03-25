@@ -1,8 +1,8 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h1 class="page-header">Class List</h1>
-    <div ng-show="message" class="alert alert-danger" role="alert">{{message}}</div>
+    <div ng-show="message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <ul>
-        <li ng-repeat="cid in currentUser.classes"><a href="#/classDetail">{{cid}}</a></li>
+        <li ng-repeat="class in model.classes"><a ng-href="#/classDetail/{{class._id}}">{{class.name}}</a></li>
     </ul>
 </div>
 

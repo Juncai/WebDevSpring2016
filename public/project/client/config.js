@@ -19,7 +19,7 @@
                 controller: "QuizListController",
                 controllerAs: "model"
             })
-            .when("/classDetail", {
+            .when("/classDetail/:classId", {
                 templateUrl: "views/class/classDetail.view.html",
                 controller: "ClassDetailController",
                 controllerAs: "model"
@@ -27,11 +27,6 @@
             .when("/classList", {
                 templateUrl: "views/class/classList.view.html",
                 controller: "ClassListController",
-                controllerAs: "model"
-            })
-            .when("/newClass", {
-                templateUrl: "views/class/newClass.view.html",
-                controller: "NewClassController",
                 controllerAs: "model"
             })
             .when("/performance", {
@@ -74,7 +69,7 @@
                 controller: "SearchController",
                 controllerAs: "model"
             })
-            .when("/details/:schoolID", {
+            .when("/details/:schoolId", {
                 templateUrl: "views/details/details.view.html",
                 controller: "DetailsController",
                 controllerAs: "model"

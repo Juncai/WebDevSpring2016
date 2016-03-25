@@ -1,39 +1,45 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function (app, formModel, userModel) {
-    app.get("/api/assignment/user/:userId/form", findFormsForUser);
-    app.get("/api/assignment/form/:formId", findFormById);
-    app.delete("/api/assignment/form/:formId", deleteForm);
-    app.post("/api/assignment/user/:userId/form", addFormForUser);
-    app.put("/api/assignment/form/:formId", updateForm);
+module.exports = function (app, classModel, userModel, quizModel) {
+    // TODO also manipulate the classes in other models
+    app.get("/api/project/user/:userId/class", findClassesForUser);
+    app.get("/api/project/school/:schoolId/class", findClassesForSchool);
+    app.get("/api/project/class/:classId", findClassById);
+    app.delete("/api/project/class/:classId", deleteClass);
+    app.post("/api/project/user/:userId/class", addClassForUser);
+    app.put("/api/project/class/:classId", updateClass);
 
-    function findFormsForUser(req, res) {
+    function findClassesForUser(req, res) {
         var userId = req.params.userId;
-        res.json(formModel.findFormsByUserId(userId));
+        res.json(classModel.findClassesByStudentId(userId));
     }
 
-    function findFormById(req, res) {
-        var formId = req.params.formId;
-        res.json(formModel.findFormByID(formId));
+    function findClassesForSchool(req, res) {
+        var schoolId = req.params.schoolId;
+        res.json(classModel.findClassesBySchoolId(schoolId));
     }
 
-    function deleteForm(req, res) {
-        var formId = req.params.formId;
-        res.json(formModel.deleteForm(formId));
+    function findClassById(req, res) {
+        var classId = req.params.classId;
+        res.json(classModel.findClassByID(classId));
     }
 
-    function addFormForUser(req, res) {
+    function deleteClass(req, res) {
+        var classId = req.params.classId;
+        res.json(classModel.deleteClass(classId));
+    }
+
+    function addClassForUser(req, res) {
         var userId = req.params.userId;
-        var form = req.body;
-        form.userId = userId;
-
-        res.json(formModel.createForm(form));
+        var clazz = req.body;
+        clazz.students = [userId];
+        res.json(classModel.createClass(clazz));
     }
 
-    function updateForm(req, res) {
-        var formId = req.params.formId;
-        var form = req.body;
-        res.json(formModel.updateForm(formId, form));
+    function updateClass(req, res) {
+        var classId = req.params.classId;
+        var clazz = req.body;
+        res.json(classModel.updateClass(classId, clazz));
     }
 };

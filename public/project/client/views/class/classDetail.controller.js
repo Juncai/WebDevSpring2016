@@ -8,12 +8,28 @@
         .module("QuizZ")
         .controller("ClassDetailController", classDetailController);
 
-    function classDetailController($scope, $location, ClassService) {
+    function classDetailController($routeParams, $location, ClassService, UserService) {
+        var vm = this;
+        vm.message = null;
+        var classId = $routeParams.classId;
+        vm.currentClass = null;
+        vm.currentUser = UserService.getCurrentUser();
+        vm.backToList = backToList;
+        vm.joinClass = joinClass;
 
-        $scope.message = null;
-        $scope.currentClass = ClassService.classes[0];
-        $scope.backToList = backToList;
-        $scope.joinClass = joinClass;
+        function init() {
+            if (vm.currentUser == null) {
+                $location.url("#/home");
+            }
+            ClassService
+                .findClassById(classId)
+                .then(function (response) {
+                    vm.currentClass = response.data;
+                });
+
+        }
+        init();
+
 
         function backToList() {
             $location.url("/classList");
