@@ -3,7 +3,11 @@
  */
 var mock = require("./user.mock.json");
 var uuid = require('node-uuid');
-module.exports = function () {
+var q = requrie("q");
+
+module.exports = function (db, mongoose) {
+    var UserSchema = require("./user.schema.server.js")(mongoose);
+    var UserModel = mongoose.model('User', UserSchema);
     var api = {
         createUser: createUser,
         findAllUsers: findAllUsers,
@@ -16,9 +20,19 @@ module.exports = function () {
     return api;
 
     function createUser(user) {
-        user._id = uuid.v1();
-        mock.push(user);
-        return mock;
+        var deferred = q.defer();
+
+        UserModel.create(user, function (err, doc) {
+            if (err) {
+                // reject promise if error
+                deferred.reject(err);
+            } else {
+                // resolve promise
+                deferred.resolve(doc);
+            }
+        });
+
+        return deferred.promise;
     }
 
 
@@ -27,12 +41,15 @@ module.exports = function () {
     }
 
     function findUserById(userId) {
-        for (var u in mock) {
-            if (mock[u]._id === userId) {
-                return mock[u];
+        var deferred = q.defer();
+        UserModel.findById(userId, function (err, doc) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(doc);
             }
-        }
-        return null;
+        });
+        return deferred.promise;
     }
 
     function findUserByUsername(username) {
@@ -73,12 +90,29 @@ module.exports = function () {
     }
 
     function findUserByCredentials(credentials) {
-        for (var u in mock) {
-            if (mock[u].username === credentials.username &&
-                mock[u].password === credentials.password) {
-                return mock[u];
-            }
-        }
-        return null;
+        var deferred = q.defer();
+
+        // find one retrieves one document
+        UserModel.findOne(
+            // first argument is predicate
+            {
+                username: credentials.username,
+                password: credentials.password
+            },
+
+            // doc is unique instance matches predicate
+            function (err, doc) {
+
+                if (err) {
+                    // reject promise if error
+                    deferred.reject(err);
+                } else {
+                    // resolve promise
+                    deferred.resolve(doc);
+                }
+
+            });
+
+        return deferred.promise;
     }
 };

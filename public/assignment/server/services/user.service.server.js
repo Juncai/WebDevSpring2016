@@ -39,7 +39,19 @@ module.exports = function (app, formModel, userModel) {
 
     function addUser(req, res) {
         var user = req.body;
-        res.json(userModel.createUser(user));
+        user = userModel.createUser(user)
+            // handle model promise
+            .then(
+                // login user if promise resolved
+                function (doc) {
+                    req.session.currentUser = doc;
+                    res.json(user);
+                },
+                // send error if promise rejected
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function login(req, res) {
