@@ -10,6 +10,7 @@
 
     function loginController($location, UserService) {
         var vm = this;
+        vm.message = null;
         
         vm.login = login;
 
@@ -32,6 +33,9 @@
                         UserService.setCurrentUser(response.data);
                         $location.url("/profile");
                     }
+                },
+                function (response) {
+                    vm.message  = "Login failed!";
                 });
         }
     }

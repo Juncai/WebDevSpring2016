@@ -101,7 +101,7 @@ module.exports = function (db, mongoose) {
     function findFormByTitle(title) {
         var deferred = q.defer();
 
-        FormModel.find({
+        FormModel.findOne({
             title: title
         }, function (err, doc) {
             if (err) {

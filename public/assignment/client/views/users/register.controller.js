@@ -34,37 +34,27 @@
                 vm.message = "Email is required.";
                 return;
             }
-            //var userWithSameUsername = UserService.findUserByUsername(user.username);
-            //if (userWithSameUsername != null) {
-            //    vm.message = "Existing username.";
-            //    return;
-            //}
+
             user.firstName = "";
             user.lastName = "";
             user.roles = [];
-            var userExisted = false;
             UserService.findUserByUsername(user.username)
                 .then(function (response) {
-                    if (reponse != null) {
-                        userExisted = true;
-                    }
-                });
-
-            if (userExisted) {
-                vm.message("Username existed!");
-                return;
-            }
-
-            UserService
-                .createUser(user)
-                .then(function (response) {
-                    var users = response.data;
-                    for (var u in users) {
-                       if (users[u].username == user.username) {
-                           UserService.setCurrentUser(users[u]);
-                           $location.url("/profile");
-                           break;
-                       }
+                    if (response.data != null) {
+                        vm.message = "Username existed!";
+                    } else {
+                        UserService
+                            .createUser(user)
+                            .then(function (response) {
+                                var users = response.data;
+                                for (var u in users) {
+                                    if (users[u].username == user.username) {
+                                        UserService.setCurrentUser(users[u]);
+                                        break;
+                                    }
+                                }
+                            });
+                        $location.url("/profile");
                     }
                 });
         }

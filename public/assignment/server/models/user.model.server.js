@@ -67,7 +67,7 @@ module.exports = function (db, mongoose) {
         var deferred = q.defer();
 
         // find all users in array of user IDs
-        UserModel.find({
+        UserModel.findOne({
             username: username
         }, function (err, doc) {
             if (err) {
