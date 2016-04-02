@@ -1,6 +1,5 @@
-/**
- * Created by juncai on 4/1/16.
- */
+"use strict";
+
 module.exports = function (mongoose) {
 
     // use mongoose to declare a user schema

@@ -1,6 +1,5 @@
-/**
- * Created by jonca on 3/16/2016.
- */
+"use strict";
+
 var q = require("q");
 
 module.exports = function (db, mongoose) {
@@ -26,7 +25,13 @@ module.exports = function (db, mongoose) {
                 deferred.reject(err);
             } else {
                 // resolve promise
-                deferred.resolve(doc);
+                UserModel.find({}, function (err, users) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(users);
+                    }
+                });
             }
         });
 
@@ -79,27 +84,18 @@ module.exports = function (db, mongoose) {
         var deferred = q.defer();
 
         // find the user
-        UserModel.findById(id, function (err, doc) {
+        UserModel.update({_id: id}, user, function (err, doc) {
 
             // reject promise if error
             if (err) {
                 deferred.reject(err);
             } else {
-
-                // update user info
-                doc.password = user.password;
-                doc.firstName = user.firstName;
-                doc.password = user.password;
-                doc.emails = user.emails;
-
-                // save user
-                doc.save(function (err, doc) {
-
+                // resolve promise with user
+                UserModel.find({}, function (err, users) {
                     if (err) {
                         deferred.reject(err);
                     } else {
-                        // resolve promise with user
-                        deferred.resolve(doc);
+                        deferred.resolve(users);
                     }
                 });
             }
@@ -110,11 +106,17 @@ module.exports = function (db, mongoose) {
 
     function deleteUser(id) {
         var deferred = q.defer();
-        UserModel.remove({userId: id}, function (err, removed) {
+        UserModel.remove({_id: id}, function (err, removed) {
             if (err) {
                 deferred.reject(err);
             } else {
-                deferred.resolve(removed);
+                UserModel.find({}, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
             }
         });
 

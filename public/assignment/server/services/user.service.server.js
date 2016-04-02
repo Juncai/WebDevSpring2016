@@ -1,6 +1,5 @@
-/**
- * Created by jonca on 3/16/2016.
- */
+"use strict";
+
 module.exports = function (app, formModel, userModel) {
     app.post("/api/assignment/user", addUser);
     app.get("/api/assignment/user", getUser);
@@ -112,15 +111,7 @@ module.exports = function (app, formModel, userModel) {
         userModel.deleteUser(id)
             .then(
                 function (doc) {
-                    return userModel.findAllUsers();
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (users) {
-                    res.json(users);
+                    res.json(doc);
                 },
                 function (err) {
                     res.status(400).send(err);

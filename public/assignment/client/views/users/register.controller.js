@@ -58,18 +58,14 @@
             UserService
                 .createUser(user)
                 .then(function (response) {
-                    UserService.setCurrentUser(response.data);
-                    $location.url("/profile");
-                    //var users = response.data;
-                    //for (var u in users) {
-                    //    if (users[u].username == user.username) {
-                    //        UserService.setCurrentUser(users[u]);
-                    //        $location.url("/profile");
-                    //        break;
-                    //    }
-                    //}
-                    //var currentUser = response.data;
-
+                    var users = response.data;
+                    for (var u in users) {
+                       if (users[u].username == user.username) {
+                           UserService.setCurrentUser(users[u]);
+                           $location.url("/profile");
+                           break;
+                       }
+                    }
                 });
         }
     }
