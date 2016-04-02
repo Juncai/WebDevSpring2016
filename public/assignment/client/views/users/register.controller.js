@@ -42,17 +42,32 @@
             user.firstName = "";
             user.lastName = "";
             user.roles = [];
+            var userExisted = false;
+            UserService.findUserByUsername(user.username)
+                .then(function (response) {
+                    if (reponse != null) {
+                        userExisted = true;
+                    }
+                });
+
+            if (userExisted) {
+                vm.message("Username existed!");
+                return;
+            }
+
             UserService
                 .createUser(user)
                 .then(function (response) {
-                    var users = response.data;
-                    for (var u in users) {
-                        if (users[u].username == user.username) {
-                            UserService.setCurrentUser(users[u]);
-                            $location.url("/profile");
-                            break;
-                        }
-                    }
+                    UserService.setCurrentUser(response.data);
+                    $location.url("/profile");
+                    //var users = response.data;
+                    //for (var u in users) {
+                    //    if (users[u].username == user.username) {
+                    //        UserService.setCurrentUser(users[u]);
+                    //        $location.url("/profile");
+                    //        break;
+                    //    }
+                    //}
                     //var currentUser = response.data;
 
                 });

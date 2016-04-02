@@ -5,8 +5,6 @@ module.exports = function (app, formModel, userModel) {
     app.post("/api/assignment/user", addUser);
     app.get("/api/assignment/user", getUser);
     app.get("/api/assignment/user/:id", profile);
-    //app.get("/api/assignment/user?username=username", findUserByUsername);
-    //app.get("/api/assignment/user?username=alice&password=wonderland", login);
     app.put("/api/assignment/user/:id", updateUser);
     app.delete("/api/assignment/user/:id", deleteUser);
 
@@ -23,23 +21,47 @@ module.exports = function (app, formModel, userModel) {
     }
 
     function all(req, res) {
-        res.json(userModel.findAllUsers());
+        userModel.findAllUsers()
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function profile(req, res) {
         var id = req.params.id;
-        var user = userModel.findUserById(id);
-        console.log(user);
+        userModel.findUserById(id)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function findUserByUsername(req, res) {
         var username = req.query.username;
-        res.json(userModel.findUserByUsername(username));
+        userModel.findUserByUsername(username)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function addUser(req, res) {
         var user = req.body;
-        user = userModel.createUser(user)
+
+        userModel.createUser(user)
             // handle model promise
             .then(
                 // login user if promise resolved
@@ -58,19 +80,51 @@ module.exports = function (app, formModel, userModel) {
         var credentials = {};
         credentials.username = req.query.username;
         credentials.password = req.query.password;
-        var user = userModel.findUserByCredentials(credentials);
-        //req.session.currentUser = user;
-        res.json(user);
+        userModel.findUserByCredentials(credentials)
+            .then(
+                function (doc) {
+                    req.session.currentUser = doc;
+                    res.json(doc);
+                },
+                // send error if promise rejected
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
     }
 
     function updateUser(req, res) {
         var id = req.params.id;
         var user = req.body;
-        res.json(userModel.updateUser(id, user));
+        userModel.updateUser(id, user)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
     }
 
     function deleteUser(req, res) {
         var id = req.params.id;
-        res.json(userModel.deleteUser(id));
+        userModel.deleteUser(id)
+            .then(
+                function (doc) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
     }
 };

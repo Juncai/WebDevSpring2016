@@ -1,9 +1,7 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-var mock = require("./user.mock.json");
-var uuid = require('node-uuid');
-var q = requrie("q");
+var q = require("q");
 
 module.exports = function (db, mongoose) {
     var UserSchema = require("./user.schema.server.js")(mongoose);
@@ -35,9 +33,17 @@ module.exports = function (db, mongoose) {
         return deferred.promise;
     }
 
-
     function findAllUsers() {
-        return mock;
+        var deferred = q.defer();
+        UserModel.find({}, function (err, users) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(users);
+            }
+        });
+
+        return deferred.promise;
     }
 
     function findUserById(userId) {
@@ -53,41 +59,68 @@ module.exports = function (db, mongoose) {
     }
 
     function findUserByUsername(username) {
-        for (var u in mock) {
-            if (mock[u].username === username) {
-                return mock[u];
+        var deferred = q.defer();
+
+        // find all users in array of user IDs
+        UserModel.find({
+            username: username
+        }, function (err, doc) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(doc);
             }
-        }
-        return null;
+        });
+
+        return deferred.promise;
     }
 
     function updateUser(id, user) {
-        var i = findIndexById(id);
-        if (i > -1) {
-            for (var p in user) {
-                mock[i][p] = user[p];
+        var deferred = q.defer();
+
+        // find the user
+        UserModel.findById(id, function (err, doc) {
+
+            // reject promise if error
+            if (err) {
+                deferred.reject(err);
+            } else {
+
+                // update user info
+                doc.password = user.password;
+                doc.firstName = user.firstName;
+                doc.password = user.password;
+                doc.emails = user.emails;
+
+                // save user
+                doc.save(function (err, doc) {
+
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        // resolve promise with user
+                        deferred.resolve(doc);
+                    }
+                });
             }
-            //return mock[u];
-        }
-        return mock;
+        });
+
+        return deferred;
     }
 
     function deleteUser(id) {
-        var indexToRemove = findIndexById(id);
-        if (indexToRemove > -1) {
-            mock.splice(indexToRemove, 1);
-        }
-        return mock;
+        var deferred = q.defer();
+        UserModel.remove({userId: id}, function (err, removed) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(removed);
+            }
+        });
+
+        return deferred.promise;
     }
 
-    function findIndexById(id) {
-        for (var u in mock) {
-            if (mock[u]._id == id) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     function findUserByCredentials(credentials) {
         var deferred = q.defer();
