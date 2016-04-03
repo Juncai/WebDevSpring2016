@@ -10,7 +10,10 @@ var connectionString = 'mongodb://127.0.0.1:27017/webdev2016';
 // use remote connection string
 // if running in remote server
 if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
-    connectionString = 'mongodb://' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+    connectionString = 'mongodb://' +
+        process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+        process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+        process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
         process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
         'webdev2016';
     //connectionString = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
