@@ -9,7 +9,7 @@ module.exports = function (db, mongoose) {
         createUser: createUser,
         findAllUsers: findAllUsers,
         findUserById: findUserById,
-        updateUser: updateUser,
+        updateUserById: updateUser,
         deleteUser: deleteUser,
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername
@@ -19,21 +19,25 @@ module.exports = function (db, mongoose) {
     function createUser(user) {
         var deferred = q.defer();
 
-        UserModel.create(user, function (err, doc) {
-            if (err) {
-                // reject promise if error
-                deferred.reject(err);
-            } else {
-                // resolve promise
-                UserModel.find({}, function (err, users) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(users);
-                    }
-                });
-            }
-        });
+        UserModel.findOne({username: user.username},
+            function (err, doc) {
+                if (err) {
+                    deferred.reject(err);
+                }
+                if (doc) {
+                    deferred.resolve(null);
+                } else {
+                    UserModel.create(user, function (err, newUser) {
+                        if (err) {
+                            // reject promise if error
+                            deferred.reject(err);
+                        } else {
+                            // resolve promise
+                            deferred.resolve(newUser);
+                        }
+                    });
+                }
+            });
 
         return deferred.promise;
     }
@@ -83,25 +87,21 @@ module.exports = function (db, mongoose) {
     function updateUser(id, user) {
         var deferred = q.defer();
 
-        // find the user
+        delete user._id;
         UserModel.update({_id: id}, user, function (err, doc) {
 
             // reject promise if error
             if (err) {
+                console.log(err);
                 deferred.reject(err);
             } else {
                 // resolve promise with user
-                UserModel.find({}, function (err, users) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(users);
-                    }
-                });
+                console.log(doc);
+                deferred.resolve(doc);
             }
         });
 
-        return deferred;
+        return deferred.promise;
     }
 
     function deleteUser(id) {

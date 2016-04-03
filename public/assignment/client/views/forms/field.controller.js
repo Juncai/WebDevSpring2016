@@ -8,7 +8,7 @@
         .module("FormBuilderApp")
         .controller("FieldController", fieldController);
 
-    function fieldController($routeParams, FieldService) {
+    function fieldController($location, $routeParams, FieldService) {
         var vm = this;
         vm.addField = addField;
         vm.updateField = updateField;
@@ -49,7 +49,7 @@
                     newField = {"_id": null, "label": "New Text Field", "type": "TEXT", "placeholder": "New Field"};
                     break;
                 case "TEXTAREA":
-                    newField = {"_id": null, "label": "New Text Field", "type": "TEXTAREA", "placeholder": "New Field"};
+                    newField = {"_id": null, "label": "New Multi-line Text Field", "type": "TEXTAREA", "placeholder": "New Field"};
                     break;
                 case "DATE":
                     newField = {"_id": null, "label": "New Date Field", "type": "DATE"};
@@ -95,7 +95,13 @@
 
         }
 
-        function updateField() {
+        function updateField(field) {
+            FieldService
+                .updateField(formId, field._id, field)
+                .then(function (response) {
+                    vm.fields = response.data;
+                    $(".modal-backdrop").hide();
+                });
         }
 
         function removeField(field) {

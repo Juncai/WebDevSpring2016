@@ -48,8 +48,9 @@ module.exports = function (app, formModel, userModel) {
         var username = req.query.username;
         userModel.findUserByUsername(username)
             .then(
-                function (doc) {
-                    res.json(doc);
+                function (user) {
+                    delete user.password;
+                    res.json(user);
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -65,8 +66,9 @@ module.exports = function (app, formModel, userModel) {
             .then(
                 // login user if promise resolved
                 function (doc) {
-                    req.session.currentUser = doc;
-                    res.json(user);
+                    //req.session.currentUser = doc;
+                    //console.log(doc);
+                    res.json(doc);
                 },
                 // send error if promise rejected
                 function (err) {
@@ -82,7 +84,7 @@ module.exports = function (app, formModel, userModel) {
         userModel.findUserByCredentials(credentials)
             .then(
                 function (doc) {
-                    req.session.currentUser = doc;
+                    //req.session.currentUser = doc;
                     res.json(doc);
                 },
                 // send error if promise rejected
@@ -95,10 +97,10 @@ module.exports = function (app, formModel, userModel) {
     function updateUser(req, res) {
         var id = req.params.id;
         var user = req.body;
-        userModel.updateUser(id, user)
+        userModel.updateUserById(id, user)
             .then(
-                function (doc) {
-                    res.json(doc);
+                function (stats) {
+                    res.send(200);
                 },
                 function (err) {
                     res.status(400).send(err);

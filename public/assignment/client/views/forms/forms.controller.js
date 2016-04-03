@@ -36,7 +36,7 @@
 
         function addForm(form) {
             FormService
-                .createFormForUser($rootScope.currentUser._id, form)
+                .createFormForUser(user._id, form)
                 .then(function (response) {
                     vm.forms = response.data;
                 });

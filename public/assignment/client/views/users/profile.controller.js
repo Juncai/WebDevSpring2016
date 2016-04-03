@@ -15,31 +15,42 @@
 
         if (!vm.currentUser) {
             $location.url("/home");
+        } else {
+            if (vm.currentUser.emails) {
+                vm.currentUser.email = vm.currentUser.emails[0];
+            }
+
         }
+
 
         vm.update = update;
 
         function update(user) {
-            if (!user.password || !user.verifyPassword) {
-                vm.message = "Password is required.";
-                return;
+
+            if (user.password) {
+                if (user.verifyPassword != user.password) {
+                    vm.message = "Passwords don't match.";
+                    return;
+                }
+            } else {
+                delete user.password;
             }
-            if (user.verifyPassword != user.password) {
-                vm.message = "Passwords don't match.";
-                return;
-            }
+
+            // TODO refactor email input
             if (!user.email) {
                 vm.message = "Email is required.";
                 return;
             }
+
+            user.emails = [user.email];
             UserService
                 .updateUser(vm.currentUser._id, user)
                 .then(function (response) {
-                var cUser = response.data;
-                if (cUser != null) {
-                    vm.currentUser = cUser;
-                }
-            });
+                        // do nothing
+                    },
+                    function (error) {
+                        vm.error = error;
+                    });
         }
     }
 })();

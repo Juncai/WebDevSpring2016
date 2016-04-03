@@ -38,22 +38,16 @@
             user.firstName = "";
             user.lastName = "";
             user.roles = [];
-            UserService.findUserByUsername(user.username)
+            user.emails = [user.email];
+            UserService
+                .createUser(user)
                 .then(function (response) {
-                    if (response.data != null) {
+                    var resUser = response.data;
+                    if (resUser == null) {
                         vm.message = "Username existed!";
                     } else {
-                        UserService
-                            .createUser(user)
-                            .then(function (response) {
-                                var users = response.data;
-                                for (var u in users) {
-                                    if (users[u].username == user.username) {
-                                        UserService.setCurrentUser(users[u]);
-                                        break;
-                                    }
-                                }
-                            });
+                        delete resUser.password;
+                        UserService.setCurrentUser(resUser);
                         $location.url("/profile");
                     }
                 });

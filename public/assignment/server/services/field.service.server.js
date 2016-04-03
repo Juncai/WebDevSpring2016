@@ -57,6 +57,7 @@ module.exports = function (app, formModel) {
                     res.json(doc);
                 },
                 function (err) {
+                    console.log(err);
                     res.status(400).send(err);
                 }
             )

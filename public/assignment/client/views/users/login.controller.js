@@ -30,7 +30,9 @@
                 )
                 .then(function(response) {
                     if (response.data) {
-                        UserService.setCurrentUser(response.data);
+                        var resUser = response.data;
+                        delete resUser.password;
+                        UserService.setCurrentUser(resUser);
                         $location.url("/profile");
                     }
                 },

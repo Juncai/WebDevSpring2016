@@ -1,6 +1,5 @@
 "use strict";
 
-var uuid = require('node-uuid');
 var q = require("q");
 
 module.exports = function (db, mongoose) {
@@ -64,7 +63,7 @@ module.exports = function (db, mongoose) {
             }
         });
 
-        return deferred;
+        return deferred.promise;
     }
 
     function deleteForm(id) {
@@ -191,7 +190,7 @@ module.exports = function (db, mongoose) {
             }
         });
 
-        return deferred;
+        return deferred.promise;
     }
 
     function createFieldForForm(formId, field) {
@@ -206,7 +205,7 @@ module.exports = function (db, mongoose) {
             } else {
 
                 // update form info
-                field._id = uuid.v1();
+                field._id = mongoose.Types.ObjectId();
                 doc.fields.push(field);
 
                 // save form
@@ -221,7 +220,7 @@ module.exports = function (db, mongoose) {
             }
         });
 
-        return deferred;
+        return deferred.promise;
     }
 
     function updateFieldForForm(formId, fieldId, field) {
@@ -255,7 +254,7 @@ module.exports = function (db, mongoose) {
             }
         });
 
-        return deferred;
+        return deferred.promise;
     }
 
     function findIndexById(id, collection) {
