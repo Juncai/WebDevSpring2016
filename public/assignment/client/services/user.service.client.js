@@ -13,6 +13,8 @@
             findUserById: findUserById,
             findUserByUsername: findUserByUsername,
             findAllUsers: findAllUsers,
+            register: register,
+            logout: logout,
             createUser: createUser,
             deleteUserById: deleteUserById,
             updateUser: updateUser,
@@ -47,6 +49,14 @@
 
         function createUser(user) {
             return $http.post("/api/assignment/user", user);
+        }
+
+        function register(user) {
+            return $http.post("/api/assignment/register", user);
+        }
+
+        function logout(user) {
+            return $http.post("/api/assignment/logout", user);
         }
 
         function deleteUserById(userId) {

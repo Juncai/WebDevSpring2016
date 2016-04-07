@@ -11,6 +11,12 @@
         $routeProvider
             .when("/admin", {
                 templateUrl: "views/admin/admin.view.html"
+                controller: "AdminController",
+                controllerAs: "model",
+                resolve: {
+                    loggedin: checkAdmin
+                }
+
             })
             .when("/form/:formId/fields", {
                 templateUrl: "views/forms/fields.view.html",
@@ -27,7 +33,11 @@
                 controller: "HeaderController"
             })
             .when("/home", {
-                templateUrl: "views/home/home.view.html"
+                templateUrl: "views/home/home.view.html",
+                controller: "HomeController",
+                resolve: {
+                    loggedin: checkCurrentUser
+                }
             })
             .when("/sidebar", {
                 templateUrl: "views/sidebar/sidebar.view.html",
@@ -41,7 +51,10 @@
             .when("/profile", {
                 templateUrl: "views/users/profile.view.html",
                 controller: "ProfileController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    loggedin: checkLoggedin
+                }
             })
             .when("/register", {
                 templateUrl: "views/users/register.view.html",
@@ -52,4 +65,56 @@
                 redirectTo: "/home"
             });
     }
+
+    var checkAdmin = function ($q, $timeout, $http, $location, UserService) {
+        var deferred = $q.defer();
+
+        $http.get('/api/assignment/loggedin').success(function (user) {
+            $rootScope.errorMessage = null;
+            // User is Authenticated
+            if (user !== '0' && user.roles.indexOf('admin') != -1) {
+                UserService.setCurrentUser(user);
+                deferred.resolve();
+            }
+        });
+
+        return deferred.promise;
+    };
+
+
+    var checkLoggedin = function ($q, $timeout, $http, $location, UserService) {
+        var deferred = $q.defer();
+
+        $http.get('/api/assignment/loggedin').success(function (user) {
+            $rootScope.errorMessage = null;
+            // User is Authenticated
+            if (user !== '0') {
+                UserService.setCurrentUser(user);
+                deferred.resolve();
+            }
+            // User is Not Authenticated
+            else {
+                $rootScope.errorMessage = 'You need to log in.';
+                deferred.reject();
+                $location.url('/login');
+            }
+        });
+
+        return deferred.promise;
+    };
+
+    var checkCurrentUser = function ($q, $timeout, $http, $location, UserService) {
+        var deferred = $q.defer();
+
+        $http.get('/api/assignment/loggedin').success(function (user) {
+            $rootScope.errorMessage = null;
+            // User is Authenticated
+            if (user !== '0') {
+                UserService.setCurrentUser(user);
+            }
+            deferred.resolve();
+        });
+
+        return deferred.promise;
+    };
 })();

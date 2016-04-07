@@ -40,7 +40,7 @@
             user.roles = [];
             user.emails = [user.email];
             UserService
-                .createUser(user)
+                .register(user)
                 .then(function (response) {
                     var resUser = response.data;
                     if (resUser == null) {
