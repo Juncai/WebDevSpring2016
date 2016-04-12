@@ -5,7 +5,8 @@ var LocalStrategy = require('passport-local').Strategy;
 //var mongoose      = require("mongoose");
 
 module.exports = function (app, formModel, userModel) {
-    app.post("/api/assignment/user", admin, addUser);
+    var auth = authorized;
+    app.post("/api/assignment/user", auth, addUser);
     app.post("/api/assignment/register", register);
     app.post("/api/assignment/login", passport.authenticate('local'), login);
     app.get("/api/assignment/user", getUser);
@@ -13,7 +14,7 @@ module.exports = function (app, formModel, userModel) {
     app.get("/api/assignment/loggedin", loggedin);
     app.get("/api/assignment/user/:id", profile);
     app.put("/api/assignment/user/:id", updateUser);
-    app.delete("/api/assignment/user/:id", admin, deleteUser);
+    app.delete("/api/assignment/user/:id", auth, deleteUser);
 
     passport.use(new LocalStrategy(localStrategy));
     passport.serializeUser(serializeUser);

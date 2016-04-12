@@ -9,7 +9,7 @@
 
     function userService($http, $rootScope) {
         var model = {
-            findUserByCredentials: findUserByCredentials,
+            login: login,
             findUserById: findUserById,
             findUserByUsername: findUserByUsername,
             findAllUsers: findAllUsers,
@@ -39,8 +39,8 @@
             return $http.get("/api/assignment/user/" + id);
         }
 
-        function findUserByCredentials(username, password) {
-            return $http.get("/api/assignment/user?username=" + username + "&password=" + password);
+        function login(user) {
+            return $http.post("/api/assignment/login", user);
         }
 
         function findAllUsers() {

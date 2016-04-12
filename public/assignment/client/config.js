@@ -10,7 +10,7 @@
     function configuration($routeProvider) {
         $routeProvider
             .when("/admin", {
-                templateUrl: "views/admin/admin.view.html"
+                templateUrl: "views/admin/admin.view.html",
                 controller: "AdminController",
                 controllerAs: "model",
                 resolve: {
@@ -82,7 +82,7 @@
     };
 
 
-    var checkLoggedin = function ($q, $timeout, $http, $location, UserService) {
+    var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope, UserService) {
         var deferred = $q.defer();
 
         $http.get('/api/assignment/loggedin').success(function (user) {
@@ -103,7 +103,7 @@
         return deferred.promise;
     };
 
-    var checkCurrentUser = function ($q, $timeout, $http, $location, UserService) {
+    var checkCurrentUser = function ($q, $timeout, $http, $location, $rootScope, UserService) {
         var deferred = $q.defer();
 
         $http.get('/api/assignment/loggedin').success(function (user) {
