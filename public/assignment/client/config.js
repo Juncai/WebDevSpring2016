@@ -66,7 +66,7 @@
             });
     }
 
-    var checkAdmin = function ($q, $timeout, $http, $location, UserService) {
+    var checkAdmin = function ($q, $timeout, $http, $location, $rootScope, UserService) {
         var deferred = $q.defer();
 
         $http.get('/api/assignment/loggedin').success(function (user) {
@@ -75,6 +75,9 @@
             if (user !== '0' && user.roles.indexOf('admin') != -1) {
                 UserService.setCurrentUser(user);
                 deferred.resolve();
+            } else {
+                deferred.reject();
+                $location.url('/home');
             }
         });
 

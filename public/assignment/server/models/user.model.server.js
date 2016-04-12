@@ -7,16 +7,68 @@ module.exports = function (db, mongoose) {
     var UserModel = mongoose.model('User', UserSchema);
     var api = {
         createUser: createUser,
+        register: register,
         findAllUsers: findAllUsers,
         findUserById: findUserById,
         updateUserById: updateUser,
+        updateUserByIdAdmin: updateUserAdmin,
         deleteUser: deleteUser,
+        sortUser: sortUser,
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername
     };
     return api;
 
+    function sortUser(startInd, endInd) {
+        var deferred = q.defer();
+        UserModel.find({}, function (err, users) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                // users.splice(endInd, 0, users.splice(startInd, 1)[0]);
+                users.splice(endInd, 0, users.splice(startInd, 1)[1]);
+                users.markModified();
+                users.save();
+                deferred.resolve(200);
+            }
+        });
+
+        return deferred.promise;
+    }
+
     function createUser(user) {
+        var deferred = q.defer();
+
+        UserModel.findOne({username: user.username},
+            function (err, doc) {
+                if (err) {
+                    deferred.reject(err);
+                }
+                if (doc) {
+                    deferred.resolve(null);
+                } else {
+                    UserModel.create(user, function (err, newUser) {
+                        if (err) {
+                            // reject promise if error
+                            deferred.reject(err);
+                        } else {
+                            // resolve promise
+                            UserModel.find({}, function (err, users) {
+                                if (err) {
+                                    deferred.reject(err);
+                                } else {
+                                    deferred.resolve(users);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+        return deferred.promise;
+    }
+
+    function register(user) {
         var deferred = q.defer();
 
         UserModel.findOne({username: user.username},
@@ -98,6 +150,31 @@ module.exports = function (db, mongoose) {
                 // resolve promise with user
                 console.log(doc);
                 deferred.resolve(doc);
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function updateUserAdmin(id, user) {
+        var deferred = q.defer();
+
+        delete user._id;
+        UserModel.update({_id: id}, user, function (err, doc) {
+
+            // reject promise if error
+            if (err) {
+                console.log(err);
+                deferred.reject(err);
+            } else {
+                // resolve promise with user
+                UserModel.find({}, function (err, users) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(users);
+                    }
+                });
             }
         });
 

@@ -27,7 +27,7 @@
 
         function update(user) {
 
-            if (user.password) {
+            if (user.verifyPassword) {
                 if (user.verifyPassword != user.password) {
                     vm.message = "Passwords don't match.";
                     return;

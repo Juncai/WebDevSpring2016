@@ -11,13 +11,14 @@
         var model = {
             login: login,
             findUserById: findUserById,
-            findUserByUsername: findUserByUsername,
             findAllUsers: findAllUsers,
             register: register,
             logout: logout,
             createUser: createUser,
             deleteUserById: deleteUserById,
             updateUser: updateUser,
+            updateUserAdmin: updateUserAdmin,
+            sortUser: sortUser,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser
         };
@@ -31,25 +32,10 @@
             return $rootScope.currentUser;
         }
 
-        function findUserByUsername(username) {
-            return $http.get("/api/assignment/user?username=" + username);
-        }
-
-        function findUserById(id) {
-            return $http.get("/api/assignment/user/" + id);
-        }
-
         function login(user) {
             return $http.post("/api/assignment/login", user);
         }
 
-        function findAllUsers() {
-            return $http.get("/api/assignment/user");
-        }
-
-        function createUser(user) {
-            return $http.post("/api/assignment/user", user);
-        }
 
         function register(user) {
             return $http.post("/api/assignment/register", user);
@@ -59,12 +45,32 @@
             return $http.post("/api/assignment/logout", user);
         }
 
-        function deleteUserById(userId) {
-            return $http.delete("/api/assignment/user/" + userId);
-        }
-
         function updateUser(userId, user) {
             return $http.put("/api/assignment/user/" + userId, user);
+        }
+
+        function findAllUsers() {
+            return $http.get("/api/assignment/admin/user");
+        }
+
+        function createUser(user) {
+            return $http.post("/api/assignment/admin/user", user);
+        }
+
+        function updateUserAdmin(userId, user) {
+            return $http.put("/api/assignment/admin/user/" + userId, user);
+        }
+
+        function findUserById(id) {
+            return $http.get("/api/assignment/admin/user/" + id);
+        }
+
+        function deleteUserById(userId) {
+            return $http.delete("/api/assignment/admin/user/" + userId);
+        }
+
+        function sortUser(startIndex, endIndex) {
+            return $http.put("/api/assignment/admin/user?startIndex=" + startIndex + "&endIndex=" + endIndex);
         }
     }
 })();

@@ -34,10 +34,14 @@
                 vm.message = "Email is required.";
                 return;
             }
+            if (!user.role) {
+                vm.message = "Role is required.";
+                return;
+            }
 
             user.firstName = "";
             user.lastName = "";
-            user.roles = [];
+            user.roles = [user.role];
             user.emails = [user.email];
             UserService
                 .register(user)
