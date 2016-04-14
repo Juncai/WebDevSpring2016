@@ -62,52 +62,7 @@
                     </th>
                 </tr>
                 </thead>
-                <!--<tbody jga-sortable jga-sortable-callback="model.sortUser(start, end)">-->
                 <tbody>
-                <!--<tr>-->
-                <!--<td>-->
-                <!--<div>-->
-                <!--<input ng-model="model.newUser.username" type="text" class="form-control" id="inputUsername"-->
-                <!--placeholder="Username">-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--<td>-->
-                <!--<div>-->
-                <!--<input ng-model="model.newUser.password" type="password" class="form-control"-->
-                <!--id="inputPassword" placeholder="Password">-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--<td>-->
-                <!--<div>-->
-                <!--<input ng-model="model.newUser.firstName" type="text" class="form-control"-->
-                <!--id="inputFirstName" placeholder="First Name">-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--<td>-->
-                <!--<div>-->
-                <!--<input ng-model="model.newUser.lastName" type="text" class="form-control" id="inputLastName"-->
-                <!--placeholder="Last Name">-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--<td>-->
-                <!--<div>-->
-                <!--<input ng-model="model.newUser.roles" type="text" class="form-control" id="inputRole"-->
-                <!--placeholder="Roles">-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--<td>-->
-                <!--<div class="col-sm-3">-->
-                <!--<button ng-click="model.addUser(model.newUser)" type="button" class="btn btn-default">-->
-                <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--<div class="col-sm-3">-->
-                <!--<button ng-click="model.updateUser()" type="button" class="btn btn-default">-->
-                <!--<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--</tr>-->
                 <tr ng-repeat="u in model.users track by u._id">
                     <td class="td-text">{{u.username}}</td>
                     <td></td>

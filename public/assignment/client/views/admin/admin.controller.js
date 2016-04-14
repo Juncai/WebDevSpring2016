@@ -7,7 +7,7 @@
         .module("FormBuilderApp")
         .controller("AdminController", adminController);
 
-    function adminController($location, UserService) {
+    function adminController(UserService) {
         var vm = this;
         vm.addUser = addUser;
         vm.updateUser = updateUser;
@@ -63,8 +63,6 @@
 
         function editUser(index) {
             vm.newUser = vm.users[index];
-            // vm.selectedUser = vm.users[index];
-            // vm.newUser.title = vm.selectedUser.title;
         }
 
         function rolesToString(roles) {
