@@ -17,7 +17,7 @@ module.exports = function (app, formModel, userModel) {
     app.get("/api/assignment/admin/user", admin, getUser);
     app.delete("/api/assignment/admin/user/:userId", admin, deleteUser);
     app.put("/api/assignment/admin/user/:userId", admin, updateUserAdmin);
-    app.put("/api/assignment/admin/user", admin, updateUsers);
+    // app.put("/api/assignment/admin/user", admin, updateUsers);
 
     passport.use(new LocalStrategy(localStrategy));
     passport.serializeUser(serializeUser);
@@ -221,22 +221,23 @@ module.exports = function (app, formModel, userModel) {
     }
 
     // app.put("/api/assignment/admin/users?startIndex=" + startIndex + "&endIndex=" + endIndex);
-    function updateUsers(req, res) {
-        var startInd = req.params.startIndex;
-        var endInd = req.params.endIndex;
-        if(startIndex && endIndex) {
-            userModel
-                .sortUser(startIndex, endIndex)
-                .then(
-                    function(stat) {
-                        return res.json(200);
-                    },
-                    function(err) {
-                        res.status(400).send(err);
-                    }
-                );
-        }
-    }
+    // function updateUsers(req, res) {
+    //     var startInd = req.params.startIndex;
+    //     var endInd = req.params.endIndex;
+    //     if(startInd && endInd) {
+    //         userModel
+    //             .sortUser(startInd, endInd)
+    //             .then(
+    //                 function(stat) {
+    //                     return res.json(200);
+    //                 },
+    //                 function(err) {
+    //                     res.status(400).send(err);
+    //                 }
+    //             );
+    //     }
+    // }
+    
     function isAdmin(req, res, next) {
         if (!req.isAuthenticated() || req.user.roles.indexOf("admin") == -1) {
             res.send(403);

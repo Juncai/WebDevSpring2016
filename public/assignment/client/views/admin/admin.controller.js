@@ -13,9 +13,14 @@
         vm.updateUser = updateUser;
         vm.deleteUser = deleteUser;
         vm.editUser = editUser;
-        vm.sortUser = sortUser;
         vm.rolesToString = rolesToString;
-        // vm.newUser = {}
+        vm.sortByUsername = sortByUsername;
+        vm.sortByFirstName = sortByFirstName;
+        vm.sortByLastName = sortByLastName;
+        vm.sortedByUsername = null;
+        vm.sortedByFirstName = null;
+        vm.sortedByLastName = null;
+
         vm.users = [];
         function init() {
             UserService
@@ -61,7 +66,7 @@
             // vm.selectedUser = vm.users[index];
             // vm.newUser.title = vm.selectedUser.title;
         }
-        
+
         function rolesToString(roles) {
             var rolesStr = ""
             for (var r in roles) {
@@ -76,17 +81,53 @@
         function stringToRoles(rStr) {
             return rStr.split(',');
         }
-        
-        function sortUser(start, end) {
-            UserService
-                .sortPage(vm.applicationId, start, end)
-                .then(
-                    function (response) {
-                    },
-                    function (err) {
-                        vm.error = err;
-                    }
-                );
+
+        function sortByUsername() {
+            if (vm.sortedByUsername) {
+                vm.users.sort(function (a, b) {
+                    return a.username.localeCompare(b.username);
+                });
+                vm.sortedByUsername = false;
+            } else {
+                vm.users.sort(function (a, b) {
+                    return b.username.localeCompare(a.username);
+                });
+                vm.sortedByUsername = true;
+                vm.sortedByFirstName = null;
+                vm.sortedByLastName = null;
+            }
+        }
+
+        function sortByFirstName() {
+            if (vm.sortedByFirstName) {
+                vm.users.sort(function (a, b) {
+                    return a.firstName.localeCompare(b.firstName);
+                });
+                vm.sortedByFirstName = false;
+            } else {
+                vm.users.sort(function (a, b) {
+                    return b.firstName.localeCompare(a.firstName);
+                });
+                vm.sortedByFirstName = true;
+                vm.sortedByUsername = null;
+                vm.sortedByLastName = null;
+            }
+        }
+
+        function sortByLastName() {
+            if (vm.sortedByLastName) {
+                vm.users.sort(function (a, b) {
+                    return a.lastName.localeCompare(b.lastName);
+                });
+                vm.sortedByLastName = false;
+            } else {
+                vm.users.sort(function (a, b) {
+                    return b.lastName.localeCompare(a.lastName);
+                });
+                vm.sortedByLastName = true;
+                vm.sortedByUsername = null;
+                vm.sortedByFirstName = null;
+            }
         }
     }
 })();

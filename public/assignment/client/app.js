@@ -5,5 +5,6 @@
 
 (function () {
     angular
-        .module("FormBuilderApp", ["ngRoute", "jgaSortable"]);
+        .module("FormBuilderApp", ["ngRoute", "jgaDirectives"]);
+    // .module("FormBuilderApp", ["ngRoute", "jgaSortable"]);
 })();

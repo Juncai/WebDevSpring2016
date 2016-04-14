@@ -6,45 +6,55 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th nowrap><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Username
+                    <th nowrap>
+                        <span ng-show="model.sortedByUsername != null"
+                              ng-class="['glyphicon', {'glyphicon-triangle-bottom' : model.sortedByUsername, 'glyphicon-triangle-top' : !model.sortedByUsername}]"
+                              aria-hidden="true"></span>
+                        <a href="" ng-click="model.sortByUsername()">Username</a>
                         <div>
                             <input ng-model="model.newUser.username" type="text" class="form-control" id="inputUsername"
                                    placeholder="Username">
                         </div>
                     </th>
                     <th nowrap> Password
-                                            <div>
+                        <div>
                             <input ng-model="model.newUser.password" type="password" class="form-control"
                                    id="inputPassword" placeholder="Password">
                         </div>
                     </th>
-                    <th nowrap><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> First Name
-                                                <div>
+                    <th nowrap>
+                        <span ng-show="model.sortedByFirstName != null"
+                              ng-class="['glyphicon', {'glyphicon-triangle-bottom' : model.sortedByFirstName, 'glyphicon-triangle-top' : !model.sortedByFirstName}]"
+                              aria-hidden="true"></span>
+                        <a href="" ng-click="model.sortByFirstName()">First Name</a>
+                        <div>
                             <input ng-model="model.newUser.firstName" type="text" class="form-control"
                                    id="inputFirstName" placeholder="First Name">
                         </div>
                     </th>
-                    <th nowrap><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Last Name
-                                                <div>
+                    <th nowrap>
+                        <span ng-show="model.sortedByLastName != null"
+                              ng-class="['glyphicon', {'glyphicon-triangle-bottom' : model.sortedByLastName, 'glyphicon-triangle-top' : !model.sortedByLastName}]"
+                              aria-hidden="true"></span>
+                        <a href="" ng-click="model.sortByLastName()">Last Name</a>
+                        <div>
                             <input ng-model="model.newUser.lastName" type="text" class="form-control" id="inputLastName"
                                    placeholder="Last Name">
                         </div>
                     </th>
                     <th nowrap>Role
-                                                <div>
+                        <div>
                             <input ng-model="model.newUser.roles" type="text" class="form-control" id="inputRole"
                                    placeholder="Roles">
                         </div>
                     </th>
                     <th nowrap>
-                        <div class="col-sm-1"></div>
+                        <!--<div class="col-sm-1">Actions</div>-->
                         Actions
-                                                <div class="col-sm-3">
+                        <div>
                             <button ng-click="model.addUser(model.newUser)" type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
-                        </div>
-                        <div class="col-sm-3">
                             <button ng-click="model.updateUser()" type="button" class="btn btn-default">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
@@ -52,50 +62,51 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody jga-sortable jga-sortable-callback="model.sortUser(start, end)">
+                <!--<tbody jga-sortable jga-sortable-callback="model.sortUser(start, end)">-->
+                <tbody>
                 <!--<tr>-->
-                    <!--<td>-->
-                        <!--<div>-->
-                            <!--<input ng-model="model.newUser.username" type="text" class="form-control" id="inputUsername"-->
-                                   <!--placeholder="Username">-->
-                        <!--</div>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<div>-->
-                            <!--<input ng-model="model.newUser.password" type="password" class="form-control"-->
-                                   <!--id="inputPassword" placeholder="Password">-->
-                        <!--</div>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<div>-->
-                            <!--<input ng-model="model.newUser.firstName" type="text" class="form-control"-->
-                                   <!--id="inputFirstName" placeholder="First Name">-->
-                        <!--</div>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<div>-->
-                            <!--<input ng-model="model.newUser.lastName" type="text" class="form-control" id="inputLastName"-->
-                                   <!--placeholder="Last Name">-->
-                        <!--</div>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<div>-->
-                            <!--<input ng-model="model.newUser.roles" type="text" class="form-control" id="inputRole"-->
-                                   <!--placeholder="Roles">-->
-                        <!--</div>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<div class="col-sm-3">-->
-                            <!--<button ng-click="model.addUser(model.newUser)" type="button" class="btn btn-default">-->
-                                <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-                            <!--</button>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-3">-->
-                            <!--<button ng-click="model.updateUser()" type="button" class="btn btn-default">-->
-                                <!--<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>-->
-                            <!--</button>-->
-                        <!--</div>-->
-                    <!--</td>-->
+                <!--<td>-->
+                <!--<div>-->
+                <!--<input ng-model="model.newUser.username" type="text" class="form-control" id="inputUsername"-->
+                <!--placeholder="Username">-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--<div>-->
+                <!--<input ng-model="model.newUser.password" type="password" class="form-control"-->
+                <!--id="inputPassword" placeholder="Password">-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--<div>-->
+                <!--<input ng-model="model.newUser.firstName" type="text" class="form-control"-->
+                <!--id="inputFirstName" placeholder="First Name">-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--<div>-->
+                <!--<input ng-model="model.newUser.lastName" type="text" class="form-control" id="inputLastName"-->
+                <!--placeholder="Last Name">-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--<div>-->
+                <!--<input ng-model="model.newUser.roles" type="text" class="form-control" id="inputRole"-->
+                <!--placeholder="Roles">-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--<div class="col-sm-3">-->
+                <!--<button ng-click="model.addUser(model.newUser)" type="button" class="btn btn-default">-->
+                <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
+                <!--</button>-->
+                <!--</div>-->
+                <!--<div class="col-sm-3">-->
+                <!--<button ng-click="model.updateUser()" type="button" class="btn btn-default">-->
+                <!--<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>-->
+                <!--</button>-->
+                <!--</div>-->
+                <!--</td>-->
                 <!--</tr>-->
                 <tr ng-repeat="u in model.users track by u._id">
                     <td class="td-text">{{u.username}}</td>

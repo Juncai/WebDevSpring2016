@@ -18,7 +18,6 @@
             deleteUserById: deleteUserById,
             updateUser: updateUser,
             updateUserAdmin: updateUserAdmin,
-            sortUser: sortUser,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser
         };
@@ -67,10 +66,6 @@
 
         function deleteUserById(userId) {
             return $http.delete("/api/assignment/admin/user/" + userId);
-        }
-
-        function sortUser(startIndex, endIndex) {
-            return $http.put("/api/assignment/admin/user?startIndex=" + startIndex + "&endIndex=" + endIndex);
         }
     }
 })();

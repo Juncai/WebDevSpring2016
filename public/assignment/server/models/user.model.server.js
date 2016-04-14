@@ -13,28 +13,27 @@ module.exports = function (db, mongoose) {
         updateUserById: updateUser,
         updateUserByIdAdmin: updateUserAdmin,
         deleteUser: deleteUser,
-        sortUser: sortUser,
+        // sortUser: sortUser,
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername
     };
     return api;
 
-    function sortUser(startInd, endInd) {
-        var deferred = q.defer();
-        UserModel.find({}, function (err, users) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                // users.splice(endInd, 0, users.splice(startInd, 1)[0]);
-                users.splice(endInd, 0, users.splice(startInd, 1)[1]);
-                users.markModified();
-                users.save();
-                deferred.resolve(200);
-            }
-        });
-
-        return deferred.promise;
-    }
+    // function sortUser(startInd, endInd) {
+    //     var deferred = q.defer();
+    //     UserModel.find({}, function (err, users) {
+    //         if (err) {
+    //             deferred.reject(err);
+    //         } else {
+    //             users.splice(endInd, 0, users.splice(startInd, 1)[0]);
+    //             users.markModified();
+    //             users.save();
+    //             deferred.resolve(200);
+    //         }
+    //     });
+    //
+    //     return deferred.promise;
+    // }
 
     function createUser(user) {
         var deferred = q.defer();
