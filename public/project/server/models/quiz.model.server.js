@@ -9,6 +9,7 @@ module.exports = function (mongoose) {
         createQuiz: createQuiz,
         updateQuiz: updateQuiz,
         deleteQuiz: deleteQuiz,
+        // for cards
         findCardsByQuizId: findCardsByQuizId,
         findCardById: findCardById,
         deleteCardById: deleteCardById,
@@ -86,7 +87,7 @@ module.exports = function (mongoose) {
             } else {
                 quiz.cards.push(card);
                 delete quiz._id;
-                ClassModel.update({_id: id}, quiz, function (err, doc) {
+                QuizModel.update({_id: id}, quiz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -119,8 +120,8 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(cardId, quiz.cards);
-                if (indToRemove > -1) {
+                var ind = findIndexById(cardId, quiz.cards);
+                if (ind > -1) {
                     res = quiz.cards[ind];
                 }
                 deferred.resolve(res);
@@ -141,7 +142,7 @@ module.exports = function (mongoose) {
                     quiz.cards.splice(indToRemove, 1);
                 }
                 delete quiz._id;
-                ClassModel.update({_id: id}, quiz, function (err, doc) {
+                QuizModel.update({_id: quizId}, quiz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -166,7 +167,7 @@ module.exports = function (mongoose) {
                     quiz.cards[ind] = card;
                 }
                 delete quiz._id;
-                ClassModel.update({_id: id}, quiz, function (err, doc) {
+                QuizModel.update({_id: quizId}, quiz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {

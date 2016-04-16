@@ -13,7 +13,23 @@ module.exports = function (mongoose) {
         deleteUser: deleteUser,
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername,
-        joinClass: joinClass
+        // for classes
+        addClassForUser: addClassForUser,
+        deleteClassById: deleteClassById,
+        updateClassById: updateClassById,
+        addGradeToClass: addGradeToClass,
+        updateGradeToClass: updateGradeToClass,
+        findGradeInClassById: findGradeInClassById,
+        // for grades
+        createQuizForUser: createGradeForUser,
+        deleteQuizById: deleteGradeById,
+        updateQuizForUser: updateGradeForUser,
+        findQuizById: findGradeById,
+        // for users
+        addFollowing: addFollowing,
+        removeFollowing: removeFollowing,
+        addFollowed: addFollowed,
+        removeFollowed: removeFollowed
     };
     return api;
 
@@ -184,7 +200,8 @@ module.exports = function (mongoose) {
         return deferred.promise;
     }
 
-    function joinClass(userId, clazz) {
+    // for classes
+    function addClassForUser(userId, clazz) {
         var deferred = q.defer();
         UserModel.findById(userId, function (err, user) {
             if (err) {
@@ -206,4 +223,322 @@ module.exports = function (mongoose) {
         });
         return deferred.promise;
     }
+
+    function deleteClassById(userId, classId) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var indToRemove = findIndexById(classId, user.classes);
+                if (indToRemove > -1) {
+                    user.classes.splice(indToRemove, 1);
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function updateClassById(userId, classId, clazz) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var ind = findIndexById(classId, user.classes);
+                if (ind > -1) {
+                    clazz._id = classId;
+                    user.classes[ind] = clazz;
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    // addGradeToClass: addGradeToClass,
+    function addGradeToClass(userId, classId, grade) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var ind = findIndexById(classId, user.classes);
+                if (ind > -1) {
+                    user.classes[ind].performance.push(grade);
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    // updateGradeToClass: updateGradeToClass,
+    function updateGradeToClass(userId, classId, gradeId, grade) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var ind = findIndexById(classId, user.classes);
+                if (ind > -1) {
+                    var gInd = findIndexById(gradeId, user.classes[ind].performance);
+                    if (gInd > -1) {
+                        grade._id = gradeId;
+                        user.classes[ind].performance[gInd] = grade;
+                    }
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function findGradeInClassById(userId, classId, gradeId) {
+        var deferred = q.defer();
+        var gradeFound = null;
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var ind = findIndexById(classId, user.classes);
+                if (ind > -1) {
+                    var gInd = findIndexById(gradeId, user.classes[ind].performance);
+                    if (gInd > -1) {
+                        gradeFound = user.classes[ind].performance[gInd];
+                    }
+                }
+                deferred.resolve(gradeFound);
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    // for grades
+    function createGradeForUser(id, grade) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: id}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                user.quizCreated.push(grade);
+                delete user._id;
+                UserModel.update({_id: id}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function findGradeById(userId, gradeId) {
+        var deferred = q.defer();
+        var res = null;
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var ind = findIndexById(gradeId, user.quizCreated);
+                if (ind > -1) {
+                    res = user.quizCreated[ind];
+                }
+                deferred.resolve(res);
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function deleteGradeById(userId, gradeId) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var indToRemove = findIndexById(gradeId, user.quizCreated);
+                if (indToRemove > -1) {
+                    user.quizCreated.splice(indToRemove, 1);
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function updateGradeForUser(userId, gradeId, grade) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var ind = findIndexById(gradeId, user.quizCreated);
+                if (ind > -1) {
+                    grade._id = gradeId;
+                    user.quizCreated[ind] = grade;
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    // for users
+    function addFollowing(userId, following) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                user.following.push(following);
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+
+    }
+
+    function removeFollowing(userId, followingId) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var indToRemove = findIndexById(followingId, user.following);
+                if (indToRemove > -1) {
+                    user.following.splice(indToRemove, 1);
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function addFollowed(userId, followed) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                user.followed.push(followed);
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+
+    }
+
+    function removeFollowed(userId, followedId) {
+        var deferred = q.defer();
+        UserModel.findOne({_id: userId}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                var indToRemove = findIndexById(followedId, user.followed);
+                if (indToRemove > -1) {
+                    user.followed.splice(indToRemove, 1);
+                }
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(doc);
+                    }
+                });
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    // utils
+    function findIndexById(id, group) {
+        var res = -1;
+        for (var g in group) {
+            if (group[g]._id === id) {
+                res = g;
+            }
+        }
+        return res;
+    }
+
 };

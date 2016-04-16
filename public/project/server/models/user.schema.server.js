@@ -14,11 +14,10 @@ module.exports = function (mongoose) {
         email: String,
         phone: String,
         role: String,
-        followedUsers: [String],
-        followingUsers: [String],
-        classesEnroll: [ClassSchema],
-        quizCreated: [GradeSchema],
-        quizAssigned: [GradeSchema]
+        followed: [String],
+        following: [String],
+        classes: [ClassSchema],
+        quizCreated: [GradeSchema]
     }, {collection: 'project.user'});
     return UserSchema;
 };
