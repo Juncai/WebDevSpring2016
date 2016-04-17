@@ -93,6 +93,7 @@ module.exports = function (app, quizModel, userModel, classModel) {
         quizModel.updateQuiz(id, quizObj)
             .then(
                 function (quiz) {
+                    // TODO also update the grades in the user and classes
                     res.json(quiz);
                 },
                 function (err) {

@@ -2,10 +2,10 @@
 
 module.exports = function (mongoose) {
 
-    // var UserSchema = require("./user.schema.server.js")(mongoose);
+    // var UserSchema = require("./projectUser.schema.server.js")(mongoose);
     // var ClassSchema = require("./class.schema.server.js")(mongoose);
     var GradeSchema = mongoose.Schema({
-        quizId: { type: ObjectId, required: true },
+        quizId: { type: String, required: true },
         quizName: { type: String, required: true },
         due: Date,
         students: [String], // this is username

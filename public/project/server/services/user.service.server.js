@@ -7,29 +7,27 @@ module.exports = function (app, userModel) {
     app.post("/api/project/logout", logout);
     app.get("/api/project/user", loggedin);
     app.get("/api/project/user/:id", profile);
-    app.post("/api/project/user", addUser);
+    // app.post("/api/project/user", addUser);
     app.put("/api/project/user/:id", updateUser);
     app.delete("/api/project/user/:id", deleteUser);
 
     // for classes
-    app.post("/api/project/user/:id/class", addClassForUser);
+    // app.post("/api/project/user/:id/class", addClassForUser);
     // app.delete("/api/project/user/:id/class/:classId", deleteClassById);
     // app.put("/api/project/user/:id/class/:classId", updateClassById);
-    app.post("/api/project/user/:id/class/:classId/grade", addGradeToClass);
-    app.put("/api/project/user/:id/class/:classId/grade/:gradeId", updateGradeToClass);
+    // app.post("/api/project/user/:id/class/:classId/grade", addGradeToClass);
+    // app.put("/api/project/user/:id/class/:classId/grade/:gradeId", updateGradeToClass);
     app.get("/api/project/user/:id/class/:classId/grade/:gradeId", findGradeInClassById);
 
     // // for grades
     app.post("/api/project/user/:id/quiz", createQuizForUser);
     app.delete("/api/project/user/:id/quiz/:quizId", deleteQuizById);
-    app.put("/api/project/user/:id/quiz/:quizId", updateQuizForUser);
+    // app.put("/api/project/user/:id/quiz/:quizId", updateQuizForUser);
     app.get("/api/project/user/:id/quiz/:quizId", findQuizById);
 
     // // for users
     app.post("/api/project/user/:id/following", addFollowing);
-    app.delete("/api/project/user/:id/following/:followingId", removeFollowing);
-    app.post("/api/project/user/:id/followed", addFollowed);
-    app.delete("/api/project/user/:id/followed/:followedId", removeFollowed);
+    app.delete("/api/project/user/:id/following/:followed", removeFollowing);
 
     function profile(req, res) {
         var id = req.params.id;
@@ -248,8 +246,16 @@ module.exports = function (app, userModel) {
     // // for users
     function addFollowing(req, res) {
         var id = req.params.id;
-        var following = req.body;
-        userModel.addFollowing(id, following)
+        var followed = req.body;
+        userModel.addFollowing(id, followed.username)
+            .then(
+                function (user) {
+                    return userModel.addFollowed(followed._id, user.username);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
             .then(
                 function (user) {
                     res.json(user);
@@ -257,13 +263,21 @@ module.exports = function (app, userModel) {
                 function (err) {
                     res.status(400).send(err);
                 }
-            );
+            )
     }
 
     function removeFollowing(req, res) {
         var id = req.params.id;
-        var followingId = req.params.followingId;
-        userModel.removeFollowing(id, followingId)
+        var followedUsername = req.params.followed;
+        userModel.removeFollowing(id, followedUsername)
+            .then(
+                function (user) {
+                    return userModel.removeFollowed(followedUsername, user.username);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
             .then(
                 function (user) {
                     res.json(user);
@@ -271,36 +285,6 @@ module.exports = function (app, userModel) {
                 function (err) {
                     res.status(400).send(err);
                 }
-            );
+            )
     }
-
-    function addFollowed(req, res) {
-        var id = req.params.id;
-        var followed = req.body;
-        userModel.addFollowed(id, followed)
-            .then(
-                function (user) {
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    function removeFollowed(req, res) {
-        var id = req.params.id;
-        var followedId = req.params.followedId;
-        userModel.removeFollowed(id, followedId)
-            .then(
-                function (user) {
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-
 };

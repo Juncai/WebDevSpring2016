@@ -1,7 +1,7 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function (mongoose, utils) {
+module.exports = function (mongoose) {
     var QuizSchema = require("./quiz.schema.server.js")(mongoose);
     var Quiz = mongoose.model('Quiz', QuizSchema);
     var api = {
@@ -58,15 +58,15 @@ module.exports = function (mongoose, utils) {
         return deferred.promise;
     }
 
-    function updateQuiz(id, quiz) {
+    function updateQuiz(id, quizObj) {
         var deferred = q.defer();
 
-        delete quiz._id;
-        Quiz.update({_id: id}, clazz, function (err, doc) {
+        delete quizObj._id;
+        Quiz.update({_id: id}, quizObj, function (err, quiz) {
             if (err) {
                 deferred.reject(err);
             } else {
-                deferred.resolve(doc);
+                deferred.resolve(quiz);
             }
         });
 

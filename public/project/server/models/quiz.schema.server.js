@@ -7,7 +7,7 @@ module.exports = function (mongoose) {
         name: { type: String, required: true },
         created: Date,
         createdBy: String,
-        assignTo: [ObjectId],  // classes' ids
+        assignTo: [String],  // classes' ids
         cards: [CardSchema]
     }, {collection: 'project.quiz'});
     return QuizSchema;

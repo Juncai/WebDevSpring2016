@@ -115,16 +115,8 @@ module.exports = function (mongoose) {
                     deferred.reject(err);
                 } else {
                     school.classes.push(clazz);
-                    delete school._id;
-                    SchoolModel.update({_id: id}, school, function (err, doc) {
-                        if (err) {
-                            // console.log(err);
-                            deferred.reject(err);
-                        } else {
-                            // console.log(doc);
-                            deferred.resolve(doc);
-                        }
-                    });
+                    school.save();
+                    deferred.resolve(school);
                 }
             });
 

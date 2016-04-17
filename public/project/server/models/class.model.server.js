@@ -42,7 +42,7 @@ module.exports = function (mongoose, utils) {
 
         return deferred.promise;
     }
-
+    
     function findClassById(classId) {
         var deferred = q.defer();
         Class.findById(classId, function (err, doc) {

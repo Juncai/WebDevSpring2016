@@ -2,8 +2,8 @@
  * Created by jonca on 3/16/2016.
  */
 module.exports = function (mongoose, utils) {
-    var UserSchema = require("./user.schema.server.js")(mongoose);
-    var UserModel = mongoose.model('User', UserSchema);
+    var ProjectUserSchema = require("./projectUser.schema.server.js")(mongoose);
+    var ProjectUser = mongoose.model('ProjectUser', ProjectUserSchema);
     var api = {
         // createUser: createUser,
         register: register,
@@ -36,7 +36,7 @@ module.exports = function (mongoose, utils) {
 
     function addGradeToClassForUsers(usernames, classId, quiz, due) {
         var deferred = q.defer();
-        UserModel.find({username: {$in: usernames}}, function (err, users) {
+        ProjectUser.find({username: {$in: usernames}}, function (err, users) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -56,7 +56,7 @@ module.exports = function (mongoose, utils) {
     function createUser(user) {
         var deferred = q.defer();
 
-        UserModel.findOne({username: user.username},
+        ProjectUser.findOne({username: user.username},
             function (err, doc) {
                 if (err) {
                     deferred.reject(err);
@@ -64,13 +64,13 @@ module.exports = function (mongoose, utils) {
                 if (doc) {
                     deferred.resolve(null);
                 } else {
-                    UserModel.create(user, function (err, newUser) {
+                    ProjectUser.create(user, function (err, newUser) {
                         if (err) {
                             // reject promise if error
                             deferred.reject(err);
                         } else {
                             // resolve promise
-                            UserModel.find({}, function (err, users) {
+                            ProjectUser.find({}, function (err, users) {
                                 if (err) {
                                     deferred.reject(err);
                                 } else {
@@ -87,7 +87,7 @@ module.exports = function (mongoose, utils) {
     function register(user) {
         var deferred = q.defer();
 
-        UserModel.findOne({username: user.username},
+        ProjectUser.findOne({username: user.username},
             function (err, doc) {
                 if (err) {
                     deferred.reject(err);
@@ -95,7 +95,7 @@ module.exports = function (mongoose, utils) {
                 if (doc) {
                     deferred.resolve(null);
                 } else {
-                    UserModel.create(user, function (err, newUser) {
+                    ProjectUser.create(user, function (err, newUser) {
                         if (err) {
                             // reject promise if error
                             deferred.reject(err);
@@ -112,7 +112,7 @@ module.exports = function (mongoose, utils) {
 
     function findAllUsers() {
         var deferred = q.defer();
-        UserModel.find({}, function (err, users) {
+        ProjectUser.find({}, function (err, users) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -125,7 +125,7 @@ module.exports = function (mongoose, utils) {
 
     function findUserById(userId) {
         var deferred = q.defer();
-        UserModel.findById(userId, function (err, doc) {
+        ProjectUser.findById(userId, function (err, doc) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -139,7 +139,7 @@ module.exports = function (mongoose, utils) {
         var deferred = q.defer();
 
         // find all users in array of user IDs
-        UserModel.findOne({
+        ProjectUser.findOne({
             username: username
         }, function (err, doc) {
             if (err) {
@@ -156,7 +156,7 @@ module.exports = function (mongoose, utils) {
         var deferred = q.defer();
 
         delete user._id;
-        UserModel.update({_id: id}, user, function (err, doc) {
+        ProjectUser.update({_id: id}, user, function (err, doc) {
 
             // reject promise if error
             if (err) {
@@ -174,11 +174,11 @@ module.exports = function (mongoose, utils) {
 
     function deleteUser(id) {
         var deferred = q.defer();
-        UserModel.remove({_id: id}, function (err, removed) {
+        ProjectUser.remove({_id: id}, function (err, removed) {
             if (err) {
                 deferred.reject(err);
             } else {
-                UserModel.find({}, function (err, doc) {
+                ProjectUser.find({}, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -196,7 +196,7 @@ module.exports = function (mongoose, utils) {
         var deferred = q.defer();
 
         // find one retrieves one document
-        UserModel.findOne(
+        ProjectUser.findOne(
             // first argument is predicate
             {
                 username: credentials.username,
@@ -222,7 +222,7 @@ module.exports = function (mongoose, utils) {
     // for classes
     function addClassForStudent(userId, clazz) {
         var deferred = q.defer();
-        UserModel.findById(userId, function (err, user) {
+        ProjectUser.findById(userId, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -230,7 +230,7 @@ module.exports = function (mongoose, utils) {
                 initQuizzesInClass(clazz, user);
                 user.classesEnroll.push(clazz);
                 delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
                         // console.log(err);
                         deferred.reject(err);
@@ -246,14 +246,14 @@ module.exports = function (mongoose, utils) {
 
     function addClassForTeacher(username, clazz) {
         var deferred = q.defer();
-        UserModel.findOne({username: username}, function (err, user) {
+        ProjectUser.findOne({username: username}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
                 // TODO handle the existing quizzes
                 user.classesEnroll.push(clazz);
                 delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
                         // console.log(err);
                         deferred.reject(err);
@@ -269,7 +269,7 @@ module.exports = function (mongoose, utils) {
 
     function deleteClassById(userId, classId) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -278,7 +278,7 @@ module.exports = function (mongoose, utils) {
                     user.classes.splice(indToRemove, 1);
                 }
                 delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -293,7 +293,7 @@ module.exports = function (mongoose, utils) {
 
     function updateClassById(userId, classId, clazz) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -303,7 +303,7 @@ module.exports = function (mongoose, utils) {
                     user.classes[ind] = clazz;
                 }
                 delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -318,7 +318,7 @@ module.exports = function (mongoose, utils) {
 
     function updateGradeToClass(userId, classId, gradeId, gradeObj) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -342,7 +342,7 @@ module.exports = function (mongoose, utils) {
     function findGradeInClassById(userId, classId, gradeId) {
         var deferred = q.defer();
         var gradeFound = null;
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -363,14 +363,14 @@ module.exports = function (mongoose, utils) {
     // for grades
     function createGradeForUser(id, quiz) {
         var deferred = q.defer();
-        UserModel.findOne({_id: id}, function (err, user) {
+        ProjectUser.findOne({_id: id}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
                 var grade = newGrade(quiz, null);
                 user.quizCreated.push(grade);
                 delete user._id;
-                UserModel.update({_id: id}, user, function (err, doc) {
+                ProjectUser.update({_id: id}, user, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -386,7 +386,7 @@ module.exports = function (mongoose, utils) {
     function findGradeById(userId, gradeId) {
         var deferred = q.defer();
         var res = null;
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -403,7 +403,7 @@ module.exports = function (mongoose, utils) {
 
     function deleteGradeById(userId, gradeId) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -412,7 +412,7 @@ module.exports = function (mongoose, utils) {
                     user.quizCreated.splice(indToRemove, 1);
                 }
                 delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -427,7 +427,7 @@ module.exports = function (mongoose, utils) {
 
     function updateGradeForUser(userId, gradeId, gradeObj) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -444,21 +444,17 @@ module.exports = function (mongoose, utils) {
     }
 
     // for users
-    function addFollowing(userId, following) {
+    function addFollowing(userId, followedUsername) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                user.following.push(following);
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                if (user.following.indexOf(followedUsername) < 0) {
+                    user.following.push(followedUsername);
+                    user.save();
+                }
+                deferred.resolve(user);
             }
         });
 
@@ -466,69 +462,53 @@ module.exports = function (mongoose, utils) {
 
     }
 
-    function removeFollowing(userId, followingId) {
+    function removeFollowing(userId, followedUsername) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = utils.findIndexById(followingId, user.following);
+                var indToRemove = user.following.indexOf(followedUsername);
                 if (indToRemove > -1) {
                     user.following.splice(indToRemove, 1);
                 }
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                user.save();
+                deferred.resolve(user);
             }
         });
 
         return deferred.promise;
     }
 
-    function addFollowed(userId, followed) {
+    function addFollowed(userId, followingUsername) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                user.followed.push(followed);
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                if (user.followed.indexOf(followingUsername) < 0) {
+                    user.followed.push(followingUsername);
+                    user.save();
+                }
+                deferred.resolve(user);
             }
         });
 
         return deferred.promise;
     }
 
-    function removeFollowed(userId, followedId) {
+    function removeFollowed(username, followingUsername) {
         var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
+        ProjectUser.findOne({username: username}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = utils.findIndexById(followedId, user.followed);
+                var indToRemove = user.followed.indexOf(followingUsername);
                 if (indToRemove > -1) {
                     user.followed.splice(indToRemove, 1);
                 }
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                user.save();
+                deferred.resolve(user);
             }
         });
 
