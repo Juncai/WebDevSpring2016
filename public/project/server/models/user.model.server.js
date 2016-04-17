@@ -1,7 +1,7 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function (mongoose) {
+module.exports = function (mongoose, utils) {
     var UserSchema = require("./user.schema.server.js")(mongoose);
     var UserModel = mongoose.model('User', UserSchema);
     var api = {
@@ -61,7 +61,6 @@ module.exports = function (mongoose) {
                     });
                 }
             });
-
         return deferred.promise;
     }
 
@@ -208,10 +207,10 @@ module.exports = function (mongoose) {
                 deferred.reject(err);
             } else {
                 // TODO handle the existing quizzes
+                initQuizzesInClass(clazz, user);
                 user.classesEnroll.push(clazz);
                 delete user._id;
                 UserModel.update({_id: userId}, user, function (err, doc) {
-
                     if (err) {
                         // console.log(err);
                         deferred.reject(err);
@@ -231,7 +230,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(classId, user.classes);
+                var indToRemove = utils.findIndexById(classId, user.classes);
                 if (indToRemove > -1) {
                     user.classes.splice(indToRemove, 1);
                 }
@@ -255,7 +254,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(classId, user.classes);
+                var ind = utils.findIndexById(classId, user.classes);
                 if (ind > -1) {
                     clazz._id = classId;
                     user.classes[ind] = clazz;
@@ -281,8 +280,10 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(classId, user.classes);
+                var ind = utils.findIndexById(classId, user.classes);
                 if (ind > -1) {
+                    // init grade
+                    initQuiz(grade, user);
                     user.classes[ind].performance.push(grade);
                 }
                 delete user._id;
@@ -306,9 +307,9 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(classId, user.classes);
+                var ind = utils.findIndexById(classId, user.classes);
                 if (ind > -1) {
-                    var gInd = findIndexById(gradeId, user.classes[ind].performance);
+                    var gInd = utils.findIndexById(gradeId, user.classes[ind].performance);
                     if (gInd > -1) {
                         grade._id = gradeId;
                         user.classes[ind].performance[gInd] = grade;
@@ -335,9 +336,9 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(classId, user.classes);
+                var ind = utils.findIndexById(classId, user.classes);
                 if (ind > -1) {
-                    var gInd = findIndexById(gradeId, user.classes[ind].performance);
+                    var gInd = utils.findIndexById(gradeId, user.classes[ind].performance);
                     if (gInd > -1) {
                         gradeFound = user.classes[ind].performance[gInd];
                     }
@@ -356,6 +357,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
+                initQuiz(grade, user);
                 user.quizCreated.push(grade);
                 delete user._id;
                 UserModel.update({_id: id}, user, function (err, doc) {
@@ -378,7 +380,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(gradeId, user.quizCreated);
+                var ind = utils.findIndexById(gradeId, user.quizCreated);
                 if (ind > -1) {
                     res = user.quizCreated[ind];
                 }
@@ -395,7 +397,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(gradeId, user.quizCreated);
+                var indToRemove = utils.findIndexById(gradeId, user.quizCreated);
                 if (indToRemove > -1) {
                     user.quizCreated.splice(indToRemove, 1);
                 }
@@ -419,7 +421,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(gradeId, user.quizCreated);
+                var ind = utils.findIndexById(gradeId, user.quizCreated);
                 if (ind > -1) {
                     grade._id = gradeId;
                     user.quizCreated[ind] = grade;
@@ -467,7 +469,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(followingId, user.following);
+                var indToRemove = utils.findIndexById(followingId, user.following);
                 if (indToRemove > -1) {
                     user.following.splice(indToRemove, 1);
                 }
@@ -504,7 +506,6 @@ module.exports = function (mongoose) {
         });
 
         return deferred.promise;
-
     }
 
     function removeFollowed(userId, followedId) {
@@ -513,7 +514,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(followedId, user.followed);
+                var indToRemove = utils.findIndexById(followedId, user.followed);
                 if (indToRemove > -1) {
                     user.followed.splice(indToRemove, 1);
                 }
@@ -532,26 +533,18 @@ module.exports = function (mongoose) {
     }
 
     // utils
-    function findIndexById(id, group) {
-        var res = -1;
-        for (var g in group) {
-            if (group[g]._id === id) {
-                res = g;
-            }
-        }
-        return res;
-    }
-
     function initQuizzesInClass(clazz, user) {
         for (var q in clazz.performance) {
-
+            initQuiz(clazz.performance[q], user);
         }
     }
 
     function initQuiz(quiz, user) {
-        quiz.students = [user];
-
-
+        var pUser = utils.purgeUser(user);
+        quiz.students = [pUser];
+        quiz.finished = [false];
+        quiz.grades = [-1];
+        quiz.finishTSs = [null];
+        quiz.durations = [0];
     }
-
 };

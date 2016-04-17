@@ -2,7 +2,7 @@
  * Created by jonca on 3/16/2016.
  * Use clazz instead of class to avoid keyword conflicts
  */
-module.exports = function (mongoose) {
+module.exports = function (mongoose, utils) {
     var ClassSchema = require("./class.schema.server.js")(mongoose);
     var ClassModel = mongoose.model('Class', ClassSchema);
     var api = {
@@ -126,7 +126,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(gradeId, clazz.performance);
+                var ind = utils.findIndexById(gradeId, clazz.performance);
                 if (ind > -1) {
                     res = clazz.performance[ind];
                 }
@@ -143,7 +143,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(gradeId, clazz.performance);
+                var indToRemove = utils.findIndexById(gradeId, clazz.performance);
                 if (indToRemove > -1) {
                     clazz.performance.splice(indToRemove, 1);
                 }
@@ -167,7 +167,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(gradeId, clazz.performance);
+                var ind = utils.findIndexById(gradeId, clazz.performance);
                 if (ind > -1) {
                     grade._id = gradeId;
                     clazz.performance[ind] = grade;
@@ -242,7 +242,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(studentId, clazz.students);
+                var indToRemove = utils.findIndexById(studentId, clazz.students);
                 if (indToRemove > -1) {
                     clazz.students.splice(indToRemove, 1);
                     // also remove the quiz records for that student
@@ -270,7 +270,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(studentId, clazz.students);
+                var ind = utils.findIndexById(studentId, clazz.students);
                 if (ind > -1) {
                     student._id = studentId;
                     clazz.students[ind] = student;
@@ -290,20 +290,6 @@ module.exports = function (mongoose) {
     }
 
     // utils
-    function findIndexById(id, group) {
-        var res = -1;
-        for (var g in group) {
-            if (group[g]._id === id) {
-                res = g;
-            }
-        }
-        return res;
-    }
-
-    function removeElementAt(collection, index) {
-        collection.splice(index, 1);
-    }
-
     function findGradeByQuizId(quizId, performance) {
         var res = -1;
         for (var q in performance) {
@@ -323,18 +309,18 @@ module.exports = function (mongoose) {
     }
 
     function deleteStudentFromGrade(grade, studentId) {
-        var ind = findIndexById(studentId, grade.students);
+        var ind = utils.findIndexById(studentId, grade.students);
         if (ind > -1) {
-            removeElementAt(grade.students, ind);
-            removeElementAt(grade.finished, ind);
-            removeElementAt(grade.grades, ind);
-            removeElementAt(grade.finishTSs, ind);
-            removeElementAt(grade.durations, ind);
+            utils.removeElementAt(grade.students, ind);
+            utils.removeElementAt(grade.finished, ind);
+            utils.removeElementAt(grade.grades, ind);
+            utils.removeElementAt(grade.finishTSs, ind);
+            utils.removeElementAt(grade.durations, ind);
         }
     }
 
     function updateStudentGradeInGrade(grade, studentGrade) {
-        var ind = findIndexById(studentGrade.students[0]._id, grade.students);
+        var ind = utils.findIndexById(studentGrade.students[0]._id, grade.students);
         if (ind > -1) {
             grade.finished[ind] = studentGrade.finished[0];
             grade.grades[ind] = studentGrade.grades[0];

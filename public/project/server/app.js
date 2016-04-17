@@ -3,11 +3,13 @@
  */
 module.exports = function (app, mongoose) {
 
-    // pass db and mongoose reference to model
-    var userModel = require("./models/user.model.server.js")(mongoose);
-    var quizModel = require("./models/quiz.model.server.js")(mongoose);
-    var classModel = require("./models/class.model.server.js")(mongoose);
-    var schoolModel = require("./models/school.model.server.js")(mongoose);
+    // help functions
+    var utils = require("./utils/utils.js");
+
+    var userModel = require("./models/user.model.server.js")(mongoose, utils);
+    var quizModel = require("./models/quiz.model.server.js")(mongoose, utils);
+    var classModel = require("./models/class.model.server.js")(mongoose, utils);
+    var schoolModel = require("./models/school.model.server.js")(mongoose, utils);
 
     var userService = require("./services/user.service.server.js")(app, userModel, quizModel, classModel);
     var classService = require("./services/class.service.server.js")(app, classModel, quizModel, userModel);

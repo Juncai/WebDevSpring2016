@@ -12,37 +12,23 @@ module.exports = function (app, userModel, quizModel, classModel) {
     app.delete("/api/project/user/:id", deleteUser);
 
     // for classes
-    // addClassForUser: addClassForUser,
     app.post("/api/project/user/:id/class", addClassForUser);
-    // deleteClassById: deleteClassById,
     // app.delete("/api/project/user/:id/class/:classId", deleteClassById);
-    // updateClassById: updateClassById,
     // app.put("/api/project/user/:id/class/:classId", updateClassById);
-    // addGradeToClass: addGradeToClass,
     app.post("/api/project/user/:id/class/:classId/grade", addGradeToClass);
-    // updateGradeToClass: updateGradeToClass,
-    app.put("/api/project/user/:id/class/:classId/grade", updateGradeToClass);
-    // findGradeInClassById: findGradeInClassById,
+    app.put("/api/project/user/:id/class/:classId/grade/:gradeId", updateGradeToClass);
     app.get("/api/project/user/:id/class/:classId/grade/:gradeId", findGradeInClassById);
 
     // // for grades
-    // createQuizForUser: createGradeForUser,
     app.post("/api/project/user/:id/quiz", createQuizForUser);
-    // deleteQuizById: deleteGradeById,
     app.delete("/api/project/user/:id/quiz/:quizId", deleteQuizById);
-    // updateQuizForUser: updateGradeForUser,
     app.put("/api/project/user/:id/quiz/:quizId", updateQuizForUser);
-    // findQuizById: findGradeById,
     app.get("/api/project/user/:id/quiz/:quizId", findQuizById);
 
     // // for users
-    // addFollowing: addFollowing,
     app.post("/api/project/user/:id/following", addFollowing);
-    // removeFollowing: removeFollowing,
     app.delete("/api/project/user/:id/following/:followingId", removeFollowing);
-    // addFollowed: addFollowed,
     app.post("/api/project/user/:id/followed", addFollowed);
-    // removeFollowed: removeFollowed
     app.delete("/api/project/user/:id/followed/:followedId", removeFollowed);
 
     function profile(req, res) {
@@ -122,7 +108,7 @@ module.exports = function (app, userModel, quizModel, classModel) {
     }
 
     function updateUser(req, res) {
-        var id = req.params.userId;
+        var id = req.params.id;
         var user = req.body;
         if (req.user._id == id) {
             userModel.updateUserById(id, user)
@@ -163,4 +149,191 @@ module.exports = function (app, userModel, quizModel, classModel) {
         var id = req.params.id;
         res.json(userModel.deleteUser(id));
     }
+
+    // for classes
+    function addClassForUser(req, res) {
+        var id = req.params.id;
+        var clazz = req.body;
+        userModel.addClassForUser(id, clazz)
+            .then(
+                function (user) {
+                    delete user.password;
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+
+    }
+
+    // app.delete("/api/project/user/:id/class/:classId", deleteClassById);
+    // app.put("/api/project/user/:id/class/:classId", updateClassById);
+
+    function addGradeToClass(req, res) {
+        var id = req.params.id;
+        var classId = req.params.classId;
+        var grade = req.body;
+        userModel.addGradeToClass(id, classId, grade)
+            .then(
+                function (user) {
+                    delete user.password;
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+
+    }
+
+    function updateGradeToClass(req, res) {
+        var id = req.params.id;
+        var classId = req.params.classId;
+        var gradeId = req.params.gradeId;
+        var grade = req.body;
+        userModel.updateGradeToClass(id, classId, gradeId, grade)
+            .then(
+                function (user) {
+                    delete user.password;
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    app.get("/api/project/user/:id/class/:classId/grade/:gradeId", findGradeInClassById);
+    function findGradeInClassById(req, res) {
+        var id = req.params.id;
+        var classId = req.params.classId;
+        var gradeId = req.params.gradeId;
+        userModel.findGradeInClassById(id, classId, gradeId)
+            .then(
+                function (grade) {
+                    res.json(grade);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    // // for grades
+    function createQuizForUser(req, res) {
+        var id = req.params.id;
+        var grade = req.body;
+        userModel.createQuizForUser(id, grade)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function deleteQuizById(req, res) {
+        var id = req.params.id;
+        var gradeId = req.params.quizId;
+        userModel.deleteQuizById(id, gradeId)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function updateQuizForUser(req, res) {
+        var id = req.params.id;
+        var gradeId = req.params.quizId;
+        var grade = req.body;
+        userModel.updateQuizForUser(id, gradeId, grade)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function findQuizById(req, res) {
+        var id = req.params.id;
+        var gradeId = req.params.quizId;
+        userModel.findQuizById(id, gradeId)
+            .then(
+                function (grade) {
+                    res.json(grade);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    // // for users
+    function addFollowing(req, res) {
+        var id = req.params.id;
+        var following = req.body;
+        userModel.addFollowing(id, following)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function removeFollowing(req, res) {
+        var id = req.params.id;
+        var followingId = req.params.followingId;
+        userModel.removeFollowing(id, followingId)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function addFollowed(req, res) {
+        var id = req.params.id;
+        var followed = req.body;
+        userModel.addFollowed(id, followed)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function removeFollowed(req, res) {
+        var id = req.params.id;
+        var followedId = req.params.followedId;
+        userModel.removeFollowed(id, followedId)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+
 };

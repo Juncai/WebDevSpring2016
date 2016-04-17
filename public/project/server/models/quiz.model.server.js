@@ -1,14 +1,14 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function (mongoose) {
+module.exports = function (mongoose, utils) {
     var QuizSchema = require("./quiz.schema.server.js")(mongoose);
     var QuizModel = mongoose.model('Quiz', QuizSchema);
     var api = {
         findQuizById: findQuizById,
         createQuiz: createQuiz,
         updateQuiz: updateQuiz,
-        deleteQuiz: deleteQuiz,
+        deleteQuizById: deleteQuizById,
         // for cards
         findCardsByQuizId: findCardsByQuizId,
         findCardById: findCardById,
@@ -58,24 +58,37 @@ module.exports = function (mongoose) {
         return deferred.promise;
     }
 
-    function deleteQuiz(id) {
+    function deleteQuizById(id) {
         var deferred = q.defer();
         QuizModel.remove({_id: id}, function (err, removed) {
             if (err) {
                 deferred.reject(err);
             } else {
-                QuizModel.find({}, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                deferred.resolve(removed);
             }
         });
 
         return deferred.promise;
     }
+
+    //function deleteQuizById(id) {
+    //    var deferred = q.defer();
+    //    QuizModel.remove({_id: id}, function (err, removed) {
+    //        if (err) {
+    //            deferred.reject(err);
+    //        } else {
+    //            QuizModel.find({}, function (err, doc) {
+    //                if (err) {
+    //                    deferred.reject(err);
+    //                } else {
+    //                    deferred.resolve(doc);
+    //                }
+    //            });
+    //        }
+    //    });
+    //
+    //    return deferred.promise;
+    //}
 
 
     // for cards
@@ -120,7 +133,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(cardId, quiz.cards);
+                var ind = utils.findIndexById(cardId, quiz.cards);
                 if (ind > -1) {
                     res = quiz.cards[ind];
                 }
@@ -137,7 +150,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = findIndexById(cardId, quiz.cards);
+                var indToRemove = utils.findIndexById(cardId, quiz.cards);
                 if (indToRemove > -1) {
                     quiz.cards.splice(indToRemove, 1);
                 }
@@ -161,7 +174,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = findIndexById(cardId, quiz.cards);
+                var ind = utils.findIndexById(cardId, quiz.cards);
                 if (ind > -1) {
                     card._id = cardId;
                     quiz.cards[ind] = card;
@@ -178,15 +191,5 @@ module.exports = function (mongoose) {
         });
 
         return deferred.promise;
-    }
-
-    function findIndexById(id, group) {
-        var res = -1;
-        for (var g in group) {
-            if (group[g]._id === id) {
-                res = g;
-            }
-        }
-        return res;
     }
 };
