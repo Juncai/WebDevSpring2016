@@ -14,21 +14,21 @@
                 controller: "QuizDetailController",
                 controllerAs: "model"
             })
-            .when("/quizList", {
-                templateUrl: "views/quiz/quizList.view.html",
-                controller: "QuizListController",
-                controllerAs: "model"
-            })
+            // .when("/quizList", {
+            //     templateUrl: "views/quiz/quizList.view.html",
+            //     controller: "QuizListController",
+            //     controllerAs: "model"
+            // })
             .when("/classDetail/:classId", {
                 templateUrl: "views/class/classDetail.view.html",
                 controller: "ClassDetailController",
                 controllerAs: "model"
             })
-            .when("/classList", {
-                templateUrl: "views/class/classList.view.html",
-                controller: "ClassListController",
-                controllerAs: "model"
-            })
+            // .when("/classList", {
+            //     templateUrl: "views/class/classList.view.html",
+            //     controller: "ClassListController",
+            //     controllerAs: "model"
+            // })
             .when("/performance", {
                 templateUrl: "views/performance/performance.view.html",
                 controller: "PerformanceController",
@@ -49,11 +49,11 @@
                 controller: "SidebarController",
                 controllerAs: "model"
             })
-            .when("/login", {
-                templateUrl: "views/login/login.view.html",
-                controller: "LoginController",
-                controllerAs: "model"
-            })
+            // .when("/login", {
+            //     templateUrl: "views/login/login.view.html",
+            //     controller: "LoginController",
+            //     controllerAs: "model"
+            // })
             .when("/profile", {
                 templateUrl: "views/profile/profile.view.html",
                 controller: "ProfileController",
@@ -74,22 +74,22 @@
                 controller: "DetailsController",
                 controllerAs: "model"
             })
-            .when("/user", {
-                templateUrl: "views/user/user.view.html",
-                controller: "UserController"
-            })
+            // .when("/user", {
+            //     templateUrl: "views/user/user.view.html",
+            //     controller: "UserController"
+            // })
             .when("/quiz/:quizId", {
                 templateUrl: "views/quiz/quiz.view.html",
                 controller: "QuizController"
             })
-            .when("/card", {
-                templateUrl: "views/card/card.view.html",
-                controller: "CardController"
-            })
-            .when("/class", {
-                templateUrl: "views/class/class.view.html",
-                controller: "ClassController"
-            })
+            // .when("/card", {
+            //     templateUrl: "views/card/card.view.html",
+            //     controller: "CardController"
+            // })
+            // .when("/class", {
+            //     templateUrl: "views/class/class.view.html",
+            //     controller: "ClassController"
+            // })
             .otherwise({
                 redirectTo: "/home"
             });

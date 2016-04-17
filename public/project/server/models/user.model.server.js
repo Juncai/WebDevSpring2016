@@ -207,6 +207,7 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
+                // TODO handle the existing quizzes
                 user.classesEnroll.push(clazz);
                 delete user._id;
                 UserModel.update({_id: userId}, user, function (err, doc) {
@@ -539,6 +540,18 @@ module.exports = function (mongoose) {
             }
         }
         return res;
+    }
+
+    function initQuizzesInClass(clazz, user) {
+        for (var q in clazz.performance) {
+
+        }
+    }
+
+    function initQuiz(quiz, user) {
+        quiz.students = [user];
+
+
     }
 
 };
