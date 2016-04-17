@@ -9,32 +9,33 @@
 
     function cardService($http) {
         var model = {
+
             createCardForQuiz: createCardForQuiz,
             getCardsForQuiz: getCardsForQuiz,
-            getCardForQuiz: getCardForQuiz,
+            findCardById: findCardById,
             deleteCardFromQuiz: deleteCardFromQuiz,
             updateCard: updateCard
         };
         return model;
 
         function createCardForQuiz(quizId, card) {
-            return $http.post("/api/project/quiz/" + quizId + "/card", card);
+            return $http.post("/api/project/card/quiz/" + quizId, card);
         }
 
         function getCardsForQuiz(quizId) {
-            return $http.get("/api/project/quiz/" + quizId + "/card");
+            return $http.get("/api/project/card/quiz/" + quizId);
         }
 
-        function getCardForQuiz(quizId, cardId) {
-            return $http.get("/api/project/quiz/" + quizId + "/card/" + cardId);
+        function findCardById(quizId, cardId) {
+            return $http.get("/api/project/card/" + cardId + "/quiz/" + quizId);
         }
 
         function deleteCardFromQuiz(quizId, cardId) {
-            return $http.delete("/api/project/quiz/" + quizId + "/card/" + cardId);
+            return $http.delete("/api/project/card/" + cardId + "/quiz/" + quizId);
         }
 
         function updateCard(quizId, cardId, card) {
-            return $http.put("/api/project/quiz/" + quizId + "/card/" + cardId, card);
+            return $http.put("/api/project/card/" + cardId + "/quiz/" + quizId, card);
         }
     }
 })();

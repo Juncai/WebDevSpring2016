@@ -9,31 +9,33 @@
 
     function classService($http) {
         var model = {
-            findClassesBySchoolId: findClassesBySchoolId,
-            findClassesByUserId: findClassesByUserId,
+
+            addStudentToClass: addStudentToClass,
+            updateClass: updateClass,
+            deleteClass: deleteClass,
             createClass: createClass,
             findClassById: findClassById
         };
         return model;
 
         function findClassById(classId) {
-            // dummy function for demo purpose
             return $http.get("/api/project/class/" + classId);
         }
 
-        function findClassesBySchoolId(schoolId) {
-            // dummy function for demo purpose
-            return $http.get("/api/project/school/" + schoolId + "/class");
+        function addStudentToClass(classId, student) {
+            return $http.post("/api/project/class/" + classId + "/user", student);
         }
 
-        function findClassesByUserId(userId) {
-            // dummy function for demo purpose
-            return $http.get("/api/project/user/" + userId + "/class");
+        function updateClass(classId, clazz) {
+            return $http.put("/api/project/class/" + classId, clazz);
+        }
+        
+        function deleteClass(classId) {
+            return $http.delete("/api/project/class/" + classId);
         }
 
         function createClass(userId, clazz) {
-            // dummy function for demo purpose
-            return $http.post("/api/project/user/" + userId + "/class", clazz);
+            return $http.post("/api/project/class", clazz);
         }
     }
 })();

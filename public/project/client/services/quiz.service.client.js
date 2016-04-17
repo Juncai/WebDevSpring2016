@@ -13,12 +13,17 @@
             findAllQuizzesForUser: findAllQuizzesForUser,
             deleteQuizById: deleteQuizById,
             updateQuizById: updateQuizById,
-            findQuizById: findQuizById
+            findQuizById: findQuizById,
+            assignQuizToClass: assignQuizToClass
         };
         return model;
+        
+        function assignQuizToClass(quizId, classId, due) {
+            return $http.post("/api/project/quiz/" + quizId + "/class/" + classId, due);
+        }
 
         function createQuizForUser(userId, quiz) {
-            return $http.post("/api/project/user/" + userId + "/quiz", quiz);
+            return $http.post("/api/project/quiz/user/" + userId + "/quiz", quiz);
         }
 
         function findAllQuizzesForUser(userId) {

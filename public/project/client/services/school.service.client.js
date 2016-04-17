@@ -7,37 +7,37 @@
         .factory("SchoolService", schoolService);
 
     function schoolService($http) {
-        var schools = [];
 
         var searchQueryString = "https://inventory.data.gov/api/action/datastore_search" +
             "?resource_id=38625c3d-5388-4c16-a30f-d105432553a4&q=";
         var findQueryString = "https://inventory.data.gov/api/action/datastore_search" +
             "?resource_id=38625c3d-5388-4c16-a30f-d105432553a4&limit=1&q=UNITID:";
-        var api = {
-            schools: schools,
-            searchSchoolsByName: searchSchoolsByName,
-            findSchoolByID: findSchoolByID,
-            cacheSchool: cacheSchool
-        };
-        return api;
+        var model = {
+            // app.delete("/api/project/school/:id", deleteSchool);
 
-        function findSchoolByID(schoolID) {
-            // TODO find school in the database instead
-            var res = null;
-            for (var s in schools) {
-                if (schools[s].UNITID == schoolID) {
-                    res = schools[s];
-                }
-            }
-            return res;
-            //return $http.jsonp(findQueryString + schoolID + "&callback=JSON_CALLBACK");
+            // schools: schools,
+            searchSchoolsByName: searchSchoolsByName,
+            findSchoolById: findSchoolById,
+            findSchoolByUNITID: findSchoolByUNITID,
+            createSchool: createSchool,
+            updateSchool: updateSchool
+        };
+        return model;
+
+        function findSchoolById(schoolId) {
+            return $http.get("/api/project/school/" + schoolId);
+        }
+       
+        function findSchoolByUNITID(unitid) {
+            return $http.get("/api/project/school/unitid/" + unitid);
         }
 
-        function cacheSchool(school) {
-            if (findSchoolByID(school.UNITID) == null) {
-                schools.push(school);
-            }
+        function createSchool(school) {
+            return $http.post("/api/project/school", school);
+        }
 
+        function updateSchool(schoolId, school) {
+            return $http.put("/api/project/school/" + schoolId, school);
         }
 
         function searchSchoolsByName(name) {

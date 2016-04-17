@@ -7,6 +7,7 @@ module.exports = function (app, userModel) {
     app.post("/api/project/logout", logout);
     app.get("/api/project/user", loggedin);
     app.get("/api/project/user/:id", profile);
+    app.get("/api/project/user/username/:username", findUserByUsername);
     // app.post("/api/project/user", addUser);
     app.put("/api/project/user/:id", updateUser);
     app.delete("/api/project/user/:id", deleteUser);
@@ -135,7 +136,15 @@ module.exports = function (app, userModel) {
 
     function findUserByUsername(req, res) {
         var username = req.query.username;
-        res.json(userModel.findUserByUsername(username));
+        userModel.findUserByUsername(username)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function addUser(req, res) {

@@ -15,7 +15,6 @@ module.exports = function (app, classModel, schoolModel, userModel) {
             .then(
                 function (clazz) {
                     return userModel.addClassForStudent(userObj._id, clazz);
-
                 },
                 function (err) {
                     res.status(400).send(err);

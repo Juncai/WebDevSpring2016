@@ -35,7 +35,6 @@
             return $http.post("/api/assignment/login", user);
         }
 
-
         function register(user) {
             return $http.post("/api/assignment/register", user);
         }
