@@ -2,12 +2,12 @@
 
 module.exports = function (mongoose) {
 
-    var UserSchema = require("./user.schema.server.js")(mongoose);
     var CardSchema = require("./card.schema.server.js")(mongoose);
     var QuizSchema = mongoose.Schema({
         name: { type: String, required: true },
         created: Date,
-        createdBy: UserSchema,
+        createdBy: String,
+        assignTo: [ObjectId],  // classes' ids
         cards: [CardSchema]
     }, {collection: 'project.quiz'});
     return QuizSchema;

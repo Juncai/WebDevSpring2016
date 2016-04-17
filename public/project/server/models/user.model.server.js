@@ -14,7 +14,8 @@ module.exports = function (mongoose, utils) {
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername,
         // for classes
-        addClassForUser: addClassForUser,
+        addClassForStudent: addClassForStudent,
+        addClassForTeacher: addClassForTeacher,
         // deleteClassById: deleteClassById,
         updateClassById: updateClassById,
         addGradeToClassForUsers: addGradeToClassForUsers,
@@ -33,7 +34,7 @@ module.exports = function (mongoose, utils) {
     };
     return api;
 
-    function addGradeToClassForUsers(usernames, classId, grade) {
+    function addGradeToClassForUsers(usernames, classId, quiz, due) {
         var deferred = q.defer();
         UserModel.find({username: {$in: usernames}}, function (err, users) {
             if (err) {
@@ -41,7 +42,7 @@ module.exports = function (mongoose, utils) {
             } else {
                 for (var u in users) {
                     var user = users[u];
-                    initQuiz(grade, user);
+                    var grade = newGrade(quiz, due);
                     user.classes.id(classId).performance.push(grade);
                     user.save();
                 }
@@ -219,7 +220,7 @@ module.exports = function (mongoose, utils) {
     }
 
     // for classes
-    function addClassForUser(userId, clazz) {
+    function addClassForStudent(userId, clazz) {
         var deferred = q.defer();
         UserModel.findById(userId, function (err, user) {
             if (err) {
@@ -235,7 +236,30 @@ module.exports = function (mongoose, utils) {
                         deferred.reject(err);
                     } else {
                         // console.log(doc);
-                        deferred.resolve(doc);
+                        deferred.resolve(clazz);
+                    }
+                });
+            }
+        });
+        return deferred.promise;
+    }
+
+    function addClassForTeacher(username, clazz) {
+        var deferred = q.defer();
+        UserModel.findOne({username: username}, function (err, user) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                // TODO handle the existing quizzes
+                user.classesEnroll.push(clazz);
+                delete user._id;
+                UserModel.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        // console.log(err);
+                        deferred.reject(err);
+                    } else {
+                        // console.log(doc);
+                        deferred.resolve(clazz);
                     }
                 });
             }
@@ -292,30 +316,23 @@ module.exports = function (mongoose, utils) {
         return deferred.promise;
     }
 
-
-    // updateGradeToClass: updateGradeToClass,
-    function updateGradeToClass(userId, classId, gradeId, grade) {
+    function updateGradeToClass(userId, classId, gradeId, gradeObj) {
         var deferred = q.defer();
         UserModel.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = utils.findIndexById(classId, user.classes);
-                if (ind > -1) {
-                    var gInd = utils.findIndexById(gradeId, user.classes[ind].performance);
-                    if (gInd > -1) {
-                        grade._id = gradeId;
-                        user.classes[ind].performance[gInd] = grade;
-                    }
+                var grade = user.classes.id(classId).performance.id(gradeId);
+                if (!grade.finished[0]) {
+                    grade.finished[0] = gradeObj.finished[0];
+                    grade.grades[0] = gradeObj.grades[0];
+                    grade.finishTSs[0] = gradeObj.finishTSs[0];
+                    grade.durations[0] = gradeObj.durations[0];
+                    user.save();
+                    deferred.resolve(grade);
+                } else {
+                    deferred.resolve(null);
                 }
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
             }
         });
 
@@ -344,13 +361,13 @@ module.exports = function (mongoose, utils) {
     }
 
     // for grades
-    function createGradeForUser(id, grade) {
+    function createGradeForUser(id, quiz) {
         var deferred = q.defer();
         UserModel.findOne({_id: id}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                initQuiz(grade, user);
+                var grade = newGrade(quiz, null);
                 user.quizCreated.push(grade);
                 delete user._id;
                 UserModel.update({_id: id}, user, function (err, doc) {
@@ -408,25 +425,18 @@ module.exports = function (mongoose, utils) {
         return deferred.promise;
     }
 
-    function updateGradeForUser(userId, gradeId, grade) {
+    function updateGradeForUser(userId, gradeId, gradeObj) {
         var deferred = q.defer();
         UserModel.findOne({_id: userId}, function (err, user) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = utils.findIndexById(gradeId, user.quizCreated);
-                if (ind > -1) {
-                    grade._id = gradeId;
-                    user.quizCreated[ind] = grade;
-                }
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                var grade = user.quizCreated.id(gradeId);
+                grade.finished = gradeObj.finished;
+                grade.grades = gradeObj.grades;
+                grade.finishTSs = gradeObj.finishTSs;
+                grade.durations = gradeObj.durations;
+                deferred.resolve(user.save());
             }
         });
 
@@ -528,16 +538,28 @@ module.exports = function (mongoose, utils) {
     // utils
     function initQuizzesInClass(clazz, user) {
         for (var q in clazz.performance) {
-            initQuiz(clazz.performance[q], user);
+            initGrade(clazz.performance[q], user);
         }
     }
 
-    function initQuiz(quiz, user) {
-        var pUser = utils.purgeUser(user);
-        quiz.students = [pUser];
-        quiz.finished = [false];
-        quiz.grades = [-1];
-        quiz.finishTSs = [null];
-        quiz.durations = [0];
+    function initGrade(grade, user) {
+        grade.students = [user.username];
+        grade.finished = [false];
+        grade.grades = [-1];
+        grade.finishTSs = [null];
+        grade.durations = [0];
+    }
+
+    function newGrade(quiz, due) {
+        var grade = {};
+        grade.quizId = quiz._id;
+        grade.quizName = quiz.name;
+        grade.due = due;
+        grade.students = [quiz.createdBy];
+        grade.finished = [false];
+        grade.grades = [-1];
+        grade.finishTSs = [null];
+        grade.durations = [0];
+        return grade
     }
 };

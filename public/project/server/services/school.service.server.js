@@ -7,7 +7,6 @@ module.exports = function (app, schoolModel) {
     app.post("/api/project/school", createSchool);
     app.put("/api/project/school/:id", updateSchool);
     app.delete("/api/project/school/:id", deleteSchool);
-    app.post("/api/project/school/:schoolId/class", addClassToSchool);
 
     function findSchoolById(req, res) {
         var id = req.params.id;
@@ -65,21 +64,6 @@ module.exports = function (app, schoolModel) {
         var id = req.params.id;
         var school = req.body;
         schoolModel.updateSchool(id, school)
-            .then(
-                function (doc) {
-                    res.json(doc);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    // for class
-    function addClassToSchool(req, res) {
-        var id = req.params.schoolId;
-        var clazz = req.body;
-        schoolModel.addClassToSchool(id, clazz)
             .then(
                 function (doc) {
                     res.json(doc);

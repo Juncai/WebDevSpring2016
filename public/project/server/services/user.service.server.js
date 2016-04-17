@@ -1,7 +1,7 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function (app, userModel, quizModel, classModel) {
+module.exports = function (app, userModel) {
     app.post("/api/project/register", register);
     app.post("/api/project/login", login);
     app.post("/api/project/logout", logout);
@@ -151,41 +151,8 @@ module.exports = function (app, userModel, quizModel, classModel) {
     }
 
     // for classes
-    function addClassForUser(req, res) {
-        var id = req.params.id;
-        var clazz = req.body;
-        userModel.addClassForUser(id, clazz)
-            .then(
-                function (user) {
-                    delete user.password;
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-
-    }
-
     // app.delete("/api/project/user/:id/class/:classId", deleteClassById);
     // app.put("/api/project/user/:id/class/:classId", updateClassById);
-
-    function addGradeToClass(req, res) {
-        var id = req.params.id;
-        var classId = req.params.classId;
-        var grade = req.body;
-        userModel.addGradeToClass(id, classId, grade)
-            .then(
-                function (user) {
-                    delete user.password;
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-
-    }
 
     function updateGradeToClass(req, res) {
         var id = req.params.id;
@@ -204,7 +171,7 @@ module.exports = function (app, userModel, quizModel, classModel) {
             );
     }
 
-    app.get("/api/project/user/:id/class/:classId/grade/:gradeId", findGradeInClassById);
+    // app.get("/api/project/user/:id/class/:classId/grade/:gradeId", findGradeInClassById);
     function findGradeInClassById(req, res) {
         var id = req.params.id;
         var classId = req.params.classId;

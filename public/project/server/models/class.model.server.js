@@ -91,20 +91,20 @@ module.exports = function (mongoose, utils) {
 
 
     // for grades
-    function createGradeForClass(id, grade) {
+    function createGradeForClass(id, quiz, due) {
         var deferred = q.defer();
         Class.findOne({_id: id}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
-                initGrade(grade, clazz);
+                var grade = newGrade(quiz, clazz, due);
                 clazz.performance.push(grade);
                 delete clazz._id;
                 Class.update({_id: id}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
-                        deferred.resolve(doc);
+                        deferred.resolve(doc.students);
                     }
                 });
             }
@@ -204,14 +204,8 @@ module.exports = function (mongoose, utils) {
                 if (ind > -1) {
                     updateStudentGradeInGrade(clazz.performance[ind], studentGrade);
                 }
-                delete clazz._id;
-                Class.update({_id: classId}, clazz, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                clazz.save();
+                deferred.resolve(studentGrade);
             }
         });
 
@@ -219,16 +213,15 @@ module.exports = function (mongoose, utils) {
     }
 
     // for students
-    function addStudentToClass(id, student) {
+    function addStudentToClass(id, studentUsername) {
         var deferred = q.defer();
         Class.findOne({_id: id}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
-                // TODO purge student
-                clazz.students.push(student);
+                clazz.students.push(studentUsername);
                 for (var g in clazz.performance) {
-                    addStudentToGrade(clazz.performance[g], student);
+                    addStudentToGrade(clazz.performance[g], studentUsername);
                 }
                 delete clazz._id;
                 Class.update({_id: id}, clazz, function (err, doc) {
@@ -308,8 +301,8 @@ module.exports = function (mongoose, utils) {
         return res;
     }
 
-    function addStudentToGrade(grade, student) {
-        grade.students.push(student.username);
+    function addStudentToGrade(grade, studentUsername) {
+        grade.students.push(studentUsername);
         grade.finished.push(false);
         grade.grades.push(-1);
         grade.finishTSs.push(null);
@@ -338,7 +331,7 @@ module.exports = function (mongoose, utils) {
     }
 
     function updateStudentGradeInGrade(grade, studentGrade) {
-        var ind = utils.findIndexById(studentGrade.students[0]._id, grade.students);
+        var ind = findIndexByStudent(studentGrade.students[0], grade.students);
         if (ind > -1) {
             grade.finished[ind] = studentGrade.finished[0];
             grade.grades[ind] = studentGrade.grades[0];
@@ -347,7 +340,11 @@ module.exports = function (mongoose, utils) {
         }
     }
 
-    function initGrade(grade, clazz) {
+    function newGrade(quiz, clazz, due) {
+        var grade = {};
+        grade.quizId = quiz._id;
+        grade.quizName = quiz.name;
+        grade.due = due;
         grade.students = [];
         grade.finished = [];
         grade.grades = [];
@@ -360,5 +357,6 @@ module.exports = function (mongoose, utils) {
             grade.finishTSs.push(null);
             grade.durations.push(0);
         }
+        return quiz;
     }
 };

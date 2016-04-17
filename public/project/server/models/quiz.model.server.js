@@ -9,13 +9,28 @@ module.exports = function (mongoose, utils) {
         createQuiz: createQuiz,
         updateQuiz: updateQuiz,
         deleteQuizById: deleteQuizById,
+        addClassToQuiz: addClassToQuiz,
         //
         getModel: getModel
     };
     return api;
-    
+
     function getModel() {
         return Quiz;
+    }
+
+    function addClassToQuiz(quizId, classId) {
+        var deferred = q.defer();
+        Quiz.findById(quizId, function (err, quiz) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                quiz.classes.push(classId);
+                deferred.resolve(quiz.save());
+            }
+        });
+
+        return deferred.promise;
     }
 
     function createQuiz(quiz) {
