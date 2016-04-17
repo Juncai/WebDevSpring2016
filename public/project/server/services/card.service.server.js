@@ -2,39 +2,81 @@
  * Created by jonca on 3/16/2016.
  */
 module.exports = function (app, quizModel) {
-    app.get("/api/project/quiz/:quizId/card", findCardsForQuiz);
-    app.get("/api/project/quiz/:quizId/card/:cardId", findQuizCardById);
-    app.delete("/api/project/quiz/:quizId/card/:cardId", deleteQuizCard);
-    app.post("/api/project/quiz/:quizId/card", addCardForQuiz);
-    app.put("/api/project/quiz/:quizId/card/:cardId", updateQuizCard);
+    app.get("/api/project/card/quiz/:quizId", findCardsByQuizId);
+    app.get("/api/project/card/:cardId/quiz/:quizId", findCardById);
+    app.delete("/api/project/card/:cardId/quiz/:quizId", deleteCardById);
+    app.post("/api/project/card/quiz/:quizId", createCardForQuiz);
+    app.put("/api/project/card/:cardId/quiz/:quizId", updateCardForQuiz);
 
-    function findCardsForQuiz(req, res) {
+    var cardModel = require("../models/card.model.server.js")(quizModel);
+    
+    function findCardsByQuizId(req, res) {
         var quizId = req.params.quizId;
-        res.json(quizModel.findCardsByQuizId(quizId));
+        cardModel.findCardsByQuizId(quizId)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
-    function findQuizCardById(req, res) {
+    function findCardById(req, res) {
         var quizId = req.params.quizId;
         var cardId = req.params.cardId;
-        res.json(quizModel.findCardById(quizId, cardId));
+        cardModel.findCardById(quizId, cardId)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
-    function deleteQuizCard(req, res) {
+    function deleteCardById(req, res) {
         var quizId = req.params.quizId;
         var cardId = req.params.cardId;
-        res.json(quizModel.deleteCardById(quizId, cardId));
+        cardModel.deleteCardById(quizId, cardId)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
-    function addCardForQuiz(req, res) {
+    function createCardForQuiz(req, res) {
         var quizId = req.params.quizId;
         var card = req.body;
-        res.json(quizModel.createCardForQuiz(quizId, card));
+        cardModel.createCardForQuiz(quizId, card)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
-    function updateQuizCard(req, res) {
+    function updateCardForQuiz(req, res) {
         var quizId = req.params.quizId;
         var cardId = req.params.cardId;
         var card = req.body;
-        res.json(quizModel.updateCardForQuiz(quizId, cardId, card));
+        cardModel.updateCardForQuiz(quizId, cardId, card)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 };

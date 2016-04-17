@@ -5,9 +5,9 @@ module.exports = function (mongoose, utils) {
     var UserSchema = require("./user.schema.server.js")(mongoose);
     var UserModel = mongoose.model('User', UserSchema);
     var api = {
-        createUser: createUser,
+        // createUser: createUser,
         register: register,
-        findAllUsers: findAllUsers,
+        // findAllUsers: findAllUsers,
         findUserById: findUserById,
         updateUser: updateUser,
         deleteUser: deleteUser,
@@ -15,14 +15,14 @@ module.exports = function (mongoose, utils) {
         findUserByUsername: findUserByUsername,
         // for classes
         addClassForUser: addClassForUser,
-        deleteClassById: deleteClassById,
+        // deleteClassById: deleteClassById,
         updateClassById: updateClassById,
-        addGradeToClass: addGradeToClass,
+        addGradeToClassForUsers: addGradeToClassForUsers,
         updateGradeToClass: updateGradeToClass,
         findGradeInClassById: findGradeInClassById,
         // for grades
         createQuizForUser: createGradeForUser,
-        deleteQuizById: deleteGradeById,
+        // deleteQuizById: deleteGradeById,
         updateQuizForUser: updateGradeForUser,
         findQuizById: findGradeById,
         // for users
@@ -32,6 +32,25 @@ module.exports = function (mongoose, utils) {
         removeFollowed: removeFollowed
     };
     return api;
+
+    function addGradeToClassForUsers(usernames, classId, grade) {
+        var deferred = q.defer();
+        UserModel.find({username: {$in: usernames}}, function (err, users) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                for (var u in users) {
+                    var user = users[u];
+                    initQuiz(grade, user);
+                    user.classes.id(classId).performance.push(grade);
+                    user.save();
+                }
+                deferred.resolve(null);
+            }
+        });
+
+        return deferred.promise;
+    }
 
     function createUser(user) {
         var deferred = q.defer();
@@ -273,32 +292,6 @@ module.exports = function (mongoose, utils) {
         return deferred.promise;
     }
 
-    // addGradeToClass: addGradeToClass,
-    function addGradeToClass(userId, classId, grade) {
-        var deferred = q.defer();
-        UserModel.findOne({_id: userId}, function (err, user) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                var ind = utils.findIndexById(classId, user.classes);
-                if (ind > -1) {
-                    // init grade
-                    initQuiz(grade, user);
-                    user.classes[ind].performance.push(grade);
-                }
-                delete user._id;
-                UserModel.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
-            }
-        });
-
-        return deferred.promise;
-    }
 
     // updateGradeToClass: updateGradeToClass,
     function updateGradeToClass(userId, classId, gradeId, grade) {

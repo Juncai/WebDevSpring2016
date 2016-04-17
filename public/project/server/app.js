@@ -12,7 +12,8 @@ module.exports = function (app, mongoose) {
     var schoolModel = require("./models/school.model.server.js")(mongoose, utils);
 
     var userService = require("./services/user.service.server.js")(app, userModel, quizModel, classModel);
-    var classService = require("./services/class.service.server.js")(app, classModel, quizModel, userModel);
+    var classService = require("./services/class.service.server.js")(app, classModel, schoolModel);
     var quizService = require("./services/quiz.service.server.js")(app, quizModel);
+    var cardService = require("./services/card.service.server.js")(app, quizModel);
     var schoolService = require("./services/school.service.server.js")(app, schoolModel, classModel);
 };

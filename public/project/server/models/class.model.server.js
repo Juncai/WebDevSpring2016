@@ -4,29 +4,35 @@
  */
 module.exports = function (mongoose, utils) {
     var ClassSchema = require("./class.schema.server.js")(mongoose);
-    var ClassModel = mongoose.model('Class', ClassSchema);
+    var Class = mongoose.model('Class', ClassSchema);
     var api = {
         findClassById: findClassById,
         createClass: createClass,
         updateClass: updateClass,
-        deleteClass: deleteClass,
+        // deleteClass: deleteClass,
         // for grades
         createGradeForClass: createGradeForClass,
-        deleteGradeById: deleteGradeById,
-        updateGradeForClass: updateGradeForClass,
+        // deleteGradeById: deleteGradeById,
+        // updateGradeForClass: updateGradeForClass,
         updateStudentGrade: updateStudentGrade,
         findGradesByClassId: findGradesByClassId,
         findGradeById: findGradeById,
         // for students
         addStudentToClass: addStudentToClass,
-        deleteStudentById: deleteStudentById,
-        updateStudentForClass: updateStudentForClass
+        // deleteStudentById: deleteStudentById,
+        // updateStudentForClass: updateStudentForClass,
+        // 
+        getModel: getModel
     };
     return api;
 
+    function getModel() {
+        return Class;
+    }
+
     function createClass(clazz) {
         var deferred = q.defer();
-        ClassModel.create(clazz, function (err, doc) {
+        Class.create(clazz, function (err, doc) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -39,7 +45,7 @@ module.exports = function (mongoose, utils) {
 
     function findClassById(classId) {
         var deferred = q.defer();
-        ClassModel.findById(classId, function (err, doc) {
+        Class.findById(classId, function (err, doc) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -53,7 +59,7 @@ module.exports = function (mongoose, utils) {
         var deferred = q.defer();
 
         delete clazz._id;
-        ClassModel.update({_id: id}, clazz, function (err, doc) {
+        Class.update({_id: id}, clazz, function (err, doc) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -66,11 +72,11 @@ module.exports = function (mongoose, utils) {
 
     function deleteClass(id) {
         var deferred = q.defer();
-        ClassModel.remove({_id: id}, function (err, removed) {
+        Class.remove({_id: id}, function (err, removed) {
             if (err) {
                 deferred.reject(err);
             } else {
-                ClassModel.find({}, function (err, doc) {
+                Class.find({}, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -87,13 +93,14 @@ module.exports = function (mongoose, utils) {
     // for grades
     function createGradeForClass(id, grade) {
         var deferred = q.defer();
-        ClassModel.findOne({_id: id}, function (err, clazz) {
+        Class.findOne({_id: id}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
+                initGrade(grade, clazz);
                 clazz.performance.push(grade);
                 delete clazz._id;
-                ClassModel.update({_id: id}, clazz, function (err, doc) {
+                Class.update({_id: id}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -108,7 +115,7 @@ module.exports = function (mongoose, utils) {
 
     function findGradesByClassId(classId) {
         var deferred = q.defer();
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
+        Class.findOne({_id: classId}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -121,16 +128,16 @@ module.exports = function (mongoose, utils) {
 
     function findGradeById(classId, gradeId) {
         var deferred = q.defer();
-        var res = null;
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
+        // var res = null;
+        Class.findOne({_id: classId}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = utils.findIndexById(gradeId, clazz.performance);
-                if (ind > -1) {
-                    res = clazz.performance[ind];
-                }
-                deferred.resolve(res);
+                // var ind = utils.findIndexById(gradeId, clazz.performance);
+                // if (ind > -1) {
+                //     res = clazz.performance[ind];
+                // }
+                deferred.resolve(clazz.performance.id(gradeId));
             }
         });
 
@@ -139,16 +146,17 @@ module.exports = function (mongoose, utils) {
 
     function deleteGradeById(classId, gradeId) {
         var deferred = q.defer();
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
+        Class.findOne({_id: classId}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var indToRemove = utils.findIndexById(gradeId, clazz.performance);
-                if (indToRemove > -1) {
-                    clazz.performance.splice(indToRemove, 1);
-                }
+                // var indToRemove = utils.findIndexById(gradeId, clazz.performance);
+                // if (indToRemove > -1) {
+                //     clazz.performance.splice(indToRemove, 1);
+                // }
+                clazz.performance.id(gradeId).remove();
                 delete clazz._id;
-                ClassModel.update({_id: classId}, clazz, function (err, doc) {
+                Class.update({_id: classId}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -163,7 +171,7 @@ module.exports = function (mongoose, utils) {
 
     function updateGradeForClass(classId, gradeId, grade) {
         var deferred = q.defer();
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
+        Class.findOne({_id: classId}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -173,7 +181,7 @@ module.exports = function (mongoose, utils) {
                     clazz.performance[ind] = grade;
                 }
                 delete clazz._id;
-                ClassModel.update({_id: classId}, clazz, function (err, doc) {
+                Class.update({_id: classId}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -188,7 +196,7 @@ module.exports = function (mongoose, utils) {
 
     function updateStudentGrade(classId, quizId, studentGrade) {
         var deferred = q.defer();
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
+        Class.findOne({_id: classId}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -197,7 +205,7 @@ module.exports = function (mongoose, utils) {
                     updateStudentGradeInGrade(clazz.performance[ind], studentGrade);
                 }
                 delete clazz._id;
-                ClassModel.update({_id: classId}, clazz, function (err, doc) {
+                Class.update({_id: classId}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -213,7 +221,7 @@ module.exports = function (mongoose, utils) {
     // for students
     function addStudentToClass(id, student) {
         var deferred = q.defer();
-        ClassModel.findOne({_id: id}, function (err, clazz) {
+        Class.findOne({_id: id}, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -223,7 +231,7 @@ module.exports = function (mongoose, utils) {
                     addStudentToGrade(clazz.performance[g], student);
                 }
                 delete clazz._id;
-                ClassModel.update({_id: id}, clazz, function (err, doc) {
+                Class.update({_id: id}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
@@ -236,58 +244,58 @@ module.exports = function (mongoose, utils) {
         return deferred.promise;
     }
 
-    function deleteStudentById(classId, studentId) {
-        var deferred = q.defer();
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                var indToRemove = utils.findIndexById(studentId, clazz.students);
-                if (indToRemove > -1) {
-                    clazz.students.splice(indToRemove, 1);
-                    // also remove the quiz records for that student
-                    for (var gInd in clazz.performance) {
-                        deleteStudentFromGrade(clazz.performance[gInd], studentId);
-                    }
-                }
-                delete clazz._id;
-                ClassModel.update({_id: classId}, clazz, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
-            }
-        });
+    // function deleteStudentById(classId, studentId) {
+    //     var deferred = q.defer();
+    //     Class.findOne({_id: classId}, function (err, clazz) {
+    //         if (err) {
+    //             deferred.reject(err);
+    //         } else {
+    //             var indToRemove = utils.findIndexById(studentId, clazz.students);
+    //             if (indToRemove > -1) {
+    //                 clazz.students.splice(indToRemove, 1);
+    //                 // also remove the quiz records for that student
+    //                 for (var gInd in clazz.performance) {
+    //                     deleteStudentFromGrade(clazz.performance[gInd], studentId);
+    //                 }
+    //             }
+    //             delete clazz._id;
+    //             Class.update({_id: classId}, clazz, function (err, doc) {
+    //                 if (err) {
+    //                     deferred.reject(err);
+    //                 } else {
+    //                     deferred.resolve(doc);
+    //                 }
+    //             });
+    //         }
+    //     });
 
-        return deferred.promise;
-    }
+    // return deferred.promise;
+    // }
 
-    function updateStudentForClass(classId, studentId, student) {
-        var deferred = q.defer();
-        ClassModel.findOne({_id: classId}, function (err, clazz) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                var ind = utils.findIndexById(studentId, clazz.students);
-                if (ind > -1) {
-                    student._id = studentId;
-                    clazz.students[ind] = student;
-                }
-                delete clazz._id;
-                ClassModel.update({_id: classId}, clazz, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
-            }
-        });
-
-        return deferred.promise;
-    }
+    // function updateStudentForClass(classId, studentId, student) {
+    //     var deferred = q.defer();
+    //     Class.findOne({_id: classId}, function (err, clazz) {
+    //         if (err) {
+    //             deferred.reject(err);
+    //         } else {
+    //             var ind = utils.findIndexById(studentId, clazz.students);
+    //             if (ind > -1) {
+    //                 student._id = studentId;
+    //                 clazz.students[ind] = student;
+    //             }
+    //             delete clazz._id;
+    //             Class.update({_id: classId}, clazz, function (err, doc) {
+    //                 if (err) {
+    //                     deferred.reject(err);
+    //                 } else {
+    //                     deferred.resolve(doc);
+    //                 }
+    //             });
+    //         }
+    //     });
+    //
+    //     return deferred.promise;
+    // }
 
     // utils
     function findGradeByQuizId(quizId, performance) {
@@ -301,15 +309,15 @@ module.exports = function (mongoose, utils) {
     }
 
     function addStudentToGrade(grade, student) {
-        grade.students.push(student);
+        grade.students.push(student.username);
         grade.finished.push(false);
         grade.grades.push(-1);
         grade.finishTSs.push(null);
         grade.durations.push(0);
     }
 
-    function deleteStudentFromGrade(grade, studentId) {
-        var ind = utils.findIndexById(studentId, grade.students);
+    function deleteStudentFromGrade(grade, username) {
+        var ind = findIndexByStudent(username, grade.students);
         if (ind > -1) {
             utils.removeElementAt(grade.students, ind);
             utils.removeElementAt(grade.finished, ind);
@@ -319,6 +327,16 @@ module.exports = function (mongoose, utils) {
         }
     }
 
+    function findIndexByStudent(student, grade) {
+        var res = -1;
+        for (var s in grade.students) {
+            if (grade.students[s] == student) {
+                res = s;
+            }
+        }
+        return res;
+    }
+
     function updateStudentGradeInGrade(grade, studentGrade) {
         var ind = utils.findIndexById(studentGrade.students[0]._id, grade.students);
         if (ind > -1) {
@@ -326,6 +344,21 @@ module.exports = function (mongoose, utils) {
             grade.grades[ind] = studentGrade.grades[0];
             grade.finishTSs[ind] = studentGrade.finishTSs[0];
             grade.durations[ind] = studentGrade.durations[0];
+        }
+    }
+
+    function initGrade(grade, clazz) {
+        grade.students = [];
+        grade.finished = [];
+        grade.grades = [];
+        grade.finishTSs = [];
+        grade.durations = [];
+        for (var s in clazz.students) {
+            grade.students.push(clazz.students[s]);
+            grade.finished.push(false);
+            grade.grades.push(-1);
+            grade.finishTSs.push(null);
+            grade.durations.push(0);
         }
     }
 };
