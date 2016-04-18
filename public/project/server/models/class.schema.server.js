@@ -9,7 +9,7 @@ module.exports = function (mongoose) {
         schoolName: { type: String, required: true },
         created: Date,
         students: [String], // username
-        teachers: String, // username
+        teacher: { type: String, required: true },
         performance: [GradeSchema]
     }, {collection: 'project.class'});
     return ClassSchema;

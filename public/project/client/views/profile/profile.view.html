@@ -1,5 +1,5 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">Profile</h1>
+    <h1 class="page-header">{{model.currentUser.username}}</h1>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <form class="form-horizontal">
         <div class="form-group">
@@ -8,17 +8,18 @@
                 <input ng-model="model.currentUser.username" type="text" class="form-control" id="username" disabled>
             </div>
         </div>
-        <div class="form-group">
+        <div ng-show="model.isSelf" class="form-group">
             <label for="inputPassword" class="col-sm-4 control-label">Password</label>
             <div class="col-sm-6 col-md-5">
                 <input ng-model="model.currentUser.password" type="password" class="form-control" id="inputPassword"
                        placeholder="Password">
             </div>
         </div>
-        <div class="form-group">
-            <label for="verifyPassword" class="col-sm-4 control-label">Password</label>
+        <div ng-show="model.isSelf" class="form-group">
+            <label for="verifyPassword" class="col-sm-4 control-label">Verify Password</label>
             <div class="col-sm-6 col-md-5">
-                <input ng-model="model.currentUser.verifyPassword" type="password" class="form-control" id="verifyPassword"
+                <input ng-model="model.currentUser.verifyPassword" type="password" class="form-control"
+                       id="verifyPassword"
                        placeholder="Password">
             </div>
         </div>
@@ -36,7 +37,7 @@
                        placeholder="Last Name">
             </div>
         </div>
-        <div class="form-group">
+        <div ng-show="model.isSelf" class="form-group">
             <label for="inputBirthDate" class="col-sm-4 control-label">Birth Date</label>
             <div class="col-sm-6 col-md-5">
                 <input ng-model="model.currentUser.birthdate" type="date" class="form-control" id="inputBirthDate">
@@ -57,7 +58,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div ng-show="model.isSelf" class="form-group">
             <label class="col-sm-4 control-label"></label>
             <div class="col-sm-6 col-md-5">
                 <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
@@ -66,27 +67,34 @@
         </div>
     </form>
 </div>
+<div ng-show="!model.isSelf" class="form-group">
+    <label class="col-sm-4 control-label"></label>
+    <div class="col-sm-6 col-md-5">
+        <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
+        <button ng-click="model.follow(model.currentUser)" class="btn btn-primary">Follow</button>
+    </div>
+</div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h3>Following</h3>
     <ul>
-        <li ng-repeat="uid in currentUser.following"><a href="#/profile">{{uid}}</a></li>
+        <li ng-repeat="uusername in model.currentUser.following"><a ng-href="#/profile/username/{{uusername}}">{{uusername}}</a></li>
     </ul>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h3>Followed By</h3>
     <ul>
-        <li ng-repeat="uid in currentUser.followed"><a href="#/profile">{{uid}}</a></li>
+        <li ng-repeat="uusername in model.currentUser.followed"><a ng-href="#/profile/username/{{uusername}}">{{uusername}}</a></li>
     </ul>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h3>Quizzes</h3>
     <ul>
-        <li ng-repeat="qid in currentUser.quizList"><a href="#/quizDetail">{{qid}}</a></li>
+        <li ng-repeat="g in model.currentUser.quizCreated"><a ng-href="#/quizDetail/{{g.quizId}}">{{g.quizName}}</a></li>
     </ul>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h3>Classes</h3>
     <ul>
-        <li ng-repeat="cid in currentUser.classes"><a href="#/classDetail">{{cid}}</a></li>
+        <li ng-repeat="c in model.currentUser.classes"><a ng-href="#/classDetail/{{c._id}}">{{c.name}}</a></li>
     </ul>
 </div>

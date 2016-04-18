@@ -13,22 +13,24 @@
                                ClassService) {
         var vm = this;
         vm.message = null;
-        var schoolId = $routeParams.schoolId;
+        var schoolId = $routeParams.unitid;
         vm.newClass = newClass;
-        vm.school = SchoolService.findSchoolByID(schoolId);
-        vm.classes = null;
+        vm.school = {};
         vm.currentUser = UserService.getCurrentUser();
 
         function init() {
+            if (vm.currentUser == null) {
+                $location.url("/home");
+            } else {
+                vm.isTeacher = (vm.currentUser.role == "TEACHER");
+            }
             if (schoolId == null) {
                 $location.url("/search");
             } else {
-                ClassService
-                    .findClassesBySchoolId(schoolId)
+                SchoolService.findSchoolByUNITID(schoolId)
                     .then(function (response) {
-                        vm.classes = response.data;
+                        vm.school = response.data;
                     });
-
             }
         }
 
@@ -39,26 +41,24 @@
                 vm.message = "Class name is required.";
                 return;
             }
+            
+            for (var c in vm.school.classes) {
+                if (vm.school.classes[c].name == newClassName) {
+                    vm.message = "Class names may conflict.";
+                    return;
+                }
+            }
+
             var newClass = {};
             newClass.name = newClassName;
             newClass.schoolId = vm.school.UNITID;
-            newClass.teacher = null;
+            newClass.schoolName = vm.school.name;
+            newClass.teacher = vm.currentUser.username;
             newClass.created = Date.now();
             ClassService
-                .createClass(vm.currentUser._id, newClass)
+                .createClass(newClass)
                 .then(function (response) {
-                    var nClasses = response.data;
-                    if (nClasses != null) {
-                        var classForCurrentSchool = []
-                        for (var c in nClasses) {
-                            if (nClasses[c].schoolId == vm.school.UNITID) {
-                                classForCurrentSchool.push(nClasses[c]);
-                            }
-                        }
-                        vm.classes = classForCurrentSchool;
-                    } else {
-                        vm.message = "Class names may conflict.";
-                    }
+                    vm.school = response.data;
                 });
         }
     }

@@ -11,7 +11,7 @@ module.exports = function (app, classModel, schoolModel, userModel) {
     function addStudentToClass(req, res) {
         var id = req.params.id;
         var userObj = req.body;
-        classModel.addStudentToClass(id, userObj)
+        classModel.addStudentToClass(id, userObj.username)
             .then(
                 function (clazz) {
                     return userModel.addClassForStudent(userObj._id, clazz);
@@ -57,7 +57,8 @@ module.exports = function (app, classModel, schoolModel, userModel) {
             )
             .then(
                 function (clazz) {
-                    return schoolModel.addClassToSchool(clazz.school._id, clazz);
+                    // schoolId is UNITID
+                    return schoolModel.addClassToSchool(clazz.schoolId, clazz);
                 },
                 function (err) {
                     res.status(400).send(err);

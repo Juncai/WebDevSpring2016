@@ -28,7 +28,14 @@ module.exports = function (mongoose) {
                 if (doc) {
                     deferred.resolve(doc);
                 } else {
-                    SchoolModel.create(school, function (err, newSchool) {
+                    var newSchool  = {};
+                    newSchool.name = school.INSTNM;
+                    newSchool.city = school.CITY;
+                    newSchool.county = school.COUNTYNM;
+                    newSchool.zip = school.ZIP;
+                    newSchool.state = school.STABBR;
+                    newSchool.UNITID = school.UNITID;
+                    SchoolModel.create(newSchool, function (err, newSchool) {
                         if (err) {
                             // reject promise if error
                             deferred.reject(err);
@@ -112,7 +119,7 @@ module.exports = function (mongoose) {
     function addClassToSchool(id, clazz) {
         var deferred = q.defer();
 
-        SchoolModel.findOne({_id: id},
+        SchoolModel.findOne({UNITID: id},
             function (err, school) {
                 if (err) {
                     deferred.reject(err);

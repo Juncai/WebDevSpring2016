@@ -34,7 +34,7 @@
             return $http.delete("/api/project/class/" + classId);
         }
 
-        function createClass(userId, clazz) {
+        function createClass(clazz) {
             return $http.post("/api/project/class", clazz);
         }
     }

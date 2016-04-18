@@ -1,44 +1,38 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">Class Detail</h1>
+    <h1 class="page-header">{{model.currentClass.name}}</h1>
     <div ng-show="message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <div>
-        <label>Class Name</label>
-        {{model.currentClass.name}}
-    </div>
-    <div>
         <label>School</label>
-        {{model.currentClass.schoolID}}
+        {{model.currentClass.schoolName}}
     </div>
     <div>
         <label>Teacher</label>
-        {{model.currentClass.teacher}}
+        <a ng-href="#/profile/username/{{model.currentClass.teacher}}">{{model.currentClass.teacher}}</a>
     </div>
     <div>
         <label>Date Created</label>
         {{model.currentClass.created}}
     </div>
-    <div>
-        <label>Class Name</label>
-        {{model.currentClass.name}}
-    </div>
 
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h3>Students (ID for now)</h3>
+    <h3>Students</h3>
     <ul>
-        <li ng-repeat="sid in model.currentClass.students"><a href="#/profile">{{sid}}</a></li>
+        <li ng-repeat="susername in model.currentClass.students"><a ng-href="#/profile/username/{{susername}}">{{susername}}</a>
+        </li>
     </ul>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h3>Quiz List (ID for now)</h3>
+    <h3>Quiz List</h3>
     <ul>
-        <li ng-repeat="qid in model.currentClass.quizList"><a href="#/quizDetail">{{qid}}</a>  <a href="#/performance">Grades</a></li>
+        <li ng-repeat="grade in model.currentClass.performance"><a
+                ng-href="#/quizDetail/{{grade._id}}/class/{{model.currentClass._id}}">{{grade.quizName}}</a></li>
     </ul>
 </div>
 
-<div class="col-sm-6 col-md-5">
+<div ng-show="!model.inClass" class="col-sm-6 col-md-5">
     <button ng-click="model.joinClass()" class="btn btn-primary btn-block">Join Class</button>
 </div>
-<div class="col-sm-6 col-md-5">
-    <button ng-click="model.backToList()" class="btn btn-primary btn-block">Back</button>
-</div>
+<!--<div ng-show="model.isTeacher" class="col-sm-6 col-md-5">-->
+<!--<button ng-click="model.backToList()" class="btn btn-primary btn-block">Back</button>-->
+<!--</div>-->

@@ -226,14 +226,8 @@ module.exports = function (mongoose, utils) {
                 for (var g in clazz.performance) {
                     addStudentToGrade(clazz.performance[g], studentUsername);
                 }
-                delete clazz._id;
-                Class.update({_id: id}, clazz, function (err, doc) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(doc);
-                    }
-                });
+                clazz.save();
+                deferred.resolve(clazz);
             }
         });
 

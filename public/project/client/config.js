@@ -9,16 +9,21 @@
 
     function configuration($routeProvider) {
         $routeProvider
-            .when("/quizDetail/:quizId", {
+            .when("/quizDetail/:gradeId/:act", {  // owner entry
                 templateUrl: "views/quiz/quizDetail.view.html",
                 controller: "QuizDetailController",
                 controllerAs: "model"
             })
-            .when("/quizList/:userId", {
-                templateUrl: "views/quiz/quizList.view.html",
-                controller: "QuizListController",
+            .when("/quizDetail/:gradeId/class/:classId", {  // class entry
+                templateUrl: "views/quiz/quizDetail.view.html",
+                controller: "QuizDetailController",
                 controllerAs: "model"
             })
+            // .when("/quizList/:userId", {
+            //     templateUrl: "views/quiz/quizList.view.html",
+            //     controller: "QuizListController",
+            //     controllerAs: "model"
+            // })
             .when("/classDetail/:classId", {
                 templateUrl: "views/class/classDetail.view.html",
                 controller: "ClassDetailController",
@@ -54,6 +59,11 @@
                 controller: "ProfileController",
                 controllerAs: "model"
             })
+            .when("/profile/username/:username", {
+                templateUrl: "views/profile/profile.view.html",
+                controller: "ProfileController",
+                controllerAs: "model"
+            })
             .when("/register", {
                 templateUrl: "views/register/register.view.html",
                 controller: "RegisterController",
@@ -64,7 +74,7 @@
                 controller: "SearchController",
                 controllerAs: "model"
             })
-            .when("/details/:schoolId", {
+            .when("/details/:unitid", {
                 templateUrl: "views/details/details.view.html",
                 controller: "DetailsController",
                 controllerAs: "model"

@@ -12,31 +12,45 @@
         var vm = this;
         vm.message = null;
         var classId = $routeParams.classId;
-        vm.currentClass = null;
+        vm.currentClass = {};
         vm.currentUser = UserService.getCurrentUser();
-        vm.backToList = backToList;
+        // vm.backToList = backToList;
         vm.joinClass = joinClass;
+        vm.inClass = false;
+        vm.isTeacher = false;
 
         function init() {
             if (vm.currentUser == null) {
-                $location.url("#/home");
+                $location.url("/home");
+                return;
             }
             ClassService
                 .findClassById(classId)
                 .then(function (response) {
                     vm.currentClass = response.data;
+                    vm.isTeacher = vm.currentUser.username == vm.currentClass.teacher;
+                    vm.inClass = isInClass();
                 });
-
         }
         init();
 
+        function isInClass() {
+            var res = false;
+            res = vm.currentClass.students.indexOf(vm.currentUser.username) > 0;
+            return res || vm.currentUser.role == "TEACHER";
+        }
 
         function backToList() {
             $location.url("/classList");
         }
 
         function joinClass() {
-            $location.url("/classDetail");
+            ClassService.addStudentToClass(vm.currentClass._id, vm.currentUser)
+                .then(
+                    function(response) {
+                        vm.currentClass = response.data;
+                    }
+                );
         }
     }
 })();

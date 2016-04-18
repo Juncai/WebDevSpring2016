@@ -7,7 +7,9 @@ module.exports = function (mongoose) {
         name: String,
         UNITID: String,
         city: String,
+        county: String,
         state: String,
+        zip: String,
         classes: [ClassSchema]
     }, {collection: 'project.school'});
     return SchoolSchema;

@@ -1,34 +1,39 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <div ng-show="message" class="alert alert-danger" role="alert">{{model.message}}</div>
+    <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <h2>School Details</h2>
 
-    <h3>{{model.school.INSTNM}}</h3>
+    <h3>{{model.school.name}}</h3>
 
     <br/>
     <br/>
 
     <h4>City</h4>
     <p>
-        {{model.school.CITY}}
+        {{model.school.city}}
     </p>
 
     <h4>County Name</h4>
     <p>
-        {{model.school.COUNTYNM}}
+        {{model.school.county}}
+    </p>
+
+    <h4>State</h4>
+    <p>
+        {{model.school.state}}
     </p>
 
     <h4>Zip Code</h4>
     <p>
-        {{model.school.ZIP}}
+        {{model.school.zip}}
     </p>
 
     <h4>Classes</h4>
     <ul>
-        <li ng-repeat="class in model.classes">
+        <li ng-repeat="class in model.school.classes">
             <a ng-href="#/classDetail/{{class._id}}">{{class.name}}</a>
         </li>
     </ul>
-    <div ng-show="model.currentUser">
+    <div ng-show="model.isTeacher">
         <form>
             <div class="form-group">
                 <label for="inputClassName" class="col-sm-4 control-label">Name for New Class</label>

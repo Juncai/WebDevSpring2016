@@ -28,7 +28,7 @@
 
         function details(index) {
             var cSchool = vm.data.records[index];
-            SchoolService.cacheSchool(cSchool);
+            SchoolService.createSchool(cSchool);
             //$location.url("/details/" + cSchool.UNITID);
         }
     }

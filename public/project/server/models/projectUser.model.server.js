@@ -232,17 +232,9 @@ module.exports = function (mongoose, utils) {
             } else {
                 // TODO handle the existing quizzes
                 initQuizzesInClass(clazz, user);
-                user.classesEnroll.push(clazz);
-                delete user._id;
-                ProjectUser.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        // console.log(err);
-                        deferred.reject(err);
-                    } else {
-                        // console.log(doc);
-                        deferred.resolve(clazz);
-                    }
-                });
+                user.classes.push(clazz);
+                user.save();
+                deferred.resolve(clazz);
             }
         });
         return deferred.promise;
@@ -254,18 +246,9 @@ module.exports = function (mongoose, utils) {
             if (err) {
                 deferred.reject(err);
             } else {
-                // TODO handle the existing quizzes
-                user.classesEnroll.push(clazz);
-                delete user._id;
-                ProjectUser.update({_id: userId}, user, function (err, doc) {
-                    if (err) {
-                        // console.log(err);
-                        deferred.reject(err);
-                    } else {
-                        // console.log(doc);
-                        deferred.resolve(clazz);
-                    }
-                });
+                user.classes.push(clazz);
+                user.save();
+                deferred.resolve(clazz);
             }
         });
         return deferred.promise;
