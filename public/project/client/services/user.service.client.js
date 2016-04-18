@@ -19,9 +19,10 @@
             // for class
             findGradeInClassById: findGradeInClassById,
             // for grade
-            createQuizForUser: createQuizForUser,
-            deleteQuizById: deleteQuizById,
-            findQuizById: findQuizById,
+            findGradeForUser: findGradeForUser,
+            findGradeInClassForUser: findGradeInClassForUser,
+            deleteGradeForUser: deleteGradeForUser,
+            finishQuizPractice: finishQuizPractice,
             // for users
             addFollowing: addFollowing,
             removeFollowing: removeFollowing,
@@ -72,16 +73,21 @@
             return $http.get("/api/project/user/" + userId + "/class/" + classId + "/grade/" + gradeId);
         }
 
-        function createQuizForUser(userId, quiz) {
-            return $http.post("/api/project/user/" + userId + "/quiz", quiz);
-        }
-
-        function deleteQuizById(userId, quizId) {
+        function deleteGradeForUser(userId, quizId) {
             return $http.delete("/api/project/user/" + userId + "/quiz/" + quizId);
         }
 
-        function findQuizById(userId, quizId) {
-            return $http.get("/api/project/user/" + userId + "/quiz/" + quizId);
+        function findGradeForUser(userId, gradeId) {
+            return $http.get("/api/project/grade/" + gradeId + "/user/" + userId);
+        }
+        
+        function findGradeInClassForUser(userId, classId, gradeId) {
+            return $http.get("/api/project/grade/" + gradeId+ "/class/" + classId + "/user/" + userId);
+        }
+
+        function finishQuizPractice(userId, gradeId, grade) {
+            return $http.put("/api/project/grade/" + gradeId + "/user/" + userId, grade);
+
         }
 
         function addFollowing(userId, followedUser) {

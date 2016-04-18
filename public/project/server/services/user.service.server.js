@@ -20,11 +20,6 @@ module.exports = function (app, userModel) {
     // app.put("/api/project/user/:id/class/:classId/grade/:gradeId", updateGradeToClass);
     app.get("/api/project/user/:id/class/:classId/grade/:gradeId", findGradeInClassById);
 
-    // // for grades
-    app.post("/api/project/user/:id/quiz", createQuizForUser);
-    app.delete("/api/project/user/:id/quiz/:quizId", deleteQuizById);
-    // app.put("/api/project/user/:id/quiz/:quizId", updateQuizForUser);
-    app.get("/api/project/user/:id/quiz/:quizId", findQuizById);
 
     // // for users
     app.post("/api/project/user/:id/following", addFollowing);
@@ -206,63 +201,6 @@ module.exports = function (app, userModel) {
             );
     }
 
-    // // for grades
-    function createQuizForUser(req, res) {
-        var id = req.params.id;
-        var grade = req.body;
-        userModel.createQuizForUser(id, grade)
-            .then(
-                function (user) {
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    function deleteQuizById(req, res) {
-        var id = req.params.id;
-        var gradeId = req.params.quizId;
-        userModel.deleteQuizById(id, gradeId)
-            .then(
-                function (user) {
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    function updateQuizForUser(req, res) {
-        var id = req.params.id;
-        var gradeId = req.params.quizId;
-        var grade = req.body;
-        userModel.updateQuizForUser(id, gradeId, grade)
-            .then(
-                function (user) {
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    function findQuizById(req, res) {
-        var id = req.params.id;
-        var gradeId = req.params.quizId;
-        userModel.findQuizById(id, gradeId)
-            .then(
-                function (grade) {
-                    res.json(grade);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
 
     // // for users
     function addFollowing(req, res) {

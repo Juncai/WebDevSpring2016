@@ -9,6 +9,11 @@
 
     function configuration($routeProvider) {
         $routeProvider
+            .when("/quizDetail", {  // create quiz entry
+                templateUrl: "views/quiz/quizDetail.view.html",
+                controller: "QuizDetailController",
+                controllerAs: "model"
+            })
             .when("/quizDetail/:gradeId/:act", {  // owner entry
                 templateUrl: "views/quiz/quizDetail.view.html",
                 controller: "QuizDetailController",

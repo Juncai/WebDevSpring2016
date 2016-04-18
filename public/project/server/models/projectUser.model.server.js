@@ -333,14 +333,17 @@ module.exports = function (mongoose, utils) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = utils.findIndexById(classId, user.classes);
-                if (ind > -1) {
-                    var gInd = utils.findIndexById(gradeId, user.classes[ind].performance);
-                    if (gInd > -1) {
-                        gradeFound = user.classes[ind].performance[gInd];
-                    }
-                }
+                var clazz = user.classes.id(classId);
+                gradeFound = clazz.performance.id(gradeId);
                 deferred.resolve(gradeFound);
+                // var ind = utils.findIndexById(classId, user.classes);
+                // if (ind > -1) {
+                //     var gInd = utils.findIndexById(gradeId, user.classes[ind].performance);
+                //     if (gInd > -1) {
+                //         gradeFound = user.classes[ind].performance[gInd];
+                //     }
+                // }
+                // deferred.resolve(gradeFound);
             }
         });
 

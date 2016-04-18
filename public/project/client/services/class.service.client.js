@@ -14,7 +14,9 @@
             updateClass: updateClass,
             deleteClass: deleteClass,
             createClass: createClass,
-            findClassById: findClassById
+            findClassById: findClassById,
+            findGradeInClass: findGradeInClass,
+            finishClassQuiz: finishClassQuiz
         };
         return model;
 
@@ -36,6 +38,15 @@
 
         function createClass(clazz) {
             return $http.post("/api/project/class", clazz);
+        }
+        
+        function findGradeInClass(classId, gradeId) {
+            return $http.get("/api/project/grade/" + gradeId + "/class/" + classId);
+        }
+        
+        function finishClassQuiz(classId, username, gradeId, grade) {
+            app.put("/api/project/grade/:gradeId/class/:classId/user/:userId", finishClassQuiz);
+            
         }
     }
 })();
