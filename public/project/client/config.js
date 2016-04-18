@@ -9,16 +9,16 @@
 
     function configuration($routeProvider) {
         $routeProvider
-            .when("/quizDetail", {
+            .when("/quizDetail/:quizId", {
                 templateUrl: "views/quiz/quizDetail.view.html",
                 controller: "QuizDetailController",
                 controllerAs: "model"
             })
-            // .when("/quizList", {
-            //     templateUrl: "views/quiz/quizList.view.html",
-            //     controller: "QuizListController",
-            //     controllerAs: "model"
-            // })
+            .when("/quizList/:userId", {
+                templateUrl: "views/quiz/quizList.view.html",
+                controller: "QuizListController",
+                controllerAs: "model"
+            })
             .when("/classDetail/:classId", {
                 templateUrl: "views/class/classDetail.view.html",
                 controller: "ClassDetailController",
@@ -49,11 +49,6 @@
                 controller: "SidebarController",
                 controllerAs: "model"
             })
-            // .when("/login", {
-            //     templateUrl: "views/login/login.view.html",
-            //     controller: "LoginController",
-            //     controllerAs: "model"
-            // })
             .when("/profile", {
                 templateUrl: "views/profile/profile.view.html",
                 controller: "ProfileController",
@@ -78,10 +73,10 @@
             //     templateUrl: "views/user/user.view.html",
             //     controller: "UserController"
             // })
-            .when("/quiz/:quizId", {
-                templateUrl: "views/quiz/quiz.view.html",
-                controller: "QuizController"
-            })
+            // .when("/quiz/:quizId", {
+            //     templateUrl: "views/quiz/quiz.view.html",
+            //     controller: "QuizController"
+            // })
             // .when("/card", {
             //     templateUrl: "views/card/card.view.html",
             //     controller: "CardController"

@@ -1,3 +1,6 @@
+"use strict";
+var q = require("q");
+
 /**
  * Created by jonca on 3/16/2016.
  * Use clazz instead of class to avoid keyword conflicts

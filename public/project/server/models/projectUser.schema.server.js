@@ -6,14 +6,13 @@ module.exports = function (mongoose) {
     var GradeSchema = require("./grade.schema.server.js")(mongoose);
     var ClassSchema = require("./class.schema.server.js")(mongoose);
     var ProjectUserSchema = mongoose.Schema({
-        username: { type: String, required: true },
+        username: {type: String, required: true},
         password: String,
         firstName: String,
         lastName: String,
         birthDate: Date,
         email: String,
-        phone: String,
-        role: String,
+        role: {type: String, default: 'STUDENT', enum: ['STUDENT', 'TEACHER']},
         followed: [String],
         following: [String],
         classes: [ClassSchema],

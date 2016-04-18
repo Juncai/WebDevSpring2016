@@ -1,6 +1,10 @@
+"use strict";
+var q = require("q");
+
 /**
  * Created by jonca on 3/16/2016.
  */
+
 module.exports = function (mongoose, utils) {
     var ProjectUserSchema = require("./projectUser.schema.server.js")(mongoose);
     var ProjectUser = mongoose.model('ProjectUser', ProjectUserSchema);
@@ -160,11 +164,11 @@ module.exports = function (mongoose, utils) {
 
             // reject promise if error
             if (err) {
-                console.log(err);
+                // console.log(err);
                 deferred.reject(err);
             } else {
                 // resolve promise with user
-                console.log(doc);
+                // console.log(doc);
                 deferred.resolve(doc);
             }
         });

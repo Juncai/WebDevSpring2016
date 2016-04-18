@@ -7,7 +7,7 @@
         .module("QuizZ")
         .controller("HomeController", homeController);
 
-    function homeController($location, UserService, QuizService) {
+    function homeController($location, UserService) {
 
         var vm = this;
         vm.currentUser = UserService.getCurrentUser();
@@ -15,49 +15,36 @@
 
         function init() {
             if (vm.currentUser) {
-                vm.userQuizzes = userQuizzes();
-                vm.quizzesTodo = quizzesTodo();
+                $location.url("/profile");
             }
+
         }
 
         init();
-
-        function userQuizzes() {
-            if (vm.currentUser) {
-                return QuizService.findAllQuizzesForUser(vm.currentUser._id);
-            }
-            return null;
-        }
-
-        function quizzesTodo() {
-            var quizToDo = [
-                {
-                    "_id": "111",
-                    "title": "Sample Quiz 1"
-                },
-                {
-                    "_id": "222",
-                    "title": "Sample Quiz 2"
-                }
-            ];
-            return quizToDo;
-        }
 
         function login(user) {
             if (!user) {
                 return;
             }
             UserService
-                .findUserByCredentials(
+                .login(
                     user.username,
                     user.password
                 )
-                .then(function (response) {
-                    if (response.data) {
-                        UserService.setCurrentUser(response.data);
-                        $location.url("/profile");
-                    }
-                });
+                .then(
+                    function (response) {
+                        var resUser = response.data;
+                        if (resUser) {
+                            delete resUser.password;
+                            UserService.setCurrentUser(resUser);
+                            $location.url("/profile");
+                        } else {
+                            vm.message = "Login failed!";
+                        }
+                    },
+                    function (response) {
+                        vm.message = "Login failed!";
+                    });
         }
     }
 })();

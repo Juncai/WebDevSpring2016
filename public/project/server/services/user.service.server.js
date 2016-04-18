@@ -32,19 +32,19 @@ module.exports = function (app, userModel) {
 
     function profile(req, res) {
         var id = req.params.id;
-        if (req.user._id == id) {
-            userModel.findUserById(id)
-                .then(
-                    function (doc) {
-                        res.json(doc);
-                    },
-                    function (err) {
-                        res.status(400).send(err);
-                    }
-                );
-        } else {
-            res.send(401);
-        }
+        // if (req.user._id == id) {
+        userModel.findUserById(id)
+            .then(
+                function (doc) {
+                    res.json(doc);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+        // } else {
+        //     res.send(401);
+        // }
     }
 
     function findUserById(req, res) {
@@ -96,33 +96,45 @@ module.exports = function (app, userModel) {
             );
     }
 
+    // function login(req, res) {
+    //     var user = req.user;
+    //     res.json(user);
+    // }
     function login(req, res) {
-        var user = req.user;
-        res.json(user);
+        var credentials = req.body;
+        userModel.findUserByCredentials(credentials)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
+    // function logout(req, res) {
+    //     req.logout();
+    //     res.send(200);
+    // }
+
     function logout(req, res) {
-        req.logout();
         res.send(200);
+
     }
 
     function updateUser(req, res) {
         var id = req.params.id;
-        var user = req.body;
-        if (req.user._id == id) {
-            userModel.updateUserById(id, user)
-                .then(
-                    function (stats) {
-                        res.send(200);
-                    },
-                    function (err) {
-                        res.status(400).send(err);
-                    }
-                );
-        } else {
-            res.send(401);
-        }
-
+        var userObj = req.body;
+        userModel.updateUser(id, userObj)
+            .then(
+                function (user) {
+                    res.send(200);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function loggedin(req, res) {

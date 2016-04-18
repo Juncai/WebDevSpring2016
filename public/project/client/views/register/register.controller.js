@@ -15,6 +15,7 @@
         function init() {
 
         }
+
         init();
 
         function register(user) {
@@ -35,21 +36,35 @@
                 vm.message = "Passwords don't match.";
                 return;
             }
+            if (!user.birthDate) {
+                vm.message = "Email is required.";
+                return;
+            }
             if (!user.email) {
                 vm.message = "Email is required.";
                 return;
             }
+            if (!user.role) {
+                vm.message = "Role is required.";
+                return;
+            }
+
+            user.firstName = "";
+            user.lastName = "";
+            user.classes = [];
+            user.quizCreated = [];
+            user.following = [];
+            user.followed = [];
 
             UserService
-                .createUser(user)
+                .register(user)
                 .then(function (response) {
-                    var users = response.data;
-                    for (var u in users) {
-                        if (users[u].username == user.username) {
-                            UserService.setCurrentUser(users[u]);
-                            $location.url("/profile");
-                            break;
-                        }
+                    var resUser = response.data;
+                    if (resUser == null) {
+                        vm.message = "Username existed!";
+                    } else {
+                        UserService.setCurrentUser(resUser);
+                        $location.url("/profile");
                     }
                 });
         }

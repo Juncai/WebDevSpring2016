@@ -25,14 +25,15 @@
         init();
 
         function update(user) {
-            if (!user.password || !user.verifyPassword) {
-                vm.message = "Password is required.";
-                return;
+            if (user.verifyPassword) {
+                if (user.verifyPassword != user.password) {
+                    vm.message = "Passwords don't match.";
+                    return;
+                }
+            } else {
+                delete user.password;
             }
-            if (user.verifyPassword != user.password) {
-                vm.message = "Passwords don't match.";
-                return;
-            }
+
             if (!user.email) {
                 vm.message = "Email is required.";
                 return;
@@ -40,10 +41,10 @@
             UserService
                 .updateUser(vm.currentUser._id, user)
                 .then(function (response) {
-                    var cUser = response.data;
-                    if (cUser != null) {
-                        vm.currentUser = cUser;
-                    }
+                    // var cUser = response.data;
+                    // if (cUser != null) {
+                    //     vm.currentUser = cUser;
+                    // }
                 });
         }
     }
