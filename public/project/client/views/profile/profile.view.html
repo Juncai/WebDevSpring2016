@@ -1,6 +1,86 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">{{model.currentUser.username}}</h1>
+<div class="col-sm-9 col-md-10 main">
+    <h1 class="page-header">Hi {{model.currentUser.username}}!</h1>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
+    <h3>My Quizzes</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="g in model.currentUser.quizCreated">
+                <td nowrap>{{g.quizName}}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button ng-click="model.view(g._id)" type="button" class="btn btn-default">View</button>
+                        <button ng-if="model.isSelf" ng-click="model.edit(g._id)" type="button" class="btn btn-default">
+                            Edit
+                        </button>
+                        <div ng-if="model.isSelf && model.isTeacher()" class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Assign <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="c in model.currentUser.classes"><a
+                                        ng-click="model.assign(g.quizId, c._id)" href="#">{{c.name}}</a></li>
+                            </ul>
+                        </div>
+                        <!--<button ng-if="model.isSelf && model.isTeacher()" ng-click="model.assign(g._id)" type="button"-->
+                        <!--class="btn btn-default">Assign-->
+                        <!--</button>-->
+                        <button ng-if="model.isSelf && !model.isTeacher()" ng-click="model.practice(g._id)"
+                                type="button" class="btn btn-default">Practice
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--<ul>-->
+    <!--<li ng-repeat="g in model.currentUser.quizCreated"><a-->
+    <!--ng-href="#/quizDetail/{{g._id}}/act/VIEW">{{g.quizName}}</a></li>-->
+    <!--</ul>-->
+    <a ng-if="model.isSelf" ng-href="#/quizDetail" class="btn btn-primary">New Quiz</a>
+</div>
+<div class="col-sm-9 col-md-10 main">
+    <h3>Classes</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="c in model.currentUser.classes">
+                <td><a ng-href="#/classDetail/{{c._id}}">{{c.name}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-sm-9 col-md-10 main">
+    <!-- follow -->
+    <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
+    <button ng-if="!model.isSelf && model.followed()" ng-click="model.unfollow(model.currentUser)"
+            class="btn btn-primary">Unfollow
+    </button>
+    <button ng-if="!model.isSelf && !model.followed()" ng-click="model.follow(model.currentUser)"
+            class="btn btn-primary">Follow
+    </button>
+</div>
+<div class="col-sm-9 col-md-10 main">
+    <h4>Following</h4>
+    <ul>
+        <li ng-repeat="uusername in model.currentUser.following"><a ng-href="#/profile/username/{{uusername}}">{{uusername}}</a>
+        </li>
+    </ul>
+</div>
+
+<div class="col-sm-9 col-md-10 main">
+    <h4>Followed By</h4>
+    <ul>
+        <li ng-repeat="uusername in model.currentUser.followed"><a ng-href="#/profile/username/{{uusername}}">{{uusername}}</a>
+        </li>
+    </ul>
+</div>
+
+<div class="col-sm-9 col-md-10 main">
+    <h3>Update Profile</h3>
     <form class="form-horizontal">
         <div class="form-group">
             <label for="username" class="col-sm-4 control-label">Username</label>
@@ -68,73 +148,4 @@
     </form>
 </div>
 
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <!-- follow -->
-    <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
-    <button ng-if="!model.isSelf && model.followed()" ng-click="model.unfollow(model.currentUser)"
-            class="btn btn-primary">Unfollow
-    </button>
-    <button ng-if="!model.isSelf && !model.followed()" ng-click="model.follow(model.currentUser)"
-            class="btn btn-primary">Follow
-    </button>
-</div>
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h3>Following</h3>
-    <ul>
-        <li ng-repeat="uusername in model.currentUser.following"><a ng-href="#/profile/username/{{uusername}}">{{uusername}}</a>
-        </li>
-    </ul>
-</div>
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h3>Followed By</h3>
-    <ul>
-        <li ng-repeat="uusername in model.currentUser.followed"><a ng-href="#/profile/username/{{uusername}}">{{uusername}}</a>
-        </li>
-    </ul>
-</div>
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h3>Quizzes</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tbody>
-            <tr ng-repeat="g in model.currentUser.quizCreated">
-                <td nowrap>{{g.quizName}}</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="...">
-                        <button ng-click="model.view(g._id)" type="button" class="btn btn-default">View</button>
-                        <button ng-if="model.isSelf" ng-click="model.edit(g._id)" type="button" class="btn btn-default">
-                            Edit
-                        </button>
-                        <div ng-if="model.isSelf && model.isTeacher()" class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                Assign <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li ng-repeat="c in model.currentUser.classes"><a ng-click="model.assign(g.quizId, c._id)" href="#">{{c.name}}</a></li>
-                            </ul>
-                        </div>
-                        <!--<button ng-if="model.isSelf && model.isTeacher()" ng-click="model.assign(g._id)" type="button"-->
-                                <!--class="btn btn-default">Assign-->
-                        <!--</button>-->
-                        <button ng-if="model.isSelf && !model.isTeacher()" ng-click="model.practice(g._id)"
-                                type="button" class="btn btn-default">Practice
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <!--<ul>-->
-    <!--<li ng-repeat="g in model.currentUser.quizCreated"><a-->
-    <!--ng-href="#/quizDetail/{{g._id}}/act/VIEW">{{g.quizName}}</a></li>-->
-    <!--</ul>-->
-    <a ng-if="model.isSelf" ng-href="#/quizDetail" class="btn btn-primary">New Quiz</a>
-</div>
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h3>Classes</h3>
-    <ul>
-        <li ng-repeat="c in model.currentUser.classes"><a ng-href="#/classDetail/{{c._id}}">{{c.name}}</a></li>
-    </ul>
-</div>
+

@@ -16,6 +16,7 @@
         vm.currentUser = UserService.getCurrentUser();
         // vm.backToList = backToList;
         vm.joinClass = joinClass;
+        vm.finishRate = finishRate;
         vm.inClass = false;
         vm.isTeacher = false;
 
@@ -33,6 +34,17 @@
                 });
         }
         init();
+        
+        function finishRate(ind) {
+            var finishCount = 0;
+            var g = vm.currentClass.performance[ind];
+            for (var s in g.students) {
+                if (g.finished[s]) {
+                    finishCount += 1;
+                }
+            }
+            return finishCount + "/" + g.students.length;
+        }
 
         function isInClass() {
             var res = vm.currentClass.students.indexOf(vm.currentUser.username) > -1;

@@ -1,8 +1,8 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h2>Seach</h2>
-    <h3>Step 1 find your school</h3>
-    <h3>Step 2 find your class</h3>
-    <h3>Step 3 join class and start quizzing!</h3>
+<div class="col-sm-9 col-md-10 main">
+    <h1 class="page-header">School Search</h1>
+    <!--<h3>Step 1 find your school</h3>-->
+    <!--<h3>Step 2 find your class</h3>-->
+    <!--<h3>Step 3 join class and start quizzing!</h3>-->
 
     <input ng-model="model.school.name"
            class="form-control"
@@ -14,13 +14,12 @@
     </button>
 
     <div ng-if="model.data">
-        <h3>Search Results</h3>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>School ID</th>
-                <th>School Name</th>
-                <th>City</th>
+                <th nowrap>School ID</th>
+                <th nowrap>School Name</th>
+                <th nowrap>City</th>
             </tr>
             </thead>
             <tbody>

@@ -7,14 +7,17 @@
         .module("QuizZ")
         .controller("SearchController", searchController);
 
-    function searchController($location, SchoolService) {
+    function searchController($location, SchoolService, UserService) {
         var vm = this;
         vm.search = search;
         vm.details = details;
         vm.data = null;
+        vm.currentUser = UserService.getCurrentUser();
 
         function init() {
-
+            if (vm.currentUser == null) {
+                $location.url('/home');
+            }
         }
         init();
 

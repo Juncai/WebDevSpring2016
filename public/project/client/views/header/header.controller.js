@@ -11,16 +11,19 @@
     function headerController($scope, $location, UserService) {
         $scope.$location = $location;
         $scope.logout = logout;
-        //$scope.isAdmin = isAdmin;
+        $scope.isTeacher = isTeacher;
+        // $scope.currentUser = UserService.getCurrentUser();
+        
 
+        function isTeacher() {
+            if (UserService.getCurrentUser() != null) {
+                return UserService.getCurrentUser().role == 'TEACHER';
+            }
+            return false;
+        }
         function logout() {
             UserService.setCurrentUser(null);
             $location.url("/home");
         }
-
-        //function isAdmin() {
-        //    var user = UserService.getCurrentUser();
-        //    return (user != null && user.roles.indexOf("admin") != -1);
-        //}
     }
 })();

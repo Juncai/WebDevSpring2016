@@ -10,18 +10,39 @@
     function homeController($location, UserService) {
 
         var vm = this;
-        vm.currentUser = UserService.getCurrentUser();
+        vm.currentUser = null;
         vm.login = login;
+        vm.quizzesToDo = [];
 
         function init() {
+            vm.currentUser = UserService.getCurrentUser();
             if (vm.currentUser) {
-                $location.url("/profile");
+                findQuizzesToDo();
             }
 
         }
 
         init();
 
+        function findQuizzesToDo() {
+            vm.quizzesToDo = [];
+            var gg;
+            var clazz;
+            var grade;
+            for (var c in vm.currentUser.classes) {
+                clazz = vm.currentUser.classes[c];
+                for (var g in clazz.performance) {
+                    grade = clazz.performance[g];
+                    if (!grade.finished[0]) {
+                        gg = {};
+                        gg.quizId = grade.quizId;
+                        gg.quizName = grade.quizName;
+                        gg.classId = clazz._id;
+                        vm.quizzesToDo.push(gg);
+                    }
+                }
+            }
+        }
         function login(user) {
             if (!user) {
                 return;

@@ -7,13 +7,18 @@
         .module("QuizZ")
         .controller("SidebarController", sidebarController);
 
-    function sidebarController($scope, $location, UserService) {
-        $scope.$location = $location;
-        //$scope.isAdmin = isAdmin;
+    function sidebarController($location, UserService) {
+        var vm = this;
+        vm.$location = $location;
+        vm.isTeacher = isTeacher;
+        vm.currentUser = UserService.getCurrentUser();
+        
 
-        //function isAdmin() {
-        //    var user = UserService.getCurrentUser();
-        //    return (user != null && user.roles.indexOf("admin") != -1);
-        //}
+        function isTeacher() {
+            if (UserService.getCurrentUser() != null) {
+                return UserService.getCurrentUser().role == 'TEACHER';
+            }
+            return false;
+        }
     }
 })();

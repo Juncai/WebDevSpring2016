@@ -1,8 +1,10 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-9 col-md-10 main">
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <h1 class="page-header">Welcome {{model.currentUser.username}}!</h1>
-    <div ng-show="!model.currentUser">
+    <div ng-show="!currentUser">
         <h4>Login and Start using QuizZ!</h4>
+        <br>
+        <br>
         <form class="form-horizontal">
             <div class="form-group">
                 <label for="inputUsername" class="col-sm-4 control-label">Username</label>
@@ -27,14 +29,26 @@
         </form>
         <h4>Or Sign Up <a href="#/register">Here</a>.</h4>
     </div>
-    <div ng-show="model.currentUser">
+    <div ng-show="currentUser">
         <h4>Ready to study?</h4>
         <div ng-repeat="q in model.userQuizzes">
             <a type="button" ng-href="#/quiz/{{q._id}}">{{q.name}}</a>
         </div>
         <h4>Assigned quizzes</h4>
-        <div ng-repeat="q in model.quizzesTodo">
-            <a type="button" ng-href="#/quiz/{{q._id}}">{{q.name}}</a>
+        <div ng-if="model.quizzesToDo.length > 0" class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Quiz Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="g in model.quizzesToDo">
+                    <td><a ng-href="#/quizDetail/{{g.quizId}}/class/{{g.classId}}">{{g.quizName}}</a></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        <p ng-if="model.quizzesToDo.length == 0">Awesome! All assigned quizzes finished.</p>
     </div>
 </div>

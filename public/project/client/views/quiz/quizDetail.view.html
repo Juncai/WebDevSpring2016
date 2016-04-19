@@ -1,4 +1,4 @@
-<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
 
     <h1 class="page-header">Quiz</h1>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
@@ -18,28 +18,27 @@
                            placeholder="Question...">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="answer" class="col-sm-4 control-label">Answers</label>
-                <ul>
-                    <li ng-repeat="a in model.currentCard.answers">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-value="a" aria-label="..." disabled>
-                            <div class="input-group-btn">
-                                <!--<button ng-click="model.updateAnswer($index, a)" class="btn btn-primary">Update</button>-->
-                                <button ng-click="model.removeAnswer($index)" class="btn btn-primary">Remove</button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <div class="col-sm-6 col-md-5">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="model.newAnswer" id="answer" aria-label="...">
-                        <div class="input-group-btn">
-                            <button ng-click="model.addAnswer(model.newAnswer)" class="btn btn-primary">Add</button>
-                        </div>
+            <div ng-repeat="a in model.currentCard.answers" class="form-group">
+                <label class="col-sm-4 control-label">Answer Candidate {{$index}}</label>
+                <div class="input-group col-sm-6 col-md-5">
+                    <input type="text" class="form-control" ng-value="a" aria-label="..." disabled>
+                    <div class="input-group-btn">
+                        <!--<button ng-click="model.updateAnswer($index, a)" class="btn btn-primary">Update</button>-->
+                        <button ng-click="model.removeAnswer($index)" class="btn btn-primary">Remove</button>
                     </div>
-                    <!--<input ng-model="model.currentCard.answers" type="text" class="form-control" id="answer">-->
                 </div>
+            </div>
+            <!--<div class="col-sm-6 col-md-5">-->
+            <div class="form-group">
+                <label for="newAnswer" class="col-sm-4 control-label">New Answer</label>
+                <div class="input-group col-sm-6 col-md-5">
+                    <input type="text" class="form-control" ng-model="model.newAnswer" id="newAnswer" aria-label="...">
+                    <div class="input-group-btn">
+                        <button ng-click="model.addAnswer(model.newAnswer)" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+                <!--<input ng-model="model.currentCard.answers" type="text" class="form-control" id="answer">-->
+                <!--</div>-->
             </div>
             <div class="form-group">
                 <label for="answerInd" class="col-sm-4 control-label">Correct Answer</label>
@@ -65,7 +64,7 @@
             <h4>Answer:</h4>
             <p>{{model.currentCard.answers[model.currentCard.ansInd]}}</p>
             <!--<div class="col-sm-6 col-md-5">-->
-                <!--<img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">-->
+            <!--<img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">-->
             <!--</div>-->
         </div>
         <div ng-if="model.pageType == 'PRACTICE' || model.pageType == 'QUIZ'">
@@ -90,11 +89,11 @@
     </form>
 </div>
 
-<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">
+<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
+    <img ng-show="model.currentCard.pic" ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Some Image">
 </div>
 
-<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
     <!-- page numbers -->
     <div>
         <p>{{model.currentIndex + 1}} / {{model.currentQuiz.cards.length}}</p>
@@ -108,7 +107,7 @@
         <button ng-click="model.next()" type="button" class="btn btn-primary">Next</button>
     </div>
 </div>
-<div ng-if="model.pageType == 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-if="model.pageType == 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
     <h1 class="page-header">Performance for {{model.currentGrade.quizName}} ({{model.currentClass.name}})</h1>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <div class="table-responsive">
@@ -134,7 +133,7 @@
         </table>
     </div>
 </div>
-<div ng-if="model.pageType == 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-if="model.pageType == 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
     <!-- buttons -->
     <div class="btn-group" role="group" aria-label="...">
         <button ng-click="model.cancel()" type="button" class="btn btn-primary">Back</button>

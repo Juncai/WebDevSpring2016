@@ -1,36 +1,59 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-9 col-md-10 main">
     <h1 class="page-header">{{model.currentClass.name}}</h1>
     <div ng-show="message" class="alert alert-danger" role="alert">{{model.message}}</div>
-    <div>
-        <label>School</label>
-        {{model.currentClass.schoolName}}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <td><b>School</b></td>
+                <td>{{model.currentClass.schoolName}}</td>
+            </tr>
+            <tr>
+                <td><b>Teacher</b></td>
+                <td><a ng-href="#/profile/username/{{model.currentClass.teacher}}">{{model.currentClass.teacher}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Date Created</b></td>
+                <td>{{model.currentClass.created}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <div>
-        <label>Teacher</label>
-        <a ng-href="#/profile/username/{{model.currentClass.teacher}}">{{model.currentClass.teacher}}</a>
-    </div>
-    <div>
-        <label>Date Created</label>
-        {{model.currentClass.created}}
-    </div>
-
 </div>
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-9 col-md-10 main">
     <h3>Students</h3>
-    <ul>
-        <li ng-repeat="susername in model.currentClass.students"><a ng-href="#/profile/username/{{susername}}">{{susername}}</a>
-        </li>
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="susername in model.currentClass.students">
+                <td><a ng-href="#/profile/username/{{susername}}">{{susername}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-9 col-md-10 main">
     <h3>Quiz List</h3>
-    <ul>
-        <li ng-repeat="grade in model.currentClass.performance"><a
-                ng-href="#/quizDetail/{{grade.quizId}}/class/{{model.currentClass._id}}">{{grade.quizName}}</a></li>
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Quiz Name</th>
+                <th>Finish Rate</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="grade in model.currentClass.performance">
+                <td><a ng-href="#/quizDetail/{{grade.quizId}}/class/{{model.currentClass._id}}">{{grade.quizName}}</a></td>
+                <td>{{model.finishRate($index)}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<div ng-if="!model.inClass" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-if="!model.inClass" class="col-sm-9 col-md-10 main">
     <button ng-click="model.joinClass()" class="btn btn-primary btn-block">Join Class</button>
 </div>
 <!--<div ng-show="model.isTeacher" class="col-sm-6 col-md-5">-->
