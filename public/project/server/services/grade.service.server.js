@@ -4,9 +4,9 @@
 module.exports = function (app, userModel, classModel) {
     app.delete("/api/project/grade/:gradeId/user/:id", deleteGradeForUser);
     app.get("/api/project/grade/:gradeId/user/:id", findGradeForUser);
-    app.get("/api/project/grade/:gradeId/class/:classId/user/:userId", findGradeInClassForUser);
+    app.get("/api/project/grade/:quizId/class/:classId/user/:userId", findGradeInClassForUser);
     app.put("/api/project/grade/:gradeId/user/:userId", finishQuizPractice);
-    app.put("/api/project/grade/:gradeId/class/:classId/user/:userId", finishClassQuiz);
+    app.put("/api/project/grade/:quizId/class/:classId/user/:userId", finishClassQuiz);
 
     function deleteGradeForUser(req, res) {
         var id = req.params.id;
@@ -54,8 +54,8 @@ module.exports = function (app, userModel, classModel) {
     function findGradeInClassForUser(req, res) {
         var classId = req.params.classId;
         var userId = req.params.userId;
-        var gradeId = req.params.gradeId;
-        userModel.findGradeInClassById(userId, classId, gradeId)
+        var quizId = req.params.quizId;
+        userModel.findGradeInClassByQuizId(userId, classId, quizId)
             .then(
                 function (grade) {
                     res.json(grade);
@@ -67,11 +67,11 @@ module.exports = function (app, userModel, classModel) {
     }
 
     function finishClassQuiz(req, res) {
-        var gradeId = req.params.gradeId;
+        var quizId = req.params.quizId;
         var classId = req.params.classId;
         var userId = req.params.userId;
         var gradeObj = req.body;
-        userModel.updateGradeToClass(userId, classId, gradeId, gradeObj)
+        userModel.updateGradeToClass(userId, classId, quizId, gradeObj)
             .then(
                 function (grade) {
                     if (grade != null) {

@@ -209,8 +209,15 @@ module.exports = function (mongoose, utils) {
                 if (ind > -1) {
                     updateStudentGradeInGrade(clazz.performance[ind], studentGrade);
                 }
-                clazz.save();
-                deferred.resolve(studentGrade);
+                // clazz.save();
+                delete clazz._id;
+                Class.update({_id: classId}, clazz, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(studentGrade);
+                    }
+                });
             }
         });
 
@@ -330,7 +337,7 @@ module.exports = function (mongoose, utils) {
     }
 
     function updateStudentGradeInGrade(grade, studentGrade) {
-        var ind = findIndexByStudent(studentGrade.students[0], grade.students);
+        var ind = findIndexByStudent(studentGrade.students[0], grade);
         if (ind > -1) {
             grade.finished[ind] = studentGrade.finished[0];
             grade.grades[ind] = studentGrade.grades[0];

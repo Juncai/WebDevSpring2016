@@ -39,11 +39,6 @@
             //     controller: "ClassListController",
             //     controllerAs: "model"
             // })
-            .when("/performance", {
-                templateUrl: "views/performance/performance.view.html",
-                controller: "PerformanceController",
-                controllerAs: "model"
-            })
             .when("/header", {
                 templateUrl: "views/header/header.view.html",
                 controller: "HeaderController",

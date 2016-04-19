@@ -1,7 +1,8 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
     <h1 class="page-header">Quiz</h1>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
+    <div ng-show="model.correctMessage" class="alert alert-success" role="alert">{{model.correctMessage}}</div>
     <form class="form-horizontal">
         <div ng-if="model.pageType == 'NEW' || model.pageType == 'EDIT'">
             <div class="form-group">
@@ -22,9 +23,9 @@
                 <ul>
                     <li ng-repeat="a in model.currentCard.answers">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-value="a" aria-label="...">
+                            <input type="text" class="form-control" ng-value="a" aria-label="..." disabled>
                             <div class="input-group-btn">
-                                <button ng-click="model.updateAnswer($index, a)" class="btn btn-primary">Update</button>
+                                <!--<button ng-click="model.updateAnswer($index, a)" class="btn btn-primary">Update</button>-->
                                 <button ng-click="model.removeAnswer($index)" class="btn btn-primary">Remove</button>
                             </div>
                         </div>
@@ -52,7 +53,7 @@
                 <label for="picture" class="col-sm-4 control-label">Picture</label>
                 <div class="col-sm-6 col-md-5">
                     <input ng-model="model.currentCard.pic" type="text" class="form-control" id="picture">
-                    <img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">
+                    <!--<img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">-->
                 </div>
             </div>
 
@@ -63,23 +64,80 @@
             <p>{{model.currentCard.question}}</p>
             <h4>Answer:</h4>
             <p>{{model.currentCard.answers[model.currentCard.ansInd]}}</p>
-            <div class="col-sm-6 col-md-5">
-                <img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">
+            <!--<div class="col-sm-6 col-md-5">-->
+                <!--<img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">-->
+            <!--</div>-->
+        </div>
+        <div ng-if="model.pageType == 'PRACTICE' || model.pageType == 'QUIZ'">
+            <h3>{{model.currentQuiz.name}} (Current score: {{model.score}})</h3>
+            <h4>Question:</h4>
+            <p>{{model.currentCard.question}}</p>
+            <h4>Answer:</h4>
+            <div class="btn-group-vertical" data-toggle="buttons">
+                <label ng-repeat="a in model.currentCard.answers" ng-click="model.selectAns($index)"
+                       class="btn btn-primary">
+                    <input type="radio" name="options" id="option1" autocomplete="off">{{a}}
+                </label>
+                <!--<label class="btn btn-primary">-->
+                <!--<input type="radio" name="options" id="option2" autocomplete="off"> Radio 2-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary">-->
+                <!--<input type="radio" name="options" id="option3" autocomplete="off"> Radio 3-->
+                <!--</label>-->
             </div>
-        </div>
-
-        <!-- page numbers -->
-        <div>
-            <p>{{model.currentIndex + 1}} / {{model.currentQuiz.cards.length}}</p>
-        </div>
-        <!-- buttons -->
-        <div class="btn-group" role="group" aria-label="...">
-            <button ng-click="model.prev()" type="button" class="btn btn-primary">Prev</button>
-            <button ng-if="model.canEdit()" ng-click="model.remove()" type="button" class="btn btn-primary">Delete</button>
-            <button ng-click="model.done()" type="button" class="btn btn-primary">Done</button>
-            <button ng-click="model.cancel()" type="button" class="btn btn-primary">Cancel</button>
-            <button ng-click="model.next()" type="button" class="btn btn-primary">Next</button>
+            <!--<p>{{model.currentCard.answers[model.currentCard.ansInd]}}</p>-->
         </div>
     </form>
+</div>
+
+<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">
+</div>
+
+<div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <!-- page numbers -->
+    <div>
+        <p>{{model.currentIndex + 1}} / {{model.currentQuiz.cards.length}}</p>
+    </div>
+    <!-- buttons -->
+    <div class="btn-group" role="group" aria-label="...">
+        <button ng-click="model.prev()" type="button" class="btn btn-primary">Prev</button>
+        <button ng-if="model.canEdit()" ng-click="model.remove()" type="button" class="btn btn-primary">Delete</button>
+        <button ng-click="model.done()" type="button" class="btn btn-primary">Done</button>
+        <button ng-click="model.cancel()" type="button" class="btn btn-primary">Cancel</button>
+        <button ng-click="model.next()" type="button" class="btn btn-primary">Next</button>
+    </div>
+</div>
+<div ng-if="model.pageType == 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">Performance for {{model.currentGrade.quizName}} ({{model.currentClass.name}})</h1>
+    <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th nowrap>Student</th>
+                <th nowrap>Grade</th>
+                <th nowrap>Finished</th>
+                <th nowrap>When</th>
+                <th nowrap>Duration</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="s in model.currentGrade.students">
+                <td><a ng-href="#/profile/username/{{s}}">{{s}}</a></td>
+                <td>{{model.currentGrade.grades[$index]}}</td>
+                <td>{{model.currentGrade.finished[$index]}}</td>
+                <td>{{model.currentGrade.finishTSs[$index]}}</td>
+                <td>{{model.currentGrade.durations[$index]}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div ng-if="model.pageType == 'PERFORMANCE'" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <!-- buttons -->
+    <div class="btn-group" role="group" aria-label="...">
+        <button ng-click="model.cancel()" type="button" class="btn btn-primary">Back</button>
+    </div>
 </div>
 

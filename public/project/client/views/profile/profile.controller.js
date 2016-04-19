@@ -138,7 +138,7 @@
 
         function followed() {
             if (!vm.isSelf && vm.currentUser != null) {
-                return vm.currentUser.followed.indexOf(vm.self.username) > 0;
+                return vm.currentUser.followed.indexOf(vm.self.username) > -1;
             }
             return false;
         }

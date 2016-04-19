@@ -44,8 +44,8 @@
             return $http.get("/api/project/grade/" + gradeId + "/class/" + classId);
         }
         
-        function finishClassQuiz(classId, username, gradeId, grade) {
-            app.put("/api/project/grade/:gradeId/class/:classId/user/:userId", finishClassQuiz);
+        function finishClassQuiz(classId, userId, quizId, grade) {
+            return $http.put("/api/project/grade/" + quizId + "/class/" + classId + "/user/" + userId, grade);
             
         }
     }

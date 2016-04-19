@@ -81,8 +81,8 @@
             return $http.get("/api/project/grade/" + gradeId + "/user/" + userId);
         }
         
-        function findGradeInClassForUser(userId, classId, gradeId) {
-            return $http.get("/api/project/grade/" + gradeId+ "/class/" + classId + "/user/" + userId);
+        function findGradeInClassForUser(userId, classId, quizId) {
+            return $http.get("/api/project/grade/" + quizId+ "/class/" + classId + "/user/" + userId);
         }
 
         function finishQuizPractice(userId, gradeId, grade) {
