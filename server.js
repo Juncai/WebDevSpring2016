@@ -30,7 +30,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 multer();
 app.use(session({
-    //secret: 'this is the secret',
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
