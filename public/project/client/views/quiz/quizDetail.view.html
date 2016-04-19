@@ -70,7 +70,7 @@
         <div ng-if="model.pageType == 'PRACTICE' || model.pageType == 'QUIZ'">
             <h3>{{model.currentQuiz.name}} (Current score: {{model.score}})</h3>
             <h4>Question:</h4>
-            <p>{{model.currentCard.question}}</p>
+            <h3>{{model.currentCard.question}}</h3>
             <h4>Answer:</h4>
             <div class="btn-group-vertical" data-toggle="buttons">
                 <label ng-repeat="a in model.currentCard.answers" ng-click="model.selectAns($index)"
@@ -90,14 +90,14 @@
 </div>
 
 <div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
-    <img ng-show="model.currentCard.pic" ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Some Image">
+    <img ng-show="model.currentCard.pic" ng-src="{{model.currentCard.pic}}" class="img-rounded" width="320" height="174" alt="Some Image">
 </div>
 
 <div ng-if="model.pageType != 'PERFORMANCE'" class="col-sm-9 col-md-10 main">
     <!-- page numbers -->
-    <div>
-        <p>{{model.currentIndex + 1}} / {{model.currentQuiz.cards.length}}</p>
-    </div>
+    <h4>{{model.currentIndex + 1}} / {{model.currentQuiz.cards.length}}</h4>
+    <!--<div>-->
+    <!--</div>-->
     <!-- buttons -->
     <div class="btn-group" role="group" aria-label="...">
         <button ng-click="model.prev()" type="button" class="btn btn-primary">Prev</button>

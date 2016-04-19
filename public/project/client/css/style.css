@@ -11,7 +11,10 @@ body {
 /*
  * Global add-ons
  */
-
+.table-responsive {
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;

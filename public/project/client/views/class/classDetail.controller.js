@@ -60,6 +60,7 @@
                 .then(
                     function(response) {
                         vm.currentClass = response.data;
+                        vm.inClass = true;
                     }
                 );
         }

@@ -21,18 +21,7 @@
         </table>
     </div>
 </div>
-<div class="col-sm-9 col-md-10 main">
-    <h3>Students</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tbody>
-            <tr ng-repeat="susername in model.currentClass.students">
-                <td><a ng-href="#/profile/username/{{susername}}">{{susername}}</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+
 <div class="col-sm-9 col-md-10 main">
     <h3>Quiz List</h3>
     <div class="table-responsive">
@@ -45,15 +34,27 @@
             </thead>
             <tbody>
             <tr ng-repeat="grade in model.currentClass.performance">
-                <td><a ng-href="#/quizDetail/{{grade.quizId}}/class/{{model.currentClass._id}}">{{grade.quizName}}</a></td>
+                <td><a ng-href="#/quizDetail/{{grade.quizId}}/class/{{model.currentClass._id}}">{{grade.quizName}}</a>
+                </td>
                 <td>{{model.finishRate($index)}}</td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
-<div ng-if="!model.inClass" class="col-sm-9 col-md-10 main">
+<div class="col-sm-9 col-md-10 main">
+    <h3>Students</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="susername in model.currentClass.students">
+                <td><a ng-href="#/profile/username/{{susername}}">{{susername}}</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div ng-if="!model.inClass" class="col-sm-4 col-md-5 main">
     <button ng-click="model.joinClass()" class="btn btn-primary btn-block">Join Class</button>
 </div>
 <!--<div ng-show="model.isTeacher" class="col-sm-6 col-md-5">-->

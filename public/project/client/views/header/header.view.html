@@ -21,11 +21,11 @@
         <!--</form>-->
         <!--</div>-->
         <ul class="nav navbar-nav navbar-right">
-            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a
-                    href="#/profile">Profile</a></li>
-            <li ng-if="currentUser && !model.isTeacher()" ng-class="{'active': $location.url() == '/search'}"><a
+            <!--<li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a-->
+                    <!--href="#/profile">Profile</a></li>-->
+            <li ng-if="currentUser && !isTeacher()" ng-class="{'active': $location.url() == '/search'}"><a
                     href="#/search">Find Your Class</a></li>
-            <li ng-if="model.isTeacher()" ng-class="{'active': $location.url() == '/search'}"><a href="#/search">Create
+            <li ng-if="isTeacher()" ng-class="{'active': $location.url() == '/search'}"><a href="#/search">Create
                 Class</a></li>
             <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/register'}"><a href="#/register">Sign
                 up</a></li>

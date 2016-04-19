@@ -1,5 +1,11 @@
 <div class="col-sm-9 col-md-10 main">
-    <h1 class="page-header">Hi {{model.currentUser.username}}!</h1>
+    <h1 class="page-header">{{model.currentUser.username}}!</h1>
+    <button ng-if="!model.isSelf && model.followed()" ng-click="model.unfollow(model.currentUser)"
+            class="btn btn-primary">Unfollow
+    </button>
+    <button ng-if="!model.isSelf && !model.followed()" ng-click="model.follow(model.currentUser)"
+            class="btn btn-primary">Follow
+    </button>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <h3>My Quizzes</h3>
     <div class="table-responsive">
@@ -53,16 +59,11 @@
         </table>
     </div>
 </div>
-<div class="col-sm-9 col-md-10 main">
+<!--<div class="col-sm-9 col-md-10 main">-->
     <!-- follow -->
     <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
-    <button ng-if="!model.isSelf && model.followed()" ng-click="model.unfollow(model.currentUser)"
-            class="btn btn-primary">Unfollow
-    </button>
-    <button ng-if="!model.isSelf && !model.followed()" ng-click="model.follow(model.currentUser)"
-            class="btn btn-primary">Follow
-    </button>
-</div>
+
+<!--</div>-->
 <div class="col-sm-9 col-md-10 main">
     <h4>Following</h4>
     <ul>

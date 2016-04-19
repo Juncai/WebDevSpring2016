@@ -127,6 +127,7 @@
                 )
                 .then(
                     function (response) {
+                        $location.url("/profile");
                         // do nothing
                     }
                 )
