@@ -28,8 +28,9 @@ module.exports = function (mongoose) {
             if (err) {
                 deferred.reject(err);
             } else {
-                quiz.classes.push(classId);
-                deferred.resolve(quiz.save());
+                quiz.assignTo.push(classId);
+                quiz.save();
+                deferred.resolve(quiz);
             }
         });
 

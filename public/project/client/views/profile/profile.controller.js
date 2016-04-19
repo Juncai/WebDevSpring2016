@@ -8,7 +8,7 @@
         .module("QuizZ")
         .controller("ProfileController", profileController);
 
-    function profileController($routeParams, $location, UserService) {
+    function profileController($routeParams, $location, UserService, ClassService, QuizService) {
         var vm = this;
 
         vm.error = null;
@@ -112,9 +112,24 @@
 
         }
 
-        function assign(gradeId, classId) {
-            // TODO to implement
-
+        function assign(quizId, classId) {
+            ClassService.findClassById(classId)
+                .then(
+                    function (response) {
+                        var clazz = response.data;
+                        for (var g in clazz.performance) {
+                            if (clazz.performance[g].quizId == quizId) {
+                                return;
+                            }
+                        }
+                        return QuizService.assignQuizToClass(quizId, classId, null);
+                    }
+                )
+                .then(
+                    function (response) {
+                        // do nothing
+                    }
+                )
         }
 
         function isTeacher() {

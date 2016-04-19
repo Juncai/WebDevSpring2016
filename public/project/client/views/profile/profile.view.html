@@ -105,9 +105,18 @@
                         <button ng-if="model.isSelf" ng-click="model.edit(g._id)" type="button" class="btn btn-default">
                             Edit
                         </button>
-                        <button ng-if="model.isSelf && model.isTeacher()" ng-click="model.assign(g._id)" type="button"
-                                class="btn btn-default">Assign
-                        </button>
+                        <div ng-if="model.isSelf && model.isTeacher()" class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Assign <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="c in model.currentUser.classes"><a ng-click="model.assign(g.quizId, c._id)" href="#">{{c.name}}</a></li>
+                            </ul>
+                        </div>
+                        <!--<button ng-if="model.isSelf && model.isTeacher()" ng-click="model.assign(g._id)" type="button"-->
+                                <!--class="btn btn-default">Assign-->
+                        <!--</button>-->
                         <button ng-if="model.isSelf && !model.isTeacher()" ng-click="model.practice(g._id)"
                                 type="button" class="btn btn-default">Practice
                         </button>

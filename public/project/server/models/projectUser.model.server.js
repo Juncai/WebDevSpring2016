@@ -46,15 +46,27 @@ module.exports = function (mongoose, utils) {
             } else {
                 for (var u in users) {
                     var user = users[u];
-                    var grade = newGrade(quiz, due);
+                    var id = user._id;
+                    var grade = newGrade(quiz, user, due);
                     user.classes.id(classId).performance.push(grade);
-                    user.save();
+                    delete user._id;
+                    ProjectUser.update({_id: id}, user, function(err, doc) {
+                        if (err) {
+                            // nothing
+                        }
+                    });
+                    // user.markModified('classes');
+                    // user.save();
                 }
                 deferred.resolve(null);
             }
         });
 
         return deferred.promise;
+    }
+
+    function updateUsers(users) {
+
     }
 
     function createUser(user) {
@@ -521,12 +533,12 @@ module.exports = function (mongoose, utils) {
         grade.durations = [0];
     }
 
-    function newGrade(quiz, due) {
+    function newGrade(quiz, user, due) {
         var grade = {};
         grade.quizId = quiz._id;
         grade.quizName = quiz.name;
         grade.due = due;
-        grade.students = [quiz.createdBy];
+        grade.students = [user.username];
         grade.finished = [false];
         grade.grades = [-1];
         grade.finishTSs = [null];

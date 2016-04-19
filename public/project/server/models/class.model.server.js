@@ -96,20 +96,22 @@ module.exports = function (mongoose, utils) {
     // for grades
     function createGradeForClass(id, quiz, due) {
         var deferred = q.defer();
-        Class.findOne({_id: id}, function (err, clazz) {
+        Class.findById(id, function (err, clazz) {
             if (err) {
                 deferred.reject(err);
             } else {
                 var grade = newGrade(quiz, clazz, due);
                 clazz.performance.push(grade);
+                // clazz.save();
+                // deferred.resolve(clazz.students);
                 delete clazz._id;
                 Class.update({_id: id}, clazz, function (err, doc) {
                     if (err) {
                         deferred.reject(err);
                     } else {
-                        deferred.resolve(doc.students);
+                        deferred.resolve(clazz.students);
                     }
-                });
+                })
             }
         });
 
@@ -354,6 +356,6 @@ module.exports = function (mongoose, utils) {
             grade.finishTSs.push(null);
             grade.durations.push(0);
         }
-        return quiz;
+        return grade;
     }
 };
