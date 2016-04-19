@@ -23,7 +23,7 @@
         }
 
         function createQuizForUser(userId, quiz) {
-            return $http.post("/api/project/quiz/user/" + userId + "/quiz", quiz);
+            return $http.post("/api/project/quiz/user/" + userId, quiz);
         }
 
         function findAllQuizzesForUser(userId) {

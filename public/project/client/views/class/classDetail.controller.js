@@ -35,8 +35,7 @@
         init();
 
         function isInClass() {
-            var res = false;
-            res = vm.currentClass.students.indexOf(vm.currentUser.username) > 0;
+            var res = vm.currentClass.students.indexOf(vm.currentUser.username) > -1;
             return res || vm.currentUser.role == "TEACHER";
         }
 

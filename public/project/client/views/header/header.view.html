@@ -24,7 +24,7 @@
             <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/register'}"><a href="#/register">Sign up</a></li>
             <li ng-show="!currentUser" ng-class="{'active': $location.url() == '/home'}"><a href="#/home">Login</a></li>
             <li ng-show="currentUser" ng-class="{'active': $location.url() == '/home'}"><a ng-click="logout()" href="#/home">Logout</a></li>
-            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">{{currentUser.firstName}}</a></li>
+            <li ng-show="currentUser" ng-class="{'active': $location.url() == '/profile'}"><a href="#/profile">{{currentUser.username}}</a></li>
         </ul>
     </div>
 </div>

@@ -14,7 +14,7 @@
                 controller: "QuizDetailController",
                 controllerAs: "model"
             })
-            .when("/quizDetail/:gradeId/:act", {  // owner entry
+            .when("/quizDetail/:gradeId/act/:act", {  // owner entry
                 templateUrl: "views/quiz/quizDetail.view.html",
                 controller: "QuizDetailController",
                 controllerAs: "model"

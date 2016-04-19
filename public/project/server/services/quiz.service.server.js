@@ -71,7 +71,7 @@ module.exports = function (app, quizModel, userModel, classModel) {
         quizModel.createQuiz(quizObj)
             .then(
                 function (quiz) {
-                    return userModel.createQuizForUser(userId, quiz.createdBy);
+                    return userModel.createQuizForUser(userId, quiz);
                 },
                 function (err) {
                     res.status(400).send(err);

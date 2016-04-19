@@ -380,10 +380,11 @@ module.exports = function (mongoose, utils) {
             if (err) {
                 deferred.reject(err);
             } else {
-                var ind = utils.findIndexById(gradeId, user.quizCreated);
-                if (ind > -1) {
-                    res = user.quizCreated[ind];
-                }
+                res = user.quizCreated.id(gradeId);
+                // var ind = utils.findIndexById(gradeId, user.quizCreated);
+                // if (ind > -1) {
+                //     res = user.quizCreated[ind];
+                // }
                 deferred.resolve(res);
             }
         });

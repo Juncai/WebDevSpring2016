@@ -1,60 +1,84 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">Quiz Detail</h1>
+
+    <h1 class="page-header">Quiz</h1>
     <div ng-show="model.message" class="alert alert-danger" role="alert">{{model.message}}</div>
     <form class="form-horizontal">
-        <div class="form-group">
-            <label for="name" class="col-sm-4 control-label">Quiz Name</label>
-            <div class="col-sm-6 col-md-5">
-                <input ng-model="currentQuiz.name" type="text" class="form-control" id="name">
+        <div ng-if="model.pageType == 'NEW' || model.pageType == 'EDIT'">
+            <div class="form-group">
+                <label for="name" class="col-sm-4 control-label">Quiz Name</label>
+                <div class="col-sm-6 col-md-5">
+                    <input ng-model="model.currentQuiz.name" type="text" class="form-control" id="name">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="question" class="col-sm-4 control-label">Question</label>
-            <div class="col-sm-6 col-md-5">
-                <input ng-model="currentCard.question" type="text" class="form-control" id="question">
+            <div class="form-group">
+                <label for="question" class="col-sm-4 control-label">Question</label>
+                <div class="col-sm-6 col-md-5">
+                    <input ng-model="model.currentCard.question" type="text" class="form-control" id="question"
+                           placeholder="Question...">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="answer" class="col-sm-4 control-label">Answer</label>
-            <div class="col-sm-6 col-md-5">
-                <input ng-model="currentCard.answer" type="text" class="form-control" id="answer">
+            <div class="form-group">
+                <label for="answer" class="col-sm-4 control-label">Answers</label>
+                <ul>
+                    <li ng-repeat="a in model.currentCard.answers">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-value="a" aria-label="...">
+                            <div class="input-group-btn">
+                                <button ng-click="model.updateAnswer($index, a)" class="btn btn-primary">Update</button>
+                                <button ng-click="model.removeAnswer($index)" class="btn btn-primary">Remove</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="col-sm-6 col-md-5">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="model.newAnswer" id="answer" aria-label="...">
+                        <div class="input-group-btn">
+                            <button ng-click="model.addAnswer(model.newAnswer)" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                    <!--<input ng-model="model.currentCard.answers" type="text" class="form-control" id="answer">-->
+                </div>
             </div>
+            <div class="form-group">
+                <label for="answerInd" class="col-sm-4 control-label">Correct Answer</label>
+                <div class="col-sm-6 col-md-5">
+                    <select ng-model="model.currentCard.ansInd" class="form-control" id="answerInd">
+                        <option ng-repeat="a in model.currentCard.answers" ng-value="$index">{{$index}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="picture" class="col-sm-4 control-label">Picture</label>
+                <div class="col-sm-6 col-md-5">
+                    <input ng-model="model.currentCard.pic" type="text" class="form-control" id="picture">
+                    <img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">
+                </div>
+            </div>
+
         </div>
-        <div class="form-group">
-            <label for="picture" class="col-sm-4 control-label">Picture</label>
+        <div ng-if="model.pageType == 'VIEW'">
+            <h3>{{model.currentQuiz.name}}</h3>
+            <h4>Question:</h4>
+            <p>{{model.currentCard.question}}</p>
+            <h4>Answer:</h4>
+            <p>{{model.currentCard.answers[model.currentCard.ansInd]}}</p>
             <div class="col-sm-6 col-md-5">
-                <input ng-model="currentCard.picture" type="text" class="form-control" id="picture">
-                <img src={{currentCard.picture}} width="320" height="174" alt="Ford Mustang">
+                <img ng-src="{{model.currentCard.pic}}" width="320" height="174" alt="Ford Mustang">
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-4 control-label"></label>
-            <div class="col-sm-6 col-md-5">
-                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
-                <button ng-click="prev()" class="btn btn-primary">Prev</button>
-            </div>
+        <!-- page numbers -->
+        <div>
+            <p>{{model.currentIndex + 1}} / {{model.currentQuiz.cards.length}}</p>
         </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label"></label>
-            <div class="col-sm-6 col-md-5">
-                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
-                <button ng-click="saveQuiz()" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label"></label>
-            <div class="col-sm-6 col-md-5">
-                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
-                <button ng-click="backToList()" class="btn btn-primary">Cancel</button>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label"></label>
-            <div class="col-sm-6 col-md-5">
-                <!--<a href="profile.view.html" class="form-control btn btn-primary">Update</a>-->
-                <button ng-click="next()" class="btn btn-primary">Next</button>
-            </div>
+        <!-- buttons -->
+        <div class="btn-group" role="group" aria-label="...">
+            <button ng-click="model.prev()" type="button" class="btn btn-primary">Prev</button>
+            <button ng-if="model.canEdit()" ng-click="model.remove()" type="button" class="btn btn-primary">Delete</button>
+            <button ng-click="model.done()" type="button" class="btn btn-primary">Done</button>
+            <button ng-click="model.cancel()" type="button" class="btn btn-primary">Cancel</button>
+            <button ng-click="model.next()" type="button" class="btn btn-primary">Next</button>
         </div>
     </form>
 </div>

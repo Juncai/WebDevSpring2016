@@ -3,8 +3,9 @@
 module.exports = function (mongoose) {
 
     var CardSchema = mongoose.Schema({
-        question: { type: String, required: true },
-        answer: { type: String, required: true },
+        question: {type: String, required: true},
+        answers: {type: [String], required: true},
+        ansInd: {type: Number, required: true},
         pic: String
     });
     return CardSchema;
