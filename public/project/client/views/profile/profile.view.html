@@ -15,7 +15,7 @@
                 <td nowrap>{{g.quizName}}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="...">
-                        <button ng-click="model.view(g._id)" type="button" class="btn btn-default">View</button>
+                        <button ng-if="model.isSelf" ng-click="model.view(g._id)" type="button" class="btn btn-default">View</button>
                         <button ng-if="model.isSelf" ng-click="model.edit(g._id)" type="button" class="btn btn-default">
                             Edit
                         </button>
@@ -81,7 +81,7 @@
 </div>
 
 <div class="col-sm-9 col-md-10 main">
-    <h3>Update Profile</h3>
+    <h3>Profile</h3>
     <form class="form-horizontal">
         <div class="form-group">
             <label for="username" class="col-sm-4 control-label">Username</label>
@@ -107,14 +107,14 @@
         <div class="form-group">
             <label for="inputFirstName" class="col-sm-4 control-label">First Name</label>
             <div class="col-sm-6 col-md-5">
-                <input ng-model="model.currentUser.firstName" type="text" class="form-control" id="inputFirstName"
+                <input ng-model="model.currentUser.firstName" type="text" class="form-control" ng-disabled="!model.isSelf" id="inputFirstName"
                        placeholder="First Name">
             </div>
         </div>
         <div class="form-group">
             <label for="inputLastName" class="col-sm-4 control-label">Last Name</label>
             <div class="col-sm-6 col-md-5">
-                <input ng-model="model.currentUser.lastName" type="text" class="form-control" id="inputLastName"
+                <input ng-model="model.currentUser.lastName" type="text" class="form-control" ng-disabled="!model.isSelf" id="inputLastName"
                        placeholder="Last Name">
             </div>
         </div>
@@ -127,7 +127,7 @@
         <div class="form-group">
             <label for="inputEmail" class="col-sm-4 control-label">Email</label>
             <div class="col-sm-6 col-md-5">
-                <input ng-model="model.currentUser.email" type="email" class="form-control" id="inputEmail">
+                <input ng-model="model.currentUser.email" type="email" class="form-control" ng-disabled="!model.isSelf" id="inputEmail">
             </div>
         </div>
         <div class="form-group">
