@@ -564,6 +564,7 @@ module.exports = function (mongoose, utils) {
                         if (err) {
                             deferred.reject(err);
                         } else {
+                            user._id = userId;
                             deferred.resolve(user);
                         }
                     });
@@ -594,6 +595,7 @@ module.exports = function (mongoose, utils) {
                     if (err) {
                         deferred.reject(err);
                     } else {
+                        user._id = id;
                         deferred.resolve(user);
                     }
                 });
