@@ -49,8 +49,9 @@ module.exports = function (mongoose, utils) {
                     var id = user._id;
                     var grade = newGrade(quiz, user, due);
                     user.classes.id(classId).performance.push(grade);
+                    user = user.toObject();
                     delete user._id;
-                    ProjectUser.update({_id: id}, user, function(err, doc) {
+                    ProjectUser.update({_id: id}, user, function (err, doc) {
                         if (err) {
                             // nothing
                         }
@@ -171,6 +172,7 @@ module.exports = function (mongoose, utils) {
     function updateUser(id, user) {
         var deferred = q.defer();
 
+        //user = user.toObject();
         delete user._id;
         ProjectUser.update({_id: id}, user, function (err, doc) {
 
@@ -245,8 +247,17 @@ module.exports = function (mongoose, utils) {
                 // TODO handle the existing quizzes
                 initQuizzesInClass(clazz, user);
                 user.classes.push(clazz);
-                user.save();
-                deferred.resolve(clazz);
+                //user.save();
+                user = user.toObject();
+                    delete user._id;
+                    ProjectUser.update({_id: userId}, user, function (err, doc) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(clazz);
+                        }
+                    });
+                //deferred.resolve(clazz);
             }
         });
         return deferred.promise;
@@ -259,8 +270,17 @@ module.exports = function (mongoose, utils) {
                 deferred.reject(err);
             } else {
                 user.classes.push(clazz);
-                user.save();
-                deferred.resolve(clazz);
+                //user.save();
+                var id = user._id;
+                user = user.toObject();
+                delete user._id;
+                ProjectUser.update({_id: id}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(clazz);
+                    }
+                });
             }
         });
         return deferred.promise;
@@ -276,6 +296,7 @@ module.exports = function (mongoose, utils) {
                 if (indToRemove > -1) {
                     user.classes.splice(indToRemove, 1);
                 }
+                user = user.toObject();
                 delete user._id;
                 ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
@@ -301,6 +322,7 @@ module.exports = function (mongoose, utils) {
                     clazz._id = classId;
                     user.classes[ind] = clazz;
                 }
+                user = user.toObject();
                 delete user._id;
                 ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
@@ -335,10 +357,11 @@ module.exports = function (mongoose, utils) {
                     grade.finishTSs[0] = gradeObj.finishTSs[0];
                     grade.durations[0] = gradeObj.durations[0];
                     // user.save();
+                    user = user.toObject();
                     delete user._id;
-                    ProjectUser.update({_id: userId}, user, function(err, doc) {
+                    ProjectUser.update({_id: userId}, user, function (err, doc) {
                         if (err) {
-                            
+
                         } else {
                             deferred.resolve(grade);
                         }
@@ -383,9 +406,12 @@ module.exports = function (mongoose, utils) {
             } else {
                 var grade = newGrade(quiz, user, null);
                 user.quizCreated.push(grade);
+                user = user.toObject();
                 delete user._id;
                 ProjectUser.update({_id: id}, user, function (err, doc) {
                     if (err) {
+                        console.log(err);
+                        console.log(user);
                         deferred.reject(err);
                     } else {
                         deferred.resolve(doc);
@@ -426,6 +452,7 @@ module.exports = function (mongoose, utils) {
                 if (indToRemove > -1) {
                     user.quizCreated.splice(indToRemove, 1);
                 }
+                user = user.toObject();
                 delete user._id;
                 ProjectUser.update({_id: userId}, user, function (err, doc) {
                     if (err) {
@@ -451,7 +478,15 @@ module.exports = function (mongoose, utils) {
                 grade.grades = gradeObj.grades;
                 grade.finishTSs = gradeObj.finishTSs;
                 grade.durations = gradeObj.durations;
-                deferred.resolve(user.save());
+                user = user.toObject();
+                delete user._id;
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                });
             }
         });
 
@@ -467,9 +502,19 @@ module.exports = function (mongoose, utils) {
             } else {
                 if (user.following.indexOf(followedUsername) < 0) {
                     user.following.push(followedUsername);
-                    user.save();
+                    //user.save();
+                    user = user.toObject();
+                    delete user._id;
+                    ProjectUser.update({_id: userId}, user, function (err, doc) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(user);
+                        }
+                    });
+                } else {
+                    deferred.resolve(user);
                 }
-                deferred.resolve(user);
             }
         });
 
@@ -487,8 +532,17 @@ module.exports = function (mongoose, utils) {
                 if (indToRemove > -1) {
                     user.following.splice(indToRemove, 1);
                 }
-                user.save();
-                deferred.resolve(user);
+                //user.save();
+                user = user.toObject();
+                delete user._id;
+                ProjectUser.update({_id: userId}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                });
+                //deferred.resolve(user);
             }
         });
 
@@ -503,9 +557,19 @@ module.exports = function (mongoose, utils) {
             } else {
                 if (user.followed.indexOf(followingUsername) < 0) {
                     user.followed.push(followingUsername);
-                    user.save();
+                    //user.save();
+                    user = user.toObject();
+                    delete user._id;
+                    ProjectUser.update({_id: userId}, user, function (err, doc) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(user);
+                        }
+                    });
+                } else {
+                    deferred.resolve(user);
                 }
-                deferred.resolve(user);
             }
         });
 
@@ -522,8 +586,18 @@ module.exports = function (mongoose, utils) {
                 if (indToRemove > -1) {
                     user.followed.splice(indToRemove, 1);
                 }
-                user.save();
-                deferred.resolve(user);
+                //user.save();
+                var id = user._id;
+                user = user.toObject();
+                delete user._id;
+                ProjectUser.update({_id: id}, user, function (err, doc) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                });
+                //deferred.resolve(user);
             }
         });
 

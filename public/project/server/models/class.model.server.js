@@ -104,6 +104,7 @@ module.exports = function (mongoose, utils) {
                 clazz.performance.push(grade);
                 // clazz.save();
                 // deferred.resolve(clazz.students);
+                clazz = clazz.toObject();
                 delete clazz._id;
                 Class.update({_id: id}, clazz, function (err, doc) {
                     if (err) {
@@ -160,6 +161,7 @@ module.exports = function (mongoose, utils) {
                 //     clazz.performance.splice(indToRemove, 1);
                 // }
                 clazz.performance.id(gradeId).remove();
+                clazz = clazz.toObject();
                 delete clazz._id;
                 Class.update({_id: classId}, clazz, function (err, doc) {
                     if (err) {
@@ -185,6 +187,7 @@ module.exports = function (mongoose, utils) {
                     grade._id = gradeId;
                     clazz.performance[ind] = grade;
                 }
+                clazz = clazz.toObject();
                 delete clazz._id;
                 Class.update({_id: classId}, clazz, function (err, doc) {
                     if (err) {
@@ -210,6 +213,7 @@ module.exports = function (mongoose, utils) {
                     updateStudentGradeInGrade(clazz.performance[ind], studentGrade);
                 }
                 // clazz.save();
+                clazz = clazz.toObject();
                 delete clazz._id;
                 Class.update({_id: classId}, clazz, function (err, doc) {
                     if (err) {
