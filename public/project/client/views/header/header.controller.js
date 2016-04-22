@@ -3,7 +3,7 @@
  * Created by Jun Cai on 2/13/2016.
  */
 
-(function() {
+(function () {
     angular
         .module("QuizZ")
         .controller("HeaderController", headerController);
@@ -13,7 +13,7 @@
         $scope.logout = logout;
         $scope.isTeacher = isTeacher;
         // $scope.currentUser = UserService.getCurrentUser();
-        
+
 
         function isTeacher() {
             if (UserService.getCurrentUser() != null) {
@@ -21,9 +21,19 @@
             }
             return false;
         }
+
         function logout() {
-            UserService.setCurrentUser(null);
-            $location.url("/home");
+            UserService
+                .logout()
+                .then(
+                    function (response) {
+                        UserService.setCurrentUser(null);
+                        $location.url("/home");
+                    },
+                    function (err) {
+                        $scope.error = err;
+                    }
+                );
         }
     }
 })();
