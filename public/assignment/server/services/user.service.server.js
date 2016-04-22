@@ -3,11 +3,11 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function (app, formModel, userModel) {
+module.exports = function (app, formModel, userModel, projectUserModel) {
     var auth = authorized;
     var admin = isAdmin;
     app.post("/api/assignment/register", register);
-    app.post("/api/assignment/login", passport.authenticate('local'), login);
+    app.post("/api/assignment/login", passport.authenticate('assignment'), login);
     app.post("/api/assignment/logout", logout);
     app.get("/api/assignment/loggedin", loggedin);
     app.get("/api/assignment/user/:id", auth, profile);
@@ -17,12 +17,40 @@ module.exports = function (app, formModel, userModel) {
     app.delete("/api/assignment/admin/user/:userId", admin, deleteUser);
     app.put("/api/assignment/admin/user/:userId", admin, updateUserAdmin);
 
-    passport.use(new LocalStrategy(localStrategy));
+    // for project login
+    app.post("/api/project/register", projectRegister);
+    app.post("/api/project/login", passport.authenticate('project'), projectLogin);
+    app.post("/api/project/logout", projectLogout);
+    app.get("/api/project/loggedin", projectLoggedin);
+
+
+    // passport.use(new LocalStrategy(localStrategy));
+    passport.use('assignment', new LocalStrategy(assignmentLocalStrategy));
+    passport.use('project', new LocalStrategy(projectLocalStrategy));
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
 
-    function localStrategy(username, password, done) {
+
+    function assignmentLocalStrategy(username, password, done) {
         userModel
+            .findUserByCredentials({username: username, password: password})
+            .then(
+                function (user) {
+                    if (!user) {
+                        return done(null, false);
+                    }
+                    return done(null, user);
+                },
+                function (err) {
+                    if (err) {
+                        return done(err);
+                    }
+                }
+            );
+    }
+
+    function projectLocalStrategy(username, password, done) {
+        projectUserModel
             .findUserByCredentials({username: username, password: password})
             .then(
                 function (user) {
@@ -44,16 +72,30 @@ module.exports = function (app, formModel, userModel) {
     }
 
     function deserializeUser(user, done) {
-        userModel
-            .findUserById(user._id)
-            .then(
-                function (user) {
-                    done(null, user);
-                },
-                function (err) {
-                    done(err, null);
-                }
-            );
+        if (user.roles != null) {
+            userModel
+                .findUserById(user._id)
+                .then(
+                    function (user) {
+                        done(null, user);
+                    },
+                    function (err) {
+                        done(err, null);
+                    }
+                );
+        } else {
+            projectUserModel
+                .findUserById(user._id)
+                .then(
+                    function (user) {
+                        done(null, user);
+                    },
+                    function (err) {
+                        done(err, null);
+                    }
+                );
+        }
+
     }
 
     function loggedin(req, res) {
@@ -233,4 +275,55 @@ module.exports = function (app, formModel, userModel) {
             next();
         }
     }
+
+    // for project user
+    function projectRegister(req, res) {
+        var newUser = req.body;
+
+        projectUserModel
+            .findUserByUsername(newUser.username)
+            .then(
+                function (user) {
+                    if (user) {
+                        res.json(null);
+                    } else {
+                        return projectUserModel.register(newUser);
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if (user) {
+                        req.login(user, function (err) {
+                            if (err) {
+                                res.status(400).send(err);
+                            } else {
+                                res.json(user);
+                            }
+                        });
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function projectLogin(req, res) {
+        var user = req.user;
+        res.json(user);
+    }
+
+    function projectLogout(req, res) {
+        req.logout();
+        res.send(200);
+    }
+   
+    function projectLoggedin(req, res) {
+        res.send(req.isAuthenticated() ? req.user : '0');
+    }
+
 };

@@ -10,11 +10,7 @@
 
         var searchQueryString = "https://inventory.data.gov/api/action/datastore_search" +
             "?resource_id=38625c3d-5388-4c16-a30f-d105432553a4&q=";
-        var findQueryString = "https://inventory.data.gov/api/action/datastore_search" +
-            "?resource_id=38625c3d-5388-4c16-a30f-d105432553a4&limit=1&q=UNITID:";
         var model = {
-            // app.delete("/api/project/school/:id", deleteSchool);
-
             // schools: schools,
             searchSchoolsByName: searchSchoolsByName,
             findSchoolById: findSchoolById,
@@ -42,8 +38,6 @@
 
         function searchSchoolsByName(name) {
             return $http.jsonp(searchQueryString + name + "&callback=JSON_CALLBACK");
-            //return $http.jsonp(searchQueryString + "&callback=JSON_CALLBACK");
-            //return $http.jsonp(queryURL + "&callback=JSON_CALLBACK", {data: data});
         }
     }
 })();

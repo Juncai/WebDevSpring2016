@@ -47,7 +47,10 @@
             .when("/home", {
                 templateUrl: "views/home/home.view.html",
                 controller: "HomeController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    loggedin: checkCurrentUser
+                }
             })
             .when("/sidebar", {
                 templateUrl: "views/sidebar/sidebar.view.html",
@@ -99,4 +102,19 @@
                 redirectTo: "/home"
             });
     }
+
+    var checkCurrentUser = function ($q, $timeout, $http, $location, $rootScope, UserService) {
+        var deferred = $q.defer();
+
+        $http.get('/api/project/loggedin').success(function (user) {
+            $rootScope.errorMessage = null;
+            // User is Authenticated
+            if (user !== '0') {
+                UserService.setCurrentUser(user);
+            }
+            deferred.resolve();
+        });
+
+        return deferred.promise;
+    };
 })();

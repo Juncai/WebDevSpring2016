@@ -2,10 +2,10 @@
  * Created by jonca on 3/16/2016.
  */
 module.exports = function (app, userModel) {
-    app.post("/api/project/register", register);
-    app.post("/api/project/login", login);
-    app.post("/api/project/logout", logout);
-    app.get("/api/project/user", loggedin);
+    // app.post("/api/project/register", projectRegister);
+    // app.post("/api/project/login", projectLogin);
+    // app.post("/api/project/logout", projectLogout);
+    // app.get("/api/project/user", projectLoggedin);
     app.get("/api/project/user/:id", profile);
     app.get("/api/project/user/username/:username", findUserByUsername);
     // app.post("/api/project/user", addUser);
@@ -56,67 +56,10 @@ module.exports = function (app, userModel) {
             );
     }
 
-    function register(req, res) {
-        var newUser = req.body;
 
-        userModel
-            .findUserByUsername(newUser.username)
-            .then(
-                function (user) {
-                    if (user) {
-                        res.json(null);
-                    } else {
-                        return userModel.register(newUser);
-                    }
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (user) {
-                    if (user) {
-                        req.login(user, function (err) {
-                            if (err) {
-                                res.status(400).send(err);
-                            } else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    // function login(req, res) {
-    //     var user = req.user;
-    //     res.json(user);
-    // }
-    function login(req, res) {
-        var credentials = req.body;
-        userModel.findUserByCredentials(credentials)
-            .then(
-                function (user) {
-                    res.json(user);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            );
-    }
-
-    // function logout(req, res) {
-    //     req.logout();
+    // function projectLogout(req, res) {
     //     res.send(200);
     // }
-
-    function logout(req, res) {
-        res.send(200);
-
-    }
 
     function updateUser(req, res) {
         var id = req.params.id;
@@ -132,9 +75,6 @@ module.exports = function (app, userModel) {
             );
     }
 
-    function loggedin(req, res) {
-        res.send(req.isAuthenticated() ? req.user : '0');
-    }
 
 
     function all(req, res) {

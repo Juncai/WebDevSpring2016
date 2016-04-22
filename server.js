@@ -40,6 +40,9 @@ app.use(passport.session());
 //require("./app/app.js")(app);
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
-require("./public/assignment/server/app.js")(app, db, mongoose);
-require("./public/project/server/app.js")(app, mongoose);
+
+var utils = require("./public/project/server/utils/utils.js");
+var projectUserModel = require("./public/project/server/models/projectUser.model.server.js")(mongoose, utils);
+require("./public/assignment/server/app.js")(app, db, mongoose, projectUserModel);
+require("./public/project/server/app.js")(app, mongoose, projectUserModel, utils);
 app.listen(port, ipaddress);

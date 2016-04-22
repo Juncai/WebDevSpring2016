@@ -43,6 +43,7 @@
                 }
             }
         }
+        
         function login(user) {
             if (!user) {
                 return;

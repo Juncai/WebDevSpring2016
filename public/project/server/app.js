@@ -1,12 +1,12 @@
 /**
  * Created by jonca on 3/16/2016.
  */
-module.exports = function (app, mongoose) {
+module.exports = function (app, mongoose, projectUserModel, utils) {
 
     // help functions
-    var utils = require("./utils/utils.js");
+    // var utils = require("./utils/utils.js");
 
-    var projectUserModel = require("./models/projectUser.model.server.js")(mongoose, utils);
+    // var projectUserModel = require("./models/projectUser.model.server.js")(mongoose, utils);
     var quizModel = require("./models/quiz.model.server.js")(mongoose);
     var classModel = require("./models/class.model.server.js")(mongoose, utils);
     var schoolModel = require("./models/school.model.server.js")(mongoose, utils);
